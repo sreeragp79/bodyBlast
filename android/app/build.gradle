@@ -1,0 +1,74 @@
+plugins {
+    id "com.android.application"
+    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
+    id "dev.flutter.flutter-gradle-plugin"
+    id "org.jetbrains.kotlin.android" // Kotlin plugin for Kotlin support
+}
+
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader("UTF-8") { reader ->
+        localProperties.load(reader)
+    }
+}
+
+def flutterVersionCode = localProperties.getProperty("flutter.versionCode")
+if (flutterVersionCode == null) {
+    flutterVersionCode = "1"
+}
+
+def flutterVersionName = localProperties.getProperty("flutter.versionName")
+if (flutterVersionName == null) {
+    flutterVersionName = "1.0"
+}
+
+android {
+    namespace = "com.example.body_blast"
+    compileSdk = flutter.compileSdkVersion
+    ndkVersion = flutter.ndkVersion
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    defaultConfig {
+        applicationId = "com.example.body_blast"
+        minSdk = 24
+        targetSdk = 33
+        versionCode = flutterVersionCode.toInteger()
+        versionName = flutterVersionName
+    }
+
+    buildTypes {
+        release {
+            // TODO: Add your own signing config for the release build.
+            signingConfig = signingConfigs.debug
+        }
+    }
+}
+
+flutter {
+    source = "../.."
+}
+
+// Add Google Services plugin at the end of the file
+apply plugin: 'com.google.gms.google-services'  // Apply Google Services plugin
+
+// Firebase and Google Sign-In dependencies
+dependencies {
+    implementation 'com.google.android.gms:play-services-auth:20.3.0'  // Google Sign-In
+    implementation 'com.google.firebase:firebase-auth:21.0.6'          // Firebase Authentication
+    implementation 'com.google.firebase:firebase-core:21.1.0'          // Firebase Core
+
+    // Kotlin Standard Library (needed if using Kotlin)
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.10"    // Kotlin Standard Library
+
+    // Add any other Firebase dependencies if needed
+    // For example, if you are using Firebase Firestore:
+    // implementation 'com.google.firebase:firebase-firestore:24.0.0'
+
+    // For Firebase Messaging (if needed)
+    // implementation 'com.google.firebase:firebase-messaging:23.1.0'
+}
