@@ -410,7 +410,6 @@ class _AppointmentState extends State<Appointment> {
                             widget.name
 
                           );
-                          // callNext(context, Paymentoption());
                         },
                         "Next"
                     ),

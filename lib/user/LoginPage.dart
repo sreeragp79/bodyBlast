@@ -208,6 +208,7 @@ class _LoginpageState extends State<Loginpage> {
                              String name = logvalue.logInNameController.text;
                              String password = logvalue.logInPasswordController.text;
                              logvalue.checkUser(context,name, password);
+                             logvalue.loadUserDetails(context);
                             }
 
                       },

@@ -5,10 +5,12 @@ import 'package:flutter/material.dart';
 import '../constants/AppBar Texts.dart';
 import '../constants/BottonContainer.dart';
 import '../constants/Navigator.dart';
+import '../models/class.dart';
 import 'PaymentCompleted.dart';
 
 class Receipt extends StatelessWidget {
-  const Receipt({super.key});
+  BookingDetailsClass item;
+   Receipt({super.key,required this.item});
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +89,7 @@ class Receipt extends StatelessWidget {
                               shape: BoxShape.circle,
                               image: DecorationImage(
                                 fit: BoxFit.cover,
-                                image: AssetImage("assets/image/rose1.png"),
+                                image: NetworkImage(item.instructorImage),
                               )
                           ),
                         ),
@@ -98,7 +100,7 @@ class Receipt extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Rose",
+                              item.instructorIName,
                               style: TextStyle(
                                   fontFamily: "jeju",
                                   height: height / 800.99,
@@ -132,7 +134,7 @@ class Receipt extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.only(left: width / 34.45),
                     child: Text(
-                      "20 October - Monday",
+                      "${item.day} ${item.month} ${item.dayName}",
                       style: TextStyle(
                         color: Colors.white,
                         fontFamily: "interlight",
@@ -143,25 +145,60 @@ class Receipt extends StatelessWidget {
                   SizedBox(height: height/30.54,),
                   Padding(
                     padding: EdgeInsets.only(left: width / 34.45),
-                    child: Text(
-                      "Time",
-                      style: TextStyle(
-                        color: Colors.grey.withOpacity(0.56),
-                        fontFamily: "intermedi",
-                        fontSize: 16,
-                      ),
+                    child: Row(
+                      children: [
+                        Text(
+                          "Time",
+                          style: TextStyle(
+                            color: Colors.grey.withOpacity(0.56),
+                            fontFamily: "intermedi",
+                            fontSize: 16,
+                          ),
+                        ),
+                        SizedBox(width: width / 3.40,),
+                        Text(
+                          "To",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: "interlight",
+                            fontSize: 14,
+                          ),
+                        ),
+                        SizedBox(width: width / 4.40,),
+                        Text(
+                          "Time",
+                          style: TextStyle(
+                            color: Colors.grey.withOpacity(0.56),
+                            fontFamily: "intermedi",
+                            fontSize: 16,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   SizedBox(height: height/400.54,),
                   Padding(
                     padding: EdgeInsets.only(left: width / 34.45),
-                    child: Text(
-                      "9;30 Am",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontFamily: "interlight",
-                        fontSize: 16,
-                      ),
+                    child: Row(
+                      children: [
+                        Text(
+                          item.time,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: "interlight",
+                            fontSize: 16,
+                          ),
+                        ),
+                        SizedBox(width: width / 1.80,),
+                        Text(
+                          item.toTime,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: "interlight",
+                            fontSize: 16,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   SizedBox(height: height/35.54,),
@@ -185,7 +222,7 @@ class Receipt extends StatelessWidget {
                         ),
                         SizedBox(width: width/2.34,),
                         Text(
-                          "\$170.55",
+                          item.insPrice,
                           style: TextStyle(
                             color: Colors.white,
                             fontFamily: "intermedi",

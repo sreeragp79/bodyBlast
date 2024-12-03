@@ -253,7 +253,7 @@ class Paymentpage extends StatelessWidget {
                           width/1.70,
                           height/17.56,
                               (){
-                            value1.addBookingDetails(image,name);
+                            value1.addBookingDetails(image,name,context);
                             callNext(context, Paymentcompleted(
                               image: image,
                               name: name,

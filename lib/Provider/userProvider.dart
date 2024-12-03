@@ -24,6 +24,7 @@ class Userprovider extends ChangeNotifier{
 Userprovider(){
  getReviews();
  getBookingDetails();
+ getBookingDetails();
 }
 
  final FirebaseFirestore db = FirebaseFirestore.instance;
@@ -270,10 +271,16 @@ Future<void> getReviews()async{
 
 
 // date time add
- void dateAndTimeAdd(String selectDate, String time, String toTime){
+ void dateAndTimeAdd(String? selectDate, String time, String toTime){
+
+  if (selectDate == null || selectDate.isEmpty) {
+   print("Error: Select Date is null or empty");
+   return;
+  }
+
   String userId = DateTime.now().millisecondsSinceEpoch.toString();
 
-  DateTime selectedDateTime = DateFormat('dd/MM/yyyy').parse(selectDate);
+  DateTime selectedDateTime = DateFormat('dd/MM/yyyy').parse(selectDate!);
   String day = DateFormat('dd').format(selectedDateTime);
   String month = DateFormat('MMMM').format(selectedDateTime);
   String dayName = DateFormat('EEEE').format(selectedDateTime);
@@ -333,30 +340,53 @@ Future<void> getReviews()async{
  // The selected date and time is already booked
 
  Future<void> availableDateAndTime(
-     String date, String time,
-     String toTime, BuildContext context,
-     String price,String image,String name
-     )async{
-   var data =  await FirebaseFirestore.instance.collection("USER_DATE_TIME")
-       .where("DATE",isEqualTo: date)
-       .where("TIME",isEqualTo: time)
-       .where("TO_TIME",isEqualTo: toTime).get();
-   if(data.docs.isEmpty){
-      dateAndTimeAdd(date, time, toTime); // add new booking
-      callNext(context, Paymentoption(price: price,name:name ,image: image,));
-   }else{
-    showCustomSnackBar(context,'The selected date and time are already booked.');
+     String date, String time, String toTime, BuildContext context,
+     String price, String image, String name) async {
+
+  // Step 1: Null or Empty Check for Inputs
+  if (date == null || date.isEmpty || date.trim().isEmpty ||
+      time == null || time.isEmpty || time.trim().isEmpty ||
+      toTime == null || toTime.isEmpty || toTime.trim().isEmpty) {
+   // Show Specific Error Message and exit the function
+   showCustomSnackBar(context, 'Please select a date and time.');
+   return;
+  }
+
+  try {
+   // Step 2: Firestore query to check if the selected date/time is already booked
+   var data = await FirebaseFirestore.instance
+       .collection("USER_DATE_TIME")
+       .where("DATE", isEqualTo: date)
+       .where("TIME", isEqualTo: time)
+       .where("TO_TIME", isEqualTo: toTime)
+       .get();
+
+   // Step 3: Check if the date/time slot is already booked
+   if (data.docs.isEmpty) {
+    // No booking found: Add new booking and proceed
+    dateAndTimeAdd(date, time, toTime);
+    callNext(context, Paymentoption(price: price, name: name, image: image));
+   } else {
+    // Slot is already booked: Show message
+    showCustomSnackBar(context, 'The selected date and time are already booked.');
    }
-   notifyListeners();
+  } catch (e) {
+   // Step 4: Error Handling
+   print('Error occurred while checking availability: ${e.toString()}');
+  }
+
+  notifyListeners();
  }
 
- // add booking details and notification
 
- Future<void> addBookingDetails(String paymentInstructorImage,String paymentInstructorName)async{
+
+ // add booking details and notification
+ Future<void> addBookingDetails(String paymentInstructorImage,String paymentInstructorName,BuildContext context)async{
 
    SharedPreferences prefs = await SharedPreferences.getInstance();
    String? userId = prefs.getString("SIGN_USER_ID"); // get current userId
    String bookingId = DateTime.now().millisecondsSinceEpoch.toString();
+   Adminprovider insData = Provider.of<Adminprovider>(context ,listen: false);
    Map<String,dynamic> addBookingDetails = {
     "USER_ID":userId,
     "BOOKING_ID": bookingId?? '',
@@ -367,6 +397,7 @@ Future<void> getReviews()async{
     "DAY": day,
     "MONTH": month,
     "DAY-NAME": dayName,
+    "INS_PRICE":insData.insPrice,
     "NOTIFICATION_TITLE": "Your trainer has been booked\nSuccessfully!"
    };
    print("Booking details");
@@ -387,7 +418,12 @@ Future<void> getReviews()async{
  List<BookingDetailsClass> bookingDetailsList = [];
 
  Future<void>getBookingDetails()async{
-  var datas =await db.collection("BOOKING_DETAILS").get();
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String? currentUserId = prefs.getString("SIGN_USER_ID");
+
+  var datas =await db.collection("BOOKING_DETAILS").
+  where("USER_ID",isEqualTo: currentUserId).get();
+
   if(datas.docs.isNotEmpty){
    bookingDetailsList.clear();
    for(var element in datas.docs){
@@ -402,6 +438,7 @@ Future<void> getReviews()async{
         map["DAY"]?? '',
         map["MONTH"]?? '',
         map["DAY-NAME"]?? '',
+        map["INS_PRICE"]?? '',
         map["NOTIFICATION_TITLE"]?? '',
     ));
    }

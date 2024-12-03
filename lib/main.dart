@@ -23,6 +23,7 @@ import 'package:body_blast/user/OtpPage.dart';
 import 'package:body_blast/user/Payment%20Page.dart';
 import 'package:body_blast/user/PaymentCompleted.dart';
 import 'package:body_blast/user/PaymentOption.dart';
+import 'package:body_blast/user/Privacy%20Policy.dart';
 import 'package:body_blast/user/Profile.dart';
 import 'package:body_blast/user/Receipt.dart';
 import 'package:body_blast/user/Reviews.dart';
@@ -71,7 +72,7 @@ class MyApp extends StatelessWidget {
      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: SignUpPage(),
+        home: Splashscreen(),
       ),
     );
   }

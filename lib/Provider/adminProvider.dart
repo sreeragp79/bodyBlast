@@ -162,6 +162,7 @@ class Adminprovider extends ChangeNotifier{
   // getInstructorDetails  Details
   String? paymentInstructorImage;
   String? paymentInstructorName;
+  String? insPrice;
 
 List<AdminAddInstructor> instructorList = [];
   Future<void> getInstructorDetails()async{
@@ -178,6 +179,7 @@ List<AdminAddInstructor> instructorList = [];
            Map<String,dynamic> map = element.data();
            paymentInstructorImage = map["I_IMAGE"]??'';
            paymentInstructorName = map["INSTRUCTOR_NAME"]??'';
+           insPrice = map["INSTRUCTOR_PRICE"]??'';
 
            map.forEach((key, value) {
              print("$key : $value");

@@ -71,7 +71,12 @@ class _FillYourProfileState extends State<EditProfile> {
                             image: editValue.userProfileFile != null
                                 ? DecorationImage(
                               image: FileImage(editValue.userProfileFile!),
-                              fit: BoxFit.contain,
+                              fit: BoxFit.cover,
+                            )
+                            :editValue.userProfileUrl.isNotEmpty
+                            ?DecorationImage(
+                                image:NetworkImage(editValue.userProfileUrl),
+                              fit: BoxFit.cover,
                             )
                                 :DecorationImage(
                               image: AssetImage('assets/image/user11.png',),scale: 8

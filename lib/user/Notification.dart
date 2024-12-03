@@ -85,6 +85,7 @@ class Notifications extends StatelessWidget {
                                               color: CupertinoColors.white,
                                               shape: BoxShape.circle,
                                               image: DecorationImage(
+                                                fit: BoxFit.contain,
                                                   image: NetworkImage(insItem[index].instructorImage)
                                               )
                                           ),
@@ -103,7 +104,7 @@ class Notifications extends StatelessWidget {
                                             SizedBox(height: height/90.45,),
                                             GestureDetector(
                                               onTap: () {
-                                                callNext(context, Receipt());
+                                                callNext(context, Receipt(item:value.bookingDetailsList[index],));
                                               },
                                               child: Text(
                                                 "See Details...",

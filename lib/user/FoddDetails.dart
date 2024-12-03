@@ -96,11 +96,11 @@ class FoodDetails extends StatelessWidget {
                       Row(
                         children: [
                           buildNutritionCard("Calories", foodCalories),
-                          SizedBox(width: width/13.45,),
+                          SizedBox(width: width/19.45,),
                           buildNutritionCard("Protein", foodProtein),
-                          SizedBox(width: width/13.45,),
+                          SizedBox(width: width/19.45,),
                           buildNutritionCard("Carbs", foodCarbs),
-                          SizedBox(width: width/13.45,),
+                          SizedBox(width: width/19.45,),
                           buildNutritionCard("Fat", foodFat),
                         ],
                       ),

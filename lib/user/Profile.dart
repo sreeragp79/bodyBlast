@@ -4,6 +4,7 @@ import 'package:body_blast/constants/Navigator.dart';
 import 'package:body_blast/constants/bodyContainer.dart';
 import 'package:body_blast/user/Bottom%20Navigation.dart';
 import 'package:body_blast/user/Edit%20Profile.dart';
+import 'package:body_blast/user/Privacy%20Policy.dart';
 import 'package:body_blast/user/SplashScreen.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
@@ -93,6 +94,11 @@ class Profile extends StatelessWidget {
                                           image: FileImage(proValue.userProfileFile!),
                                           fit: BoxFit.cover,
                                         )
+                                        :proValue.userProfileUrl.isNotEmpty
+                                          ?DecorationImage(
+                                            image: NetworkImage(proValue.userProfileUrl),
+                                          fit: BoxFit.cover,
+                                        )
                                         :DecorationImage(
                                           image: AssetImage('assets/image/userdefault.png'),
                                           fit: BoxFit.contain,
@@ -123,7 +129,7 @@ class Profile extends StatelessWidget {
                                     ),
                                   ),
                                   SizedBox(height: height/99.34,),
-                                  Text("2 mo ego ",
+                                  Text("1 day ego ",
                                     style: TextStyle(
                                       fontFamily: "interlight",
                                       fontSize: 20,
@@ -176,7 +182,7 @@ class Profile extends StatelessWidget {
                               height:height/999.99,
                             ),
                             SizedBox(height: height/30.34,),
-                            profileTexts("Privacy Policy", (){}),
+                            profileTexts("Privacy Policy", (){callNext(context, PrivacyPolicy());}),
                             SizedBox(height: height/30.34,),
                             Container(
                               color: CupertinoColors.white.withOpacity(0.10),

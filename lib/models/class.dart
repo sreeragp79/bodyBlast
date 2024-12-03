@@ -92,6 +92,7 @@ class BookingDetailsClass{
   String day;
   String month;
   String dayName;
+  String insPrice;
   String notificationSub;
   BookingDetailsClass(
       this.userId,
@@ -103,6 +104,7 @@ class BookingDetailsClass{
       this.day,
       this.month,
       this.dayName,
+      this.insPrice,
       this.notificationSub
       );
 }

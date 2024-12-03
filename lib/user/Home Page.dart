@@ -156,7 +156,7 @@ class _HomePageState extends State<HomePage>with SingleTickerProviderStateMixin 
                             child: Row(
                               children: [
                                 headingText("HELLO,${value1.signUpNameController.text}"),
-                                SizedBox(width: width/4.20,),
+                                SizedBox(width: 60,),
                                 GestureDetector(
                                   onTap: () {
                                     value2.getBookingDetails();
@@ -404,52 +404,57 @@ class _HomePageState extends State<HomePage>with SingleTickerProviderStateMixin 
                               scrollDirection: Axis.horizontal,
                               itemCount: TrainerImage.length,
                               itemBuilder: (context, index) {
-                                return Container(
-                                  margin: EdgeInsets.only(left: width/30.34),
-                                  height: 12.34,
-                                  width:170.45,
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      fit: BoxFit.fill,
-                                      image: AssetImage(TrainerImage[index]),
+                                return GestureDetector(
+                                  onTap: () {
+                                    callNext(context, Instructors());
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.only(left: width/30.34),
+                                    height: 12.34,
+                                    width:170.45,
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        fit: BoxFit.fill,
+                                        image: AssetImage(TrainerImage[index]),
+                                      ),
+                                      color: Colors.transparent,
+                                      borderRadius: BorderRadius.circular(25)
                                     ),
-                                    color: Colors.transparent,
-                                    borderRadius: BorderRadius.circular(25)
-                                  ),
-                                  child: Padding(
-                                    padding:  EdgeInsets.only(left: width/37.34),
-                                    child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        SizedBox(height: height/70.34,),
-                                        Container(
-                                          width: width/10.45,
-                                          height: height/20.45,
-                                          decoration: BoxDecoration(
-                                            color: Colors.grey.withOpacity(0.20),
-                                            shape: BoxShape.circle,
-                                          ),
-                                          child:  Center(
-                                            child: Text(
-                                              price[index],
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 14,
-                                                fontFamily: 'intermedi',
+                                    child: Padding(
+                                      padding:  EdgeInsets.only(left: width/37.34),
+                                      child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(height: height/70.34,),
+                                          Container(
+                                            width: width/10.45,
+                                            height: height/20.45,
+                                            decoration: BoxDecoration(
+                                              color: Colors.grey.withOpacity(0.20),
+                                              shape: BoxShape.circle,
+                                            ),
+                                            child:  Center(
+                                              child: Text(
+                                                price[index],
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 14,
+                                                  fontFamily: 'intermedi',
+                                                ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                        SizedBox(height: height/10.34,),
-                                        Text(
-                                          TrainerName[index],
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 28,
-                                            fontFamily: 'jeju',
+                                          SizedBox(height: height/10.34,),
+                                          Text(
+                                            TrainerName[index],
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 28,
+                                              fontFamily: 'jeju',
+                                            ),
                                           ),
-                                        ),
-                                        experience(Experience[index]),
-                                      ],
+                                          experience(Experience[index]),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 );

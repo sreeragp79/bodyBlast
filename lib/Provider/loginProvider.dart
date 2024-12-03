@@ -57,6 +57,7 @@ class LoginProvider extends ChangeNotifier {
       "NAME": signUpNameController.text,
       "PHONE_NUMBER": signUpPhoneController.text,
       "PASSWORD": signUpPasswordController.text.toString(),
+      "SIGN_UP_TIME": DateTime.now()
     };
     print("SignUp Details.....");
     addLoginDetails.forEach((key,value){
@@ -73,13 +74,33 @@ class LoginProvider extends ChangeNotifier {
     await prefs.setString("SIGN_USER_ID", userId,);
     notifyListeners();
   }
-  
+
+  // // user time Get
+  // Future<String>getUserTime(String userId)async{
+  //   var data =await db.collection("SIGNUP_DETAILS").doc(userId).get();
+  //   if(data.exists){
+  //     var signUpTime  = data.data()!["SIGN_UP_TIME"].toDate(); // Firebase timestamp to DateTime
+  //     var currentTime = DateTime.now();
+  //     var difference = currentTime.difference(signUpTime).inDays;
+  //
+  //     if (difference == 0) {
+  //       return "Today";
+  //     } else if (difference == 1) {
+  //       return "1 day ago";
+  //     } else {
+  //       return "$difference days ago";
+  //     }
+  //   }
+  //   return "";
+  // }
+  //
   // userData fetch
 
   Future<void> getUserDetails() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     signUpNameController.text = prefs.getString("NAME") ?? '';
     signUpPasswordController.text = prefs.getString("PASSWORD") ?? '';
+    var userId = prefs.getString("SIGN_USER_ID") ?? '';
     notifyListeners();
   }
 
@@ -145,13 +166,19 @@ class LoginProvider extends ChangeNotifier {
 
     if(userDoc.exists){
       var userData = userDoc.data(); // get firestore data
-
       // load details to controller
       signUpNameController.text = userData?["NAME"]?? "";
       lastNameController.text = userData?["LAST_NAME"]?? '';
       emailController.text = userData?[ "EMAIL"]?? '';
       dateOfBirthController.text = userData?["DATE_OF_BIRTH"]?? '';
       userImage.userProfileUrl = userData?["USER_IMAGE"]??'';
+
+      print("loade details");
+      print("Name: ${signUpNameController.text}");
+      print("Last Name: ${lastNameController.text}");
+      print("Email: ${emailController.text}");
+      print("Date of Birth: ${dateOfBirthController.text}");
+      print("User Image URL: ${userImage.userProfileUrl}");
       notifyListeners();
 
     }
