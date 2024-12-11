@@ -854,7 +854,7 @@ class AdminProvider extends ChangeNotifier {
       }
       notifyListeners();
     } catch (erorrr) {
-      print("Supplement Getting details Eroorrrrrrrr");
+      print("Supplement Getting details Eroorvrrrrrrr");
     }
   }
 }
