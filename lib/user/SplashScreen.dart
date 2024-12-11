@@ -11,30 +11,30 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMixin {
-  late AnimationController _iconAnimationController; // First controller for icon animation
-  late AnimationController _containerAnimationController; // Second controller for red container
+  late AnimationController _iconAnimationController; // icon animation
+  late AnimationController _containerAnimationController; //  red container
   late AnimationController _textFadeInController; // Third controller for text fade-in
   late Animation<double> _iconSizeAnimation;
   late Animation<double> _containerZoomAnimation;
-  late Animation<double> _textOpacityAnimation; // Fade-in animation for the text
+  late Animation<double> _textOpacityAnimation; // for the text
 
   @override
   void initState() {
     super.initState();
 
-    // First controller for icon animation
+    //  icon animation
     _iconAnimationController = AnimationController(
       duration: const Duration(seconds: 1), // Icon animation duration
       vsync: this,
     );
 
-    // Second controller for red container animation
+    //  red container animation
     _containerAnimationController = AnimationController(
-      duration: const Duration(seconds: 2), // Container animation duration
+      duration: const Duration(seconds: 1), // Container animation duration
       vsync: this,
     );
 
-    // Third controller for the text fade-in animation
+    //  text fade-in animation
     _textFadeInController = AnimationController(
       duration: const Duration(seconds: 1), // Text fade-in duration
       vsync: this,
@@ -108,7 +108,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.black,
       body: AnimatedBuilder(
         animation: Listenable.merge([_iconAnimationController, _containerAnimationController, _textFadeInController]),
         builder: (context, child) {
@@ -123,7 +123,15 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                     height: 163,
                     width: 163,
                     decoration: BoxDecoration(
-                      color: const Color(0xFFBF00).withOpacity(1),
+                      gradient: LinearGradient(
+                        colors: [
+                          Color(0x381896).withOpacity(1),
+                          Color(0x748ce9).withOpacity(1), // Hexadecimal color with full opacity
+                        ],
+                        // stops: [0.1, 1],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                      ),
                       borderRadius: BorderRadius.circular(25),
                     ),
                   ),
@@ -133,9 +141,9 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
               // Centered icon with zoom-in effect
               Center(
                 child: Transform.scale(
-                  scale: _iconSizeAnimation.value / 600,
+                  scale: _iconSizeAnimation.value / 350,
                   child: Image.asset(
-                    "assets/image/logo2.png", // Replace with your asset image path
+                    "assets/image/appLogo.png", // Replace with your asset image path
                   ),
                 ),
               ),
@@ -153,7 +161,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                             text: "Fit ",
                             style: TextStyle(
                               fontSize: 38,
-                              color: Colors.black,
+                              color: Colors.white,
                               fontFamily: "intermedi",
                               fontWeight: FontWeight.normal,
                             ),
@@ -162,7 +170,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                             text: "Pro",
                             style: TextStyle(
                               fontSize: 38,
-                              color: Colors.black,
+                              color: Colors.white,
                               fontFamily: "interbold",
                               fontWeight: FontWeight.bold,
                             ),

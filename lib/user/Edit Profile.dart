@@ -8,7 +8,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-
 import '../constants/BottonContainer.dart';
 import '../constants/Navigator.dart';
 import 'Home Page.dart';
@@ -71,7 +70,7 @@ class _FillYourProfileState extends State<EditProfile> {
                             image: editValue.userProfileFile != null
                                 ? DecorationImage(
                               image: FileImage(editValue.userProfileFile!),
-                              fit: BoxFit.cover,
+                              fit: BoxFit.contain,
                             )
                             :editValue.userProfileUrl.isNotEmpty
                             ?DecorationImage(
@@ -268,7 +267,7 @@ class _FillYourProfileState extends State<EditProfile> {
                           width / 3.20, height / 18.99,
                               (){
                             editLogValue.updateUserProfile(context);
-                              callNext(context, BottomNavigationPage());
+                             Navigator.pop(context);
                           },
                           "Save",
                         )

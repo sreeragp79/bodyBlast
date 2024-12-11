@@ -60,7 +60,7 @@ class _FoodListState extends State<FoodList> {
       backgroundColor: Colors.black,
       body: Consumer<LoginProvider>(
           builder: (context1,value2,child) {
-            return Consumer<Adminprovider>(
+            return Consumer<AdminProvider>(
                 builder: (context1,value,child) {
                   final breackFastList = value.breackFastList;
                   final gainListt = value.gainList;

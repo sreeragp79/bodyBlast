@@ -8,6 +8,7 @@ Widget appbarText(String text) {
       fontFamily: "intermedi",
       fontSize: 26,
       color: CupertinoColors.white,
+      decoration: TextDecoration.none,
     ),
   );
 }

@@ -36,7 +36,7 @@ class _WorkOutUpdateState extends State<WorkOutUpdate> {
   @override
   void initState(){
     super.initState();
-   final adminProvider =  Provider.of<Adminprovider>(context, listen: false);
+   final adminProvider =  Provider.of<AdminProvider>(context, listen: false);
    adminProvider.workOutNameController.text = widget.workoutName;
     adminProvider.minsController.text = widget.mins;
     adminProvider.calController.text = widget.cals;
@@ -46,7 +46,7 @@ class _WorkOutUpdateState extends State<WorkOutUpdate> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
-      body: Consumer<Adminprovider>(
+      body: Consumer<AdminProvider>(
         builder: (context,value,child) {
           return bodyContainer(height, width,
               Column(crossAxisAlignment: CrossAxisAlignment.center,

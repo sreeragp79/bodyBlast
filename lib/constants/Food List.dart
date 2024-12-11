@@ -1,3 +1,4 @@
+import 'package:body_blast/constants/Loading.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -31,12 +32,19 @@ required double height,
                     width: width/1.10,
                     height: height/3.30,
                     decoration: BoxDecoration(
-                      image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: NetworkImage(breakfastImage[index])
-                      ),
                       color: Colors.black,
                       borderRadius: BorderRadius.circular(23),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(23),
+                      child: Image.network(breakfastImage[index],  fit: BoxFit.cover,
+                        loadingBuilder: (context, child, loadingProgress){
+                          if (loadingProgress == null) return child;
+                          return Center(
+                            child: loader(),
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ),
@@ -101,12 +109,19 @@ Widget gainList({
                     width: width/1.10,
                     height: height/3.30,
                     decoration: BoxDecoration(
-                      image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: NetworkImage(gainImage[index])
-                      ),
                       color: Colors.black,
                       borderRadius: BorderRadius.circular(23),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(23),
+                      child: Image.network(gainImage[index],  fit: BoxFit.cover,
+                        loadingBuilder: (context, child, loadingProgress){
+                          if (loadingProgress == null) return child;
+                          return Center(
+                            child: loader(),
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ),
@@ -169,12 +184,19 @@ Widget lossListt({
                     width: width/1.10,
                     height: height/3.30,
                     decoration: BoxDecoration(
-                      image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: NetworkImage(gainImage[index])
-                      ),
                       color: Colors.black,
                       borderRadius: BorderRadius.circular(23),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(23),
+                      child: Image.network(gainImage[index], fit: BoxFit.cover,
+                        loadingBuilder: (context, child, loadingProgress){
+                          if (loadingProgress == null) return child;
+                          return Center(
+                            child: loader(),
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ),

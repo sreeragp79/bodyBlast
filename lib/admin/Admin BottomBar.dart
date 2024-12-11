@@ -45,7 +45,7 @@ class _BottomNavigationPageState extends State<AdminBottomBar> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
 
-    return Consumer<Adminprovider>(
+    return Consumer<AdminProvider>(
         builder: (context1,value,child) {
           return Scaffold(
             backgroundColor: Colors.black,

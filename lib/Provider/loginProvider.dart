@@ -144,6 +144,7 @@ class LoginProvider extends ChangeNotifier {
     // get the signup user userId
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? userId = prefs.getString("SIGN_USER_ID");
+
     Map<String, dynamic> userFillProfile ={
       "LAST_NAME": lastNameController.text,
       "EMAIL": emailController.text,

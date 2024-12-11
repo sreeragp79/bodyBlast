@@ -1,73 +1,95 @@
 import 'dart:io';
 
-
+import 'package:body_blast/user/Address.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants/snackBar.dart';
 import '../models/class.dart';
 
-class Adminprovider extends ChangeNotifier{
-
-  Adminprovider(){
+class AdminProvider extends ChangeNotifier {
+  AdminProvider() {
     getWorkoutDetails();
     getInstructorDetails();
     getFoodDetails();
+    getSupplementsDetails();
   }
   final FirebaseFirestore db = FirebaseFirestore.instance;
 
+  // Search controller
+  TextEditingController supplementSearchController = TextEditingController();
+
+  // User Location Contaollers
+  TextEditingController addressNameController = TextEditingController();
+  TextEditingController addressPhoneController = TextEditingController();
+  TextEditingController addressHouseNoController = TextEditingController();
+  TextEditingController addressRoadController = TextEditingController();
+  TextEditingController pincodeController = TextEditingController();
+  TextEditingController stateController = TextEditingController();
+  TextEditingController cityController = TextEditingController();
+
   // Iinstructor Details
 
-  TextEditingController insNameController= TextEditingController();
-  TextEditingController expController= TextEditingController();
-  TextEditingController medalController= TextEditingController();
-  TextEditingController clintController= TextEditingController();
-  TextEditingController priceController= TextEditingController();
+  TextEditingController insNameController = TextEditingController();
+  TextEditingController expController = TextEditingController();
+  TextEditingController medalController = TextEditingController();
+  TextEditingController clintController = TextEditingController();
+  TextEditingController priceController = TextEditingController();
 
- // WorkOut Details
+  // WorkOut Details
 
-  TextEditingController workOutNameController= TextEditingController();
-  TextEditingController minsController= TextEditingController();
-  TextEditingController calController= TextEditingController();
-  TextEditingController setsController= TextEditingController();
-
+  TextEditingController workOutNameController = TextEditingController();
+  TextEditingController minsController = TextEditingController();
+  TextEditingController calController = TextEditingController();
+  TextEditingController setsController = TextEditingController();
 
   // Food Controllers
 
-  TextEditingController foodNameController= TextEditingController();
-  TextEditingController calorieController= TextEditingController();
-  TextEditingController proteinController= TextEditingController();
-  TextEditingController cabsController= TextEditingController();
-  TextEditingController fatController= TextEditingController();
+  TextEditingController foodNameController = TextEditingController();
+  TextEditingController calorieController = TextEditingController();
+  TextEditingController proteinController = TextEditingController();
+  TextEditingController cabsController = TextEditingController();
+  TextEditingController fatController = TextEditingController();
 
+  // Supplement Contaollers
+
+  TextEditingController supplementName = TextEditingController();
+  TextEditingController supplementBrand = TextEditingController();
+  TextEditingController supplementPrice = TextEditingController();
 
   // image add function...
+  String supplementImageUrl = '';
+  File? supplementImageFile;
   String workOutImageUrl = '';
   String instructorImageUrl = '';
   File? workOutImageFile;
   File? instructorImageFile;
   File? selectedWorkOutImageFile;
   String? selectedWorkOutmageUrl;
-  Future<void>adminAddImage(ImageSource source,String from)async{
+  Future<void> adminAddImage(ImageSource source, String from) async {
     // image picker option
     final adminSelectImage = ImagePicker();
     // user selected image store
-    final userPickedImage = await adminSelectImage.pickImage(source:source);
+    final userPickedImage = await adminSelectImage.pickImage(source: source);
 
-    if(userPickedImage != null){
+    if (userPickedImage != null) {
       await adminCropImage(userPickedImage.path, from);
       notifyListeners();
-    }else{
+    } else {
       print('No image selected.');
     }
   }
 
-  Future<void>adminCropImage(String path,String from)async{
+  Future<void> adminCropImage(String path, String from) async {
     final cropedFile = await ImageCropper().cropImage(
       sourcePath: path,
       aspectRatioPresets: [
@@ -89,59 +111,72 @@ class Adminprovider extends ChangeNotifier{
       ],
     );
     // image save based on frome
-    if(cropedFile != null){
+    if (cropedFile != null) {
       selectedWorkOutImageFile = File(cropedFile.path);
-      if(from == "adminInstructorImage"){
+      if (from == "adminInstructorImage") {
         instructorImageFile = File(cropedFile.path); // profile image set
-      }else if(from == "adminWorkOutImage"){
+      } else if (from == "adminWorkOutImage") {
         workOutImageFile = File(cropedFile.path);
+      } else if (from == "adminSupplementImage") {
+        supplementImageFile = File(cropedFile.path);
       }
       notifyListeners();
     }
   }
+
   // save image to firebase
-  Future<void> saveAdminAddImageToFireBase(String from)async{
+  Future<void> saveAdminAddImageToFireBase(String from) async {
     String instructorId = DateTime.now().millisecondsSinceEpoch.toString();
     String workOutId = DateTime.now().millisecondsSinceEpoch.toString();
+    String supplementId = DateTime.now().millisecondsSinceEpoch.toString();
     // map to store user Details
     Map<String, dynamic> dataToSave = {};
     File? fileToUpload;
     String collection = '';
-    if(from == "adminInstructorImage"){
+    if (from == "adminInstructorImage") {
       fileToUpload = instructorImageFile;
       collection = 'INSTRUCTOR_IMAGE';
-      dataToSave ={
-        "ID":instructorId,
-        "I_IMAGE":instructorImageUrl,
-        "INSTRUCTOR_NAME":insNameController.text,
-        "INSTRUCTOR_EXP":expController.text,
-        "INSTRUCTOR_MEDAL":medalController.text,
-        "INSTRUCTOR_CLINT":clintController.text,
-        "INSTRUCTOR_PRICE":priceController.text,
+      dataToSave = {
+        "ID": instructorId,
+        "I_IMAGE": instructorImageUrl,
+        "INSTRUCTOR_NAME": insNameController.text,
+        "INSTRUCTOR_EXP": expController.text,
+        "INSTRUCTOR_MEDAL": medalController.text,
+        "INSTRUCTOR_CLINT": clintController.text,
+        "INSTRUCTOR_PRICE": priceController.text,
       };
-
-    }else if(from == "adminWorkOutImage"){
+    } else if (from == "adminWorkOutImage") {
       fileToUpload = workOutImageFile;
       collection = "WORKOUT_IMAGE";
       dataToSave = {
-        "ID":workOutId,
-        "W_IMAGE":workOutImageUrl,
-        "WORKOUT_NAME":workOutNameController.text,
-        "WORKOUT_MINS":minsController.text,
-        "WORKOUT_CAL":calController.text,
-        "WORKOUT_SETS":setsController.text,
+        "ID": workOutId,
+        "W_IMAGE": workOutImageUrl,
+        "WORKOUT_NAME": workOutNameController.text,
+        "WORKOUT_MINS": minsController.text,
+        "WORKOUT_CAL": calController.text,
+        "WORKOUT_SETS": setsController.text,
+      };
+    } else if (from == "adminSupplementImage") {
+      fileToUpload = supplementImageFile;
+      collection = "SUPPLEMENT_IMAGE";
+      dataToSave = {
+        "ID": supplementId,
+        "SUPPLEMENT_IMAGE": supplementImageUrl,
+        "SUPPLEMENT_NAME": supplementName.text,
+        "SUPPLEMENT_BRAND": supplementBrand.text,
+        "SUPPLEMENT_PRICE": supplementPrice.text,
       };
       notifyListeners();
     }
     // create image url
 
-    if(fileToUpload != null){
+    if (fileToUpload != null) {
       // create photo id
       String photoId = DateTime.now().millisecondsSinceEpoch.toString();
       // get firebase reference
       Reference ref = FirebaseStorage.instance.ref().child(photoId);
       // upload the file
-      await ref.putFile(fileToUpload).whenComplete(()async{
+      await ref.putFile(fileToUpload).whenComplete(() async {
         // Get download URL
         String downloadUrl = await ref.getDownloadURL();
 
@@ -150,12 +185,22 @@ class Adminprovider extends ChangeNotifier{
           dataToSave["I_IMAGE"] = downloadUrl;
         } else if (from == "adminWorkOutImage") {
           dataToSave["W_IMAGE"] = downloadUrl;
+        } else if (from == "adminSupplementImage") {
+          dataToSave["SUPPLEMENT_IMAGE"] = downloadUrl;
+        }
+
+        String? documentId;
+        if (from == "adminInstructorImage") {
+          documentId = instructorId;
+        } else if (from == "adminWorkOutImage") {
+          documentId = workOutId;
+        } else if (from == "adminSupplementImage") {
+          documentId = supplementId;
         }
         // Save data to Firestore
-        db.collection(collection).doc(from == "adminInstructorImage" ?instructorId:workOutId).set(dataToSave);
+        db.collection(collection).doc(documentId).set(dataToSave);
         notifyListeners();
       });
-
     }
   }
 
@@ -164,45 +209,45 @@ class Adminprovider extends ChangeNotifier{
   String? paymentInstructorName;
   String? insPrice;
 
-List<AdminAddInstructor> instructorList = [];
-  Future<void> getInstructorDetails()async{
-   try{
-     print("Fetching InstructorData details starting...");
+  List<AdminAddInstructor> instructorList = [];
+  Future<void> getInstructorDetails() async {
+    try {
+      print("Fetching InstructorData details starting...");
 
-     var datas1 = await db.collection('INSTRUCTOR_IMAGE').get();
+      var datas1 = await db.collection('INSTRUCTOR_IMAGE').get();
 
-     print("Instructor Documents found: ${datas1.docs.length}");
+      print("Instructor Documents found: ${datas1.docs.length}");
 
-     if(datas1.docs.isNotEmpty){
-       instructorList.clear();
-         for(var element in datas1.docs){
-           Map<String,dynamic> map = element.data();
-           paymentInstructorImage = map["I_IMAGE"]??'';
-           paymentInstructorName = map["INSTRUCTOR_NAME"]??'';
-           insPrice = map["INSTRUCTOR_PRICE"]??'';
+      if (datas1.docs.isNotEmpty) {
+        instructorList.clear();
+        for (var element in datas1.docs) {
+          Map<String, dynamic> map = element.data();
+          paymentInstructorImage = map["I_IMAGE"] ?? '';
+          paymentInstructorName = map["INSTRUCTOR_NAME"] ?? '';
+          insPrice = map["INSTRUCTOR_PRICE"] ?? '';
 
-           map.forEach((key, value) {
-             print("$key : $value");
-           });
+          map.forEach((key, value) {
+            print("$key : $value");
+          });
 
-           instructorList.add(AdminAddInstructor(
-             map["ID"]?? '',
-             map["I_IMAGE"]?? '',
-             map["INSTRUCTOR_NAME"]?? '',
-             map["INSTRUCTOR_EXP"]?? '',
-             map["INSTRUCTOR_MEDAL"]?? '',
-             map[ "INSTRUCTOR_CLINT"]?? '',
-             map["INSTRUCTOR_PRICE"]?? '',
-           ));
-         }
-         print("final InstructorList Length ${instructorList.length}");
-         notifyListeners();
-       }else{
-       print("No documents found in INSTROCTOR_IMAGE collection");
-     }
-   }catch(erorrrrrrr){
-     print("error fetching instructor datas${erorrrrrrr}");
-   }
+          instructorList.add(AdminAddInstructor(
+            map["ID"] ?? '',
+            map["I_IMAGE"] ?? '',
+            map["INSTRUCTOR_NAME"] ?? '',
+            map["INSTRUCTOR_EXP"] ?? '',
+            map["INSTRUCTOR_MEDAL"] ?? '',
+            map["INSTRUCTOR_CLINT"] ?? '',
+            map["INSTRUCTOR_PRICE"] ?? '',
+          ));
+        }
+        print("final InstructorList Length ${instructorList.length}");
+        notifyListeners();
+      } else {
+        print("No documents found in INSTROCTOR_IMAGE collection");
+      }
+    } catch (erorrrrrrr) {
+      print("error fetching instructor datas${erorrrrrrr}");
+    }
   }
 
   // get workOutDetails
@@ -245,8 +290,30 @@ List<AdminAddInstructor> instructorList = [];
     }
   }
 
+  // get Supplements Details
+
+  List<AdminSupplementsClass> supplementsList = [];
+
+  Future<void> getSupplementsDetails() async {
+    var suppData = await db.collection("SUPPLEMENT_IMAGE").get();
+    if (suppData.docs.isNotEmpty) {
+      supplementsList.clear();
+      for (var element in suppData.docs) {
+        Map<String, dynamic> map = element.data();
+        supplementsList.add(AdminSupplementsClass(
+          map["ID"] ?? '',
+          map["SUPPLEMENT_IMAGE"] ?? '',
+          map["SUPPLEMENT_NAME"] ?? '',
+          map["SUPPLEMENT_BRAND"] ?? '',
+          map["SUPPLEMENT_PRICE"] ?? '',
+        ));
+      }
+    }
+    notifyListeners();
+  }
+
   // clear fields
- void clearInstructorField(){
+  void clearInstructorField() {
     instructorImageFile = null;
     insNameController.clear();
     expController.clear();
@@ -254,59 +321,58 @@ List<AdminAddInstructor> instructorList = [];
     clintController.clear();
     priceController.clear();
     notifyListeners();
- }
- void clearWorkOutField(){
-   workOutImageFile = null;
-   workOutNameController.clear();
-   minsController.clear();
-   calController.clear();
-   setsController.clear();
-   notifyListeners();
- }
+  }
 
+  void clearWorkOutField() {
+    workOutImageFile = null;
+    workOutNameController.clear();
+    minsController.clear();
+    calController.clear();
+    setsController.clear();
+    notifyListeners();
+  }
 
   // add category idd
-  void addFoodCategory(String SelectCategory){
+  void addFoodCategory(String SelectCategory) {
     String categoryId = DateTime.now().millisecondsSinceEpoch.toString();
-    Map<String,dynamic> addCategory = {
-      "CATEGORY_ID":categoryId,
-      "NAME":SelectCategory.trim(),
+    Map<String, dynamic> addCategory = {
+      "CATEGORY_ID": categoryId,
+      "NAME": SelectCategory.trim(),
     };
     db.collection("FOOD_CATEGORY").doc(categoryId).set(addCategory);
     notifyListeners();
   }
 
-
   List<StoreCategoryId> categoryIdList = [];
   // get category id
-  Future<void>getCategory()async{
+  Future<void> getCategory() async {
     var data = await db.collection("FOOD_CATEGORY").get();
-    if(data.docs.isNotEmpty){
+    if (data.docs.isNotEmpty) {
       categoryIdList.clear();
-      for(var element in data.docs){
-        Map<String,dynamic> map = element.data();
+      for (var element in data.docs) {
+        Map<String, dynamic> map = element.data();
         print("category: ${map["NAME"]},ID${map["CATEGORY_ID"]}");
         categoryIdList.add(StoreCategoryId(
-          map["CATEGORY_ID"]?? "",
-          map["NAME"]?? "",
+          map["CATEGORY_ID"] ?? "",
+          map["NAME"] ?? "",
         ));
       }
       notifyListeners();
     }
   }
 
- // add food details
+  // add food details
   bool isLoading = false;
   Future<void> addFood(String selectedCategory) async {
     String? categoryId;
 
-    if (categoryIdList.isEmpty){
+    if (categoryIdList.isEmpty) {
       await getCategory();
     }
 
     for (var category in categoryIdList) {
       print("Checking category: ${category.name}, ID: ${category.categoryiD}");
-      if (category.name.trim() == selectedCategory.trim()){
+      if (category.name.trim() == selectedCategory.trim()) {
         categoryId = category.categoryiD;
         break;
       }
@@ -324,46 +390,45 @@ List<AdminAddInstructor> instructorList = [];
       "FOOD_CABS": cabsController.text,
       "FOOD_FAT": fatController.text,
       "CATEGORY_ID": categoryId,
-      "CATEGORY_NAME":selectedCategory,
+      "CATEGORY_NAME": selectedCategory,
     };
     await db.collection("FOODS").doc(foodId).set(addFood);
 
-    await addFoodTofirebase(selectedCategory,foodId);
+    await addFoodTofirebase(selectedCategory, foodId);
 
-  print("food added uder category ${categoryId},${selectedCategory}");
+    print("food added uder category ${categoryId},${selectedCategory}");
     notifyListeners();
   }
-
 
 // food image adding
   String breackFastFoodImageUrl = '';
   File? breackFastFoodImageFile;
   String gainFoodImageUrl = '';
   File? gainFoodImageFile;
-  String lossFoodImageUrl ="";
+  String lossFoodImageUrl = "";
   File? lossFoodImageFile;
-  String preworkOutFoodImageUrl ="";
+  String preworkOutFoodImageUrl = "";
   File? preworkOutFoodImageFile;
   File? selectedFoodImageFile;
   String? selectedFoodImageUrl;
 
-
-  Future<void>adminAddFoodImage(ImageSource source,String selectCategory)async{
+  Future<void> adminAddFoodImage(
+      ImageSource source, String selectCategory) async {
     // image picker option
     final adminSelectFoodImage = ImagePicker();
     // user selected image store
-    final adminPickedFoodImage = await adminSelectFoodImage.pickImage(source:source);
+    final adminPickedFoodImage =
+        await adminSelectFoodImage.pickImage(source: source);
 
-    if(adminPickedFoodImage != null){
+    if (adminPickedFoodImage != null) {
       await adminCropFoodImage(adminPickedFoodImage.path, selectCategory);
       notifyListeners();
-
-    }else{
+    } else {
       print('No image selected.');
     }
   }
 
-  Future<void>adminCropFoodImage(String path,String selectCategory)async{
+  Future<void> adminCropFoodImage(String path, String selectCategory) async {
     final cropedFoodFile = await ImageCropper().cropImage(
       sourcePath: path,
       aspectRatioPresets: [
@@ -402,31 +467,31 @@ List<AdminAddInstructor> instructorList = [];
       }
       notifyListeners(); // Add this after setting the image file
     }
-    }
+  }
 
-   //  image to add firebase
-   Future<void> addFoodTofirebase(String selectCategory,String foodId)async{
+  //  image to add firebase
+  Future<void> addFoodTofirebase(String selectCategory, String foodId) async {
     File? foodFleToUpload;
     String collection = "FOODS";
 
-    if(selectCategory == 'BreackFast'){
+    if (selectCategory == 'BreackFast') {
       foodFleToUpload = breackFastFoodImageFile;
-    }else if(selectCategory == 'Gain'){
+    } else if (selectCategory == 'Gain') {
       foodFleToUpload = gainFoodImageFile;
-    }else if(selectCategory == 'Loss'){
+    } else if (selectCategory == 'Loss') {
       foodFleToUpload = lossFoodImageFile;
-    }else if(selectCategory == 'Preworkout'){
+    } else if (selectCategory == 'Preworkout') {
       foodFleToUpload = preworkOutFoodImageFile;
     }
     // create image url
 
-    if(foodFleToUpload != null){
+    if (foodFleToUpload != null) {
       // create photo id
       String photoId = DateTime.now().millisecondsSinceEpoch.toString();
       // get firebase reference
       Reference ref = FirebaseStorage.instance.ref().child(photoId);
       // upload the file
-      await ref.putFile(foodFleToUpload).whenComplete(()async{
+      await ref.putFile(foodFleToUpload).whenComplete(() async {
         // Get download URL
         String downloadUrl = await ref.getDownloadURL();
 
@@ -434,69 +499,68 @@ List<AdminAddInstructor> instructorList = [];
         Map<String, dynamic> updateFoodData = {
           "FOOD_IMAGE": downloadUrl,
         };
-         db.collection(collection).doc(foodId).update(updateFoodData);
+        db.collection(collection).doc(foodId).update(updateFoodData);
         notifyListeners();
       });
-
     }
-   }
+  }
 
-   // getFood Details based on category id
+  // getFood Details based on category id
 
   List<FoodModel> breackFastList = [];
   List<FoodModel> gainList = [];
   List<FoodModel> lossList = [];
   String? categoryId;
-  String? categoryName ;
-  String? foodId ;
+  String? categoryName;
+  String? foodId;
 
-  Future<void>getFoodDetails()async{
+  Future<void> getFoodDetails() async {
     print("Documet fetching starting................");
-  var foodDatas =  await db.collection("FOODS").get();
+    var foodDatas = await db.collection("FOODS").get();
 
-  if(foodDatas.docs.isNotEmpty){
-    breackFastList.clear();
-    gainList.clear();
-    lossList.clear();
+    if (foodDatas.docs.isNotEmpty) {
+      breackFastList.clear();
+      gainList.clear();
+      lossList.clear();
 
-    for(var element in foodDatas.docs){
-      Map<String,dynamic> map = element.data();
+      for (var element in foodDatas.docs) {
+        Map<String, dynamic> map = element.data();
 
-      categoryId = map["CATEGORY_ID"]?? '';
-      categoryName = map["CATEGORY_NAME"]?? '';
-      foodId = map["FOOD_ID"]?? '';
-      map.forEach((key, value) {
-        print("$key : $value");
-      });
+        categoryId = map["CATEGORY_ID"] ?? '';
+        categoryName = map["CATEGORY_NAME"] ?? '';
+        foodId = map["FOOD_ID"] ?? '';
+        map.forEach((key, value) {
+          print("$key : $value");
+        });
 
-      FoodModel foods = FoodModel(
-          map["CATEGORY_ID"]?? '',
-          map["CATEGORY_NAME"]?? '',
-          map["FOOD_ID"]?? '',
-          map["FOOD_NAME"]?? '',
-          map["FOOD_CABS"]?? '',
-          map["FOOD_CALORIE"]?? '',
-          map["FOOD_FAT"]?? '',
-          map["FOOD_PROTEIN"]?? '',
-          map["FOOD_IMAGE"]?? '',
-      );
-     if(categoryName == 'BreackFast'){
-       breackFastList.add(foods);
-     }else if(categoryName == 'Gain'){
-       gainList.add(foods);
-     }else if(categoryName == 'Loss'){
-       lossList.add(foods);
-     }
+        FoodModel foods = FoodModel(
+          map["CATEGORY_ID"] ?? '',
+          map["CATEGORY_NAME"] ?? '',
+          map["FOOD_ID"] ?? '',
+          map["FOOD_NAME"] ?? '',
+          map["FOOD_CABS"] ?? '',
+          map["FOOD_CALORIE"] ?? '',
+          map["FOOD_FAT"] ?? '',
+          map["FOOD_PROTEIN"] ?? '',
+          map["FOOD_IMAGE"] ?? '',
+        );
+        if (categoryName == 'BreackFast') {
+          breackFastList.add(foods);
+        } else if (categoryName == 'Gain') {
+          gainList.add(foods);
+        } else if (categoryName == 'Loss') {
+          lossList.add(foods);
+        }
+      }
     }
-  }
-  print("catogory Name:${categoryName},${gainList}");
-  print("catogory Name:${categoryName},${lossList}");
-  print("catogory Name:${categoryName},${breackFastList}");
-  notifyListeners();
+    print("catogory Name:${categoryName},${gainList}");
+    print("catogory Name:${categoryName},${lossList}");
+    print("catogory Name:${categoryName},${breackFastList}");
+    notifyListeners();
   }
 
   // clear food
-  void clearFoodField(){
+  void clearFoodField() {
     preworkOutFoodImageFile = null;
     breackFastFoodImageFile = null;
     gainFoodImageFile = null;
@@ -509,81 +573,288 @@ List<AdminAddInstructor> instructorList = [];
     notifyListeners();
   }
 
-    // admin Update Food Details
-  String? foodImage;
-    Future<void> lodeFoodDetails(String foodIdd)async{
-      var foodData = await db.collection("FOODS").doc(foodIdd).get();
-      if(foodData.exists){
-        var map = foodData.data();
-        print("get food details");
-        map?.forEach((key,value){
-          print('$key,$value');
-        });
-        foodNameController.text =map?["FOOD_NAME"]?? '';
-        calorieController.text =map?["FOOD_CALORIE"]?? '';
-        proteinController.text =map?["FOOD_PROTEIN"]?? '';
-        cabsController.text =map?["FOOD_CABS"]?? '';
-        fatController.text =map?["FOOD_FAT"]?? '';
-        foodImage = map?["FOOD_IMAGE"]?? '';
-        print("foodIdd: $foodIdd");
+  // clear Suplement
+  void clearSupplementsField() {
+    supplementImageFile = null;
+    supplementName.clear();
+    supplementBrand.clear();
+    supplementPrice.clear();
+    notifyListeners();
+  }
 
+  // admin Update Food Details
+  String? foodImage;
+  Future<void> lodeFoodDetails(String foodIdd) async {
+    var foodData = await db.collection("FOODS").doc(foodIdd).get();
+    if (foodData.exists) {
+      var map = foodData.data();
+      print("get food details");
+      map?.forEach((key, value) {
+        print('$key,$value');
+      });
+      foodNameController.text = map?["FOOD_NAME"] ?? '';
+      calorieController.text = map?["FOOD_CALORIE"] ?? '';
+      proteinController.text = map?["FOOD_PROTEIN"] ?? '';
+      cabsController.text = map?["FOOD_CABS"] ?? '';
+      fatController.text = map?["FOOD_FAT"] ?? '';
+      foodImage = map?["FOOD_IMAGE"] ?? '';
+      print("foodIdd: $foodIdd");
+
+      notifyListeners();
+    }
+  }
+
+  // update food imge
+  Future<void> updateFoodDetails(String uFoodId) async {
+    String? imageUrl = foodImage;
+    if (selectedFoodImageFile != null) {
+      final photoId = DateTime.now().millisecondsSinceEpoch.toString();
+      Reference ref = FirebaseStorage.instance.ref().child(photoId);
+      await ref.putFile(selectedFoodImageFile!).whenComplete(() async {
+        imageUrl = await ref.getDownloadURL();
+        selectedFoodImageUrl = imageUrl;
+      });
+    }
+    db.collection("FOODS").doc(uFoodId).update({
+      "FOOD_NAME": foodNameController.text,
+      "FOOD_CALORIE": calorieController.text,
+      "FOOD_PROTEIN": proteinController.text,
+      "FOOD_CABS": cabsController.text,
+      "FOOD_FAT": fatController.text,
+      "FOOD_IMAGE": imageUrl
+    });
+    notifyListeners();
+    await getFoodDetails();
+  }
+
+  // clear update filed
+  void clearFoodUpdate() {
+    foodNameController.clear();
+    calorieController.clear();
+    proteinController.clear();
+    cabsController.clear();
+    fatController.clear();
+    selectedFoodImageFile = null;
+    notifyListeners();
+  }
+
+  // update WorkOutImage and instrocor image
+  Future<void> workOutUpdate(String workOutId) async {
+    String? wImageUrl;
+    Map<String, dynamic> updateData = {
+      "WORKOUT_NAME": workOutNameController.text,
+      "WORKOUT_MINS": minsController.text,
+      "WORKOUT_CAL": calController.text,
+      "WORKOUT_SETS": setsController.text,
+    };
+
+    if (selectedWorkOutImageFile != null) {
+      final photoId = DateTime.now().millisecondsSinceEpoch.toString();
+      Reference ref = FirebaseStorage.instance.ref().child(photoId);
+      await ref.putFile(selectedWorkOutImageFile!).whenComplete(() async {
+        wImageUrl = await ref.getDownloadURL();
+        selectedWorkOutmageUrl = wImageUrl;
+        updateData["W_IMAGE"] = wImageUrl;
+      });
+      await db.collection("WORKOUT_IMAGE").doc(workOutId).update(updateData);
+      notifyListeners();
+      await getWorkoutDetails();
+    }
+  }
+
+  // get user Location Details
+
+  String? pincode;
+  String? state;
+  String? city;
+
+  Future<void> fetchUserLocation() async {
+    try {
+      // check permission
+      LocationPermission permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+      }
+      if (permission == LocationPermission.denied) {
+        throw Exception("Location permission denied");
+      }
+
+      // get corrent Position
+      Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+      // Reverse Geocoding to get Address Details
+
+      List<Placemark> placemarks =
+          await placemarkFromCoordinates(position.latitude, position.longitude);
+
+      if (placemarks.isNotEmpty) {
+        Placemark place = placemarks.first;
+
+        pincode = place.postalCode ?? '';
+        state = place.administrativeArea ?? '';
+        city = place.locality ?? '';
+
+        // Update text controllers
+        pincodeController.text = pincode!;
+        stateController.text = state!;
+        cityController.text = city!;
         notifyListeners();
       }
+    } catch (e) {
+      print("Error fetching location: $e");
     }
-    // update food imge
-    Future<void> updateFoodDetails(String uFoodId)async{
-     String? imageUrl = foodImage;
-      if(selectedFoodImageFile != null ){
-        final photoId = DateTime.now().millisecondsSinceEpoch.toString();
-        Reference ref = FirebaseStorage.instance.ref().child(photoId);
-        await ref.putFile(selectedFoodImageFile!).whenComplete(() async {
-          imageUrl = await ref.getDownloadURL();
-          selectedFoodImageUrl = imageUrl;
-        });
+  }
+
+  // add Address Details
+  Future<void> addAddressDetails() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    DateTime now = DateTime.now();
+    String dayName = DateFormat('EEEE').format(now);
+    String month = DateFormat('MMMM').format(now);
+    String date = now.day.toString();
+
+    String? userId = prefs.getString("SIGN_USER_ID");
+    String id = DateTime.now().millisecondsSinceEpoch.toString();
+
+    Map<String, dynamic> addressDetails = {
+      "ADDRESS_ID": id,
+      "USER_ID": userId,
+      "NAME": addressNameController.text,
+      "PHONE": addressPhoneController.text,
+      "PIN_CODE": pincodeController.text,
+      "STATE": stateController.text,
+      "CITY": cityController.text,
+      "HOUSE_NO": addressHouseNoController.text,
+      "ROAD_NAME": addressRoadController.text,
+      "MONTH": month,
+      "DATE": date,
+      "DAY_NAME": dayName,
+    };
+    db
+        .collection("ADDRESS")
+        .doc(id)
+        .set(addressDetails, SetOptions(merge: true));
+    notifyListeners();
+  }
+
+  // get Address
+  String? addressName;
+  String? picode;
+  String? statee;
+  String? cityy;
+  String? rodeName;
+  String? addressId;
+  String? month;
+  String? date;
+  String? dayName;
+  List<AddressClass> addressList = [];
+  Future<void> getAddressDetails() async {
+    var datas = await db.collection("ADDRESS").get();
+    if (datas.docs.isNotEmpty) {
+      for (var element in datas.docs) {
+        Map<String, dynamic> map = element.data();
+
+        addressName = map["NAME"] ?? '';
+        picode = map["PIN_CODE"] ?? '';
+        statee = map["STATE"] ?? '';
+        cityy = map["CITY"] ?? '';
+        rodeName = map["ROAD_NAME"] ?? '';
+        addressId = map["ADDRESS_ID"] ?? '';
+        month = map["MONTH"] ?? '';
+        date = map["DATE"] ?? '';
+        dayName = map["DAY_NAME"] ?? '';
+
+        addressList.add(AddressClass(
+          map["USER_ID"] ?? '',
+          map["ADDRESS_ID"] ?? '',
+          map["NAME"] ?? '',
+          map["PHONE"] ?? '',
+          map["PIN_CODE"] ?? '',
+          map["STATE"] ?? '',
+          map["CITY"] ?? '',
+          map["HOUSE_NO"] ?? '',
+          map["ROAD_NAME"] ?? '',
+          map["MONTH"] ?? '',
+          map["DATE"] ?? '',
+          map["DAY_NAME"] ?? '',
+        ));
       }
-      db.collection("FOODS").doc(uFoodId).update({
-        "FOOD_NAME": foodNameController.text,
-        "FOOD_CALORIE": calorieController.text,
-        "FOOD_PROTEIN": proteinController.text,
-        "FOOD_CABS": cabsController.text,
-        "FOOD_FAT": fatController.text,
-        "FOOD_IMAGE":imageUrl
-      });
-      notifyListeners();
-      await getFoodDetails();
-    }
-
-    // clear update filed
-    void  clearFoodUpdate(){
-      foodNameController.clear();
-      calorieController.clear();
-      proteinController.clear();
-      cabsController.clear();
-      fatController.clear();
-      selectedFoodImageFile = null;
       notifyListeners();
     }
-    // update WorkOutImage and instrocor image
-    Future<void> workOutUpdate(String workOutId)async{
-      String? wImageUrl;
-      Map<String, dynamic> updateData = {
-        "WORKOUT_NAME": workOutNameController.text,
-        "WORKOUT_MINS": minsController.text,
-        "WORKOUT_CAL": calController.text,
-        "WORKOUT_SETS": setsController.text,
-      };
+  }
 
-     if(selectedWorkOutImageFile != null){
-       final photoId = DateTime.now().millisecondsSinceEpoch.toString();
-       Reference ref =FirebaseStorage.instance.ref().child(photoId);
-       await ref.putFile(selectedWorkOutImageFile!).whenComplete(() async {
-         wImageUrl = await ref.getDownloadURL();
-         selectedWorkOutmageUrl = wImageUrl;
-         updateData["W_IMAGE"] = wImageUrl;
-       });
-       await db.collection("WORKOUT_IMAGE").doc(workOutId).update(updateData);
-       notifyListeners();
-       await getWorkoutDetails();
-     }
+  // Update Address
+
+  Future<void> updateAddress() async {
+    Map<String, dynamic> updateUserDetails = {
+      "NAME": addressNameController.text,
+      "PHONE": addressPhoneController.text,
+      "PIN_CODE": pincodeController.text,
+      "STATE": stateController.text,
+      "CITY": cityController.text,
+      "HOUSE_NO": addressHouseNoController.text,
+      "ROAD_NAME": addressRoadController.text,
+    };
+    await db.collection("ADDRESS").doc(addressId).update(updateUserDetails);
+    notifyListeners();
+  }
+
+  // clear address
+  void clearAddress() {
+    addressNameController.clear();
+    addressPhoneController.clear();
+    pincodeController.clear();
+    stateController.clear();
+    cityController.clear();
+    addressHouseNoController.clear();
+    addressRoadController.clear();
+    notifyListeners();
+  }
+
+  // // user orderd items get myOrder page
+  // List<AdminSupplementsClass> myOrderList = [];
+  // void addOrder(AdminSupplementsClass supplemet) {
+  //   myOrderList.add(supplemet);
+  //   notifyListeners();
+  // }
+
+  // add user buy item add to firebase
+  void addBookingItem(
+      String suppleImage,
+      String suppleName,
+      String suppleBrand,
+      String supplePrice) {
+    String bookingId = DateTime.now().millisecondsSinceEpoch.toString();
+    Map<String, dynamic> addBookingItem = {
+      "BOOKIN_ID": bookingId,
+      "SUPPLEMENT_IMAGE": suppleImage,
+      "SUPPLEMENT_NAME": suppleName,
+      "SUPPLEMENT_BRAND": suppleBrand,
+      "SUPPLEMENT_PRICE": supplePrice,
+    };
+    db.collection("BOOKING_ITEMS").doc(bookingId).set(addBookingItem);
+    notifyListeners();
+  }
+
+// get booking items
+  List<SupplementBookingClass> supplementsBookingList = [];
+  Future<void> getBookingItems() async {
+    try {
+      var datas = await db.collection("BOOKING_ITEMS").get();
+      if (datas.docs.isNotEmpty) {
+        supplementsBookingList.clear();
+        for (var element in datas.docs) {
+          Map<String, dynamic> map = element.data();
+          map["BOOKIN_ID"] ?? '';
+          map["SUPPLEMENT_IMAGE"] ?? '';
+          map["SUPPLEMENT_NAME"] ?? '';
+          map["SUPPLEMENT_BRAND"] ?? '';
+          map["SUPPLEMENT_PRICE"] ?? '';
+        }
+      }
+      notifyListeners();
+    } catch (erorrr) {
+      print("Supplement Getting details Eroorrrrrrrr");
     }
-    }
+  }
+}

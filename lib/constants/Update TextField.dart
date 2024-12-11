@@ -70,3 +70,46 @@ Widget mainTextField({
   );
 }
 
+// Address Fileds
+
+Widget addressTextField({
+required String labelText,
+required double width,
+required double height,
+TextEditingController? controller,
+}){
+  return   Container(
+    width: width,
+    height: height,
+    decoration: BoxDecoration(
+    ),
+    child: TextField(
+      controller: controller,
+      style:  TextStyle(
+        color: Colors.white,
+        fontSize: 18,
+        fontFamily: "InterLight",
+      ),
+      decoration: InputDecoration(
+        contentPadding:  EdgeInsets.symmetric(vertical: 20, horizontal: 8),
+        border: InputBorder.none,
+        labelText: labelText,
+        labelStyle:  TextStyle(
+          color: Colors.grey,
+          fontFamily: "interlight",
+          fontSize: 15,
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(13),
+          borderSide: BorderSide(color: Colors.white.withOpacity(0.60), width: width / 999.99),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(13),
+          borderSide: BorderSide(color: Colors.white.withOpacity(0.60), width: width / 999.99),
+        ),
+      ),
+    ),
+  );
+}
+
+

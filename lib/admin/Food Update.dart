@@ -41,7 +41,7 @@ class _FoodUpdateState extends State<FoodUpdate> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
-      body: Consumer<Adminprovider>(
+      body: Consumer<AdminProvider>(
         builder: (context,value,child) {
           return bodyContainer(height, width,
               Column(crossAxisAlignment: CrossAxisAlignment.center,

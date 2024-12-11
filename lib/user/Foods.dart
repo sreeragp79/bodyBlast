@@ -59,9 +59,8 @@ List<String> preworimage = [
       backgroundColor: Colors.black,
       body: Consumer<LoginProvider>(
         builder: (context1,value2,child) {
-          return Consumer<Adminprovider>(
+          return Consumer<AdminProvider>(
             builder: (context1,value,child) {
-
               final breackFastList = value.breackFastList;
               final gainListt = value.gainList;
               final lossList = value.lossList;
@@ -93,8 +92,8 @@ List<String> preworimage = [
                             ),
                           ),
                         ),
-                        SizedBox(width: width / 4.34),
-                        appbarText("Food"),
+                        SizedBox(width: width / 4.10),
+                        appbarText("Foods"),
                       ],
                     ),
                     SizedBox(height: height / 50.56),

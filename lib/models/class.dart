@@ -1,3 +1,5 @@
+import 'package:firebase_storage/firebase_storage.dart';
+
 class ReviewsClass {
   String reviewUserId;
   String reviewImage;
@@ -106,5 +108,60 @@ class BookingDetailsClass{
       this.dayName,
       this.insPrice,
       this.notificationSub
+      );
+}
+class AdminSupplementsClass{
+  String supplementId;
+  String supplementImage;
+  String supplementName;
+  String supplementBrand;
+  String supplementPrice;
+  AdminSupplementsClass(
+      this.supplementId,
+      this.supplementImage,
+      this.supplementName,
+      this.supplementBrand,
+      this.supplementPrice,
+      );
+}
+
+class AddressClass{
+  String userId;
+  String addressId;
+  String addressName;
+  String addressPhone;
+  String addressPinCode;
+  String addressState;
+  String addressCity;
+  String addressHouse;
+  String addressRode;
+  String month;
+  String date;
+  String dayName;
+  AddressClass(
+      this.userId,
+      this.addressId,
+      this.addressName,
+      this.addressPhone,
+      this.addressPinCode,
+      this.addressState,
+      this.addressCity,
+      this.addressHouse,
+      this.addressRode,
+      this.month,
+      this.date,
+      this.dayName,
+      );
+}
+class SupplementBookingClass{
+  String BsupplementImage;
+  String BsupplementName;
+  String BsupplementBrand;
+  String BsupplementPrice;
+  SupplementBookingClass(
+      this.BsupplementImage,
+      this.BsupplementName,
+      this.BsupplementBrand,
+      this.BsupplementPrice,
       );
 }

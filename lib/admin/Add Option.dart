@@ -30,7 +30,7 @@ class _AddOptionState extends State<AddOption> {
     double height = MediaQuery.of(context).size.height;
     return Scaffold (
       body: SingleChildScrollView(
-        child: Consumer<Adminprovider>(
+        child: Consumer<AdminProvider>(
           builder: (context1,value1,child) {
             return bodyContainer(height, width,
                 Column(crossAxisAlignment: CrossAxisAlignment.center,

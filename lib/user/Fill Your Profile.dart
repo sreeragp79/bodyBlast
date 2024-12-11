@@ -4,6 +4,7 @@ import 'package:body_blast/constants/AppBar%20Texts.dart';
 import 'package:body_blast/constants/bodyContainer.dart';
 import 'package:body_blast/constants/colors.dart';
 import 'package:body_blast/constants/snackBar.dart';
+import 'package:body_blast/user/Address.dart';
 import 'package:body_blast/user/Get%20Premium.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -246,7 +247,7 @@ class _FillYourProfileState extends State<FillYourProfile> {
                                     } else {
                                       userValue.saveImageToFireBase("userProfileAddImage");
                                      proVlaue.userFillProfile();
-                                      callNextReplacement(context, Premium());
+                                      callNextReplacement(context, Address());
                                     }
                                   },
                               "Next >",

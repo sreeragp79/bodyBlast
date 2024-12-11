@@ -24,7 +24,6 @@ class Userprovider extends ChangeNotifier{
 Userprovider(){
  getReviews();
  getBookingDetails();
- getBookingDetails();
 }
 
  final FirebaseFirestore db = FirebaseFirestore.instance;
@@ -386,7 +385,7 @@ Future<void> getReviews()async{
    SharedPreferences prefs = await SharedPreferences.getInstance();
    String? userId = prefs.getString("SIGN_USER_ID"); // get current userId
    String bookingId = DateTime.now().millisecondsSinceEpoch.toString();
-   Adminprovider insData = Provider.of<Adminprovider>(context ,listen: false);
+   AdminProvider insData = Provider.of<AdminProvider>(context ,listen: false);
    Map<String,dynamic> addBookingDetails = {
     "USER_ID":userId,
     "BOOKING_ID": bookingId?? '',

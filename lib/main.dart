@@ -2,11 +2,14 @@ import 'package:body_blast/Provider/adminProvider.dart';
 import 'package:body_blast/Provider/loginProvider.dart';
 import 'package:body_blast/Provider/userProvider.dart';
 import 'package:body_blast/admin/Food%20List.dart';
+import 'package:body_blast/admin/SupplementAdd.dart';
 import 'package:body_blast/admin/WorkOut%20List.dart';
 import 'package:body_blast/user/AddReview.dart';
+import 'package:body_blast/user/Address.dart';
 import 'package:body_blast/user/AgeSelection.dart';
 import 'package:body_blast/user/Appointment.dart';
 import 'package:body_blast/user/Bottom%20Navigation.dart';
+import 'package:body_blast/user/CheckOut.dart';
 import 'package:body_blast/user/ChooseWorkout.dart';
 import 'package:body_blast/user/Edit%20Profile.dart';
 import 'package:body_blast/user/Fill%20Your%20Profile.dart';
@@ -30,6 +33,8 @@ import 'package:body_blast/user/Reviews.dart';
 import 'package:body_blast/user/SignUpPage.dart';
 import 'package:body_blast/user/SliderPage.dart';
 import 'package:body_blast/user/SplashScreen.dart';
+import 'package:body_blast/user/Supplements.dart';
+import 'package:body_blast/user/Track%20Order.dart';
 import 'package:body_blast/user/WeightSelection.dart';
 import 'package:body_blast/user/WorkOut%20Vedio.dart';
 import 'package:body_blast/user/instructorDetails.dart';
@@ -68,11 +73,11 @@ class MyApp extends StatelessWidget {
      providers: [
      ChangeNotifierProvider(create: (context) => Userprovider(),),
      ChangeNotifierProvider(create: (context) => LoginProvider(),),
-     ChangeNotifierProvider(create: (context) => Adminprovider(),),
+     ChangeNotifierProvider(create: (context) => AdminProvider(),),
      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: SplashScreen(),
+        home: BottomNavigationPage(),
       ),
     );
   }

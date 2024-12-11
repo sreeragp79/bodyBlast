@@ -61,6 +61,7 @@ class Notifications extends StatelessWidget {
                       shrinkWrap: true,
                       padding: EdgeInsets.zero,
                       itemBuilder: (context, index) {
+                        var item = value.bookingDetailsList[index];
                         return
                           Center(
                             child: Container(

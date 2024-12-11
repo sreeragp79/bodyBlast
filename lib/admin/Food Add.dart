@@ -29,7 +29,7 @@ class _FoodaddState extends State<Foodadd> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
-      body: Consumer<Adminprovider>(builder: (context, value, child) {
+      body: Consumer<AdminProvider>(builder: (context, value, child) {
         return SingleChildScrollView(
           child: bodyContainer(
               height,
