@@ -35,13 +35,13 @@ class _FillYourProfileState extends State<EditProfile> {
                     Column(crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         SizedBox(height: height/16.45,),
-                        Row(
+                        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Padding(
                               padding: EdgeInsets.only(left: width/23.45),
                               child: GestureDetector(
                                 onTap: (){
-                                  callNext(context, Profile());
+                                back(context);
                                 },
                                 child: Container(
                                   width: width/7.45,
@@ -56,8 +56,11 @@ class _FillYourProfileState extends State<EditProfile> {
                                 ),
                               ),
                             ),
-                            SizedBox(width: width/5.34,),
-                            appbarText("Edit Profile"),
+                            appbarText("Edit Profile",width/14.84),
+                            Container(
+                              width: width/5.10,
+                              height: height/20.45,
+                            ),
                           ],
                         ),
                         SizedBox(height: height/18.45),
@@ -75,10 +78,10 @@ class _FillYourProfileState extends State<EditProfile> {
                             :editValue.userProfileUrl.isNotEmpty
                             ?DecorationImage(
                                 image:NetworkImage(editValue.userProfileUrl),
-                              fit: BoxFit.cover,
+                              fit: BoxFit.contain,
                             )
                                 :DecorationImage(
-                              image: AssetImage('assets/image/user11.png',),scale: 8
+                              image: AssetImage('assets/image/user11.png',),scale: 8,
                             ),
                           ),
                           child: Center(

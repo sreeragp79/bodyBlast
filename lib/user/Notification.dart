@@ -28,7 +28,7 @@ class Notifications extends StatelessWidget {
               Column(
                 children: [
                   SizedBox(height: height/16.45,),
-                  Row(
+                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Padding(
                         padding: EdgeInsets.only(left: width/23.45),
@@ -49,19 +49,22 @@ class Notifications extends StatelessWidget {
                           ),
                         ),
                       ),
-                      SizedBox(width: width/6.34,),
-                      appbarText("Notification"),
+                      appbarText("Notification",width/14.84),
+                      Container(
+                        width: width/6.45,
+                        height: height/20.45,
+                      )
                     ],
                   ),
                   SizedBox(height: height/20.45,),
                   Expanded(
-                    child: ListView.builder(
+                    child: value.bookingDetailsList.isNotEmpty?
+                    ListView.builder(
                       physics: AlwaysScrollableScrollPhysics(),
                       itemCount: value.bookingDetailsList.length,
                       shrinkWrap: true,
                       padding: EdgeInsets.zero,
                       itemBuilder: (context, index) {
-                        var item = value.bookingDetailsList[index];
                         return
                           Center(
                             child: Container(
@@ -86,7 +89,7 @@ class Notifications extends StatelessWidget {
                                               color: CupertinoColors.white,
                                               shape: BoxShape.circle,
                                               image: DecorationImage(
-                                                fit: BoxFit.contain,
+                                                fit: BoxFit.cover,
                                                   image: NetworkImage(insItem[index].instructorImage)
                                               )
                                           ),
@@ -126,7 +129,12 @@ class Notifications extends StatelessWidget {
                             ),
                           );
                       },
-                    ),
+                    ):SizedBox(
+                      height: 34,
+                      child: Center(
+                        child: Text("No items",style: TextStyle(color: Colors.white,fontSize: 23),),
+                      ),
+                    )
                   ),
                 ],
               )

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-Widget buildNutritionCard(String title, String value) {
+Widget buildNutritionCard(String title, String value,double firstwidth,double secondwidth,) {
   return Container(
     padding: EdgeInsets.all(12),
     decoration: BoxDecoration(
@@ -14,7 +14,7 @@ Widget buildNutritionCard(String title, String value) {
           value,
           style: TextStyle(
             color: Colors.white,
-            fontSize: 18,
+            fontSize: firstwidth,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -23,7 +23,7 @@ Widget buildNutritionCard(String title, String value) {
           title,
           style: TextStyle(
             color: Colors.grey,
-            fontSize: 14,
+            fontSize: secondwidth,
           ),
         ),
       ],

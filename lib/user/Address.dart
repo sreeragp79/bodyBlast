@@ -5,11 +5,13 @@ import 'package:body_blast/constants/bodyContainer.dart';
 import 'package:body_blast/user/Get%20Premium.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/AppBar Texts.dart';
 import '../constants/BottonContainer.dart';
 import '../constants/Navigator.dart';
+import '../constants/snackBar.dart';
 import 'Bottom Navigation.dart';
 
 class Address extends StatefulWidget {
@@ -33,7 +35,7 @@ class _AddressState extends State<Address> {
               Column(
                 children: [
                   SizedBox(height: height / 16.45),
-                  Row(
+                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Padding(
                         padding: EdgeInsets.only(left: width / 23.45),
@@ -55,8 +57,11 @@ class _AddressState extends State<Address> {
                           ),
                         ),
                       ),
-                      SizedBox(width: width / 4.34),
-                      appbarText("Address"),
+                      appbarText("Address",width/14.84),
+                      Container(
+                        width: width/6.10,
+                        height: height/20.45,
+                      ),
                     ],
                   ),
               SizedBox(height: height/22.56,),
@@ -72,7 +77,16 @@ class _AddressState extends State<Address> {
                   SizedBox(height: height/22.56,),
                Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                  children: [
-                   addressTextField(
+                   value.isSearchingLocation
+                       ? Center(child: SizedBox(
+                     width: 50,
+                     height: 50,
+                     child: Lottie.asset(
+                       "assets/animation/LoadingAnimation.json",
+                     ),
+                   )
+                   )
+                   :addressTextField(
                        labelText: "Pincode", width: width/2.88, height: 55,
                      controller: value.pincodeController
                    ),
@@ -93,7 +107,7 @@ class _AddressState extends State<Address> {
                            Text("use my location",
                            style: TextStyle(
                              color: Colors.white,
-                             fontSize: 15,
+                             fontSize: width/27.4,
                              fontFamily: "intersemi",
                            ),
                            )
@@ -106,11 +120,29 @@ class _AddressState extends State<Address> {
                   SizedBox(height: height/33.56,),
                   Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      addressTextField(
+                      value.isSearchingLocation
+                      ? Center(child: SizedBox(
+                    width: 50,
+                    height: 50,
+                    child: Lottie.asset(
+                      "assets/animation/LoadingAnimation.json",
+                    ),
+                  )
+                      )
+                      :addressTextField(
                         labelText: "State", width: width/2.88, height: 55,
                           controller: value.stateController
                       ),
-                      addressTextField(
+                      value.isSearchingLocation
+                          ? Center(child: SizedBox(
+                        width: 50,
+                        height: 50,
+                        child: Lottie.asset(
+                          "assets/animation/LoadingAnimation.json",
+                        ),
+                      )
+                      )
+                      :addressTextField(
                         labelText: "City", width: width/2.88, height: 55,
                           controller: value.cityController,
                       ),
@@ -133,7 +165,7 @@ class _AddressState extends State<Address> {
                     style:TextStyle(
                       color: Colors.grey,
                       fontFamily: "interlight",
-                      fontSize: 15,
+                      fontSize: width/27.4,
                     ),
                     ),
                   ),
@@ -208,12 +240,20 @@ class _AddressState extends State<Address> {
                       height / 17.56,
                           ()async{
                             FocusScope.of(context).unfocus();
-                            if(value != null){
-                              await value.addAddressDetails();
+                            if(
+                            value.addressNameController.text.isEmpty||
+                            value.addressPhoneController.text.isEmpty||
+                            value.addressHouseNoController.text.isEmpty||
+                            value.addressRoadController.text.isEmpty||
+                            value.pincodeController.text.isEmpty||
+                            value.stateController.text.isEmpty||
+                            value.cityController.text.isEmpty
+                            ){
+                              showCustomSnackBar(context, 'Please Fill Your Address.');
                             }else{
-                              print("Address value is null!");
+                              await value.addAddressDetails();
+                              callNextReplacement(context, Premium());
                             }
-                        callNextReplacement(context, Premium());
                       },
                       "Save Address"
                   ),

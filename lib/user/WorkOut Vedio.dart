@@ -130,7 +130,7 @@ class _WorkOutVideoState extends State<WorkOutVedio> {
                                   SizedBox(height: height/60.34,),
                                   Row(
                                     children: [
-                                      TrainersName(widget.workoutName),
+                                      TrainersName(widget.workoutName,width/16),
                                       SizedBox(width: width/2.10,),
                                       GestureDetector(
                                           onTap: () => value1.makePhoneCall(context, '+917994152461'),
@@ -181,17 +181,17 @@ class _WorkOutVideoState extends State<WorkOutVedio> {
                                   ),
                                   SizedBox(height: height/90.56,),
                                   Text(
-                                    'You can use ropes at the beginning of session as ,\n'
-                                        'part of a warm-up or activation phase. You can \n'
-                                        'also use them in the middle of your workoutto \n'
-                                        'build intensity with waves, slams, and whips\n'
-                                        'or you can use them at the end of a workoutor\n'
-                                        'as a finisher for time orreps. Also, they are\n'
-                                        'good to pump your muscles at the end\n'
-                                        'of eachmuscle group training.\n',
+                                    'You can use ropes at the beginning of session as ,'
+                                        'part of a warm-up or activation phase. You can '
+                                        'also use them in the middle of your workoutto '
+                                        'intensity with waves, slams, and whips'
+                                        'or you can use them at the end of a workoutor'
+                                        'as a finisher for time orreps. Also, they are'
+                                        'good to pump your muscles at the end'
+                                        'of eachmuscle group training.',
                                     style: TextStyle(
                                       color: Colors.white,
-                                      fontSize: 18,
+                                      fontSize: width/23.22,
                                       fontFamily: "interlight",
                                       wordSpacing: 2,
                                     ),

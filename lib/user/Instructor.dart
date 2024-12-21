@@ -28,8 +28,7 @@ class _InscrutctorsState extends State<Instructors> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
 
-    final instructorItems =
-        Provider.of<AdminProvider>(context).instructorList; // acess the List
+    final instructorItems = Provider.of<AdminProvider>(context).instructorList; // acess the List
 
     return Scaffold(
       body: bodyContainer(
@@ -40,7 +39,7 @@ class _InscrutctorsState extends State<Instructors> {
               SizedBox(
                 height: height / 16.45,
               ),
-              Row(
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Padding(
                     padding: EdgeInsets.only(left: width / 23.45),
@@ -62,10 +61,11 @@ class _InscrutctorsState extends State<Instructors> {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    width: width / 5.34,
-                  ),
-                  appbarText("instructor"),
+                  appbarText("instructor",width/14.84),
+                  Container(
+                    width: width / 6.45,
+                    height: height / 20.45,
+                  )
                 ],
               ),
               SizedBox(height: height / 40),
@@ -134,8 +134,7 @@ class _InscrutctorsState extends State<Instructors> {
                                                           leftIns.instructorExp,
                                                       medals: leftIns
                                                           .instructorMedal,
-                                                      clint: leftIns
-                                                          .instructorClint,
+                                                      clint: leftIns.instructorClint,
                                                       insName: leftIns
                                                           .instructorName,
                                                       price: leftIns
@@ -209,8 +208,7 @@ class _InscrutctorsState extends State<Instructors> {
                                             width: width / 8.45,
                                             height: height / 18.45,
                                             decoration: BoxDecoration(
-                                              color:
-                                              Colors.grey.withOpacity(0.20),
+                                              color: Colors.grey.withOpacity(0.20),
                                               shape: BoxShape.circle,
                                             ),
                                             child: Center(
@@ -218,7 +216,7 @@ class _InscrutctorsState extends State<Instructors> {
                                                 "${leftIns.instructorPrice}",
                                                 style: TextStyle(
                                                   color: Colors.white,
-                                                  fontSize: 14,
+                                                  fontSize: width/29.35,
                                                   fontFamily: 'intermedi',
                                                 ),
                                               ),
@@ -228,7 +226,7 @@ class _InscrutctorsState extends State<Instructors> {
                                             height: height / 6.20,
                                           ),
                                           TrainersName(
-                                              "${leftIns.instructorName}"),
+                                              "${leftIns.instructorName}",width/18),
                                           SizedBox(
                                             width: width / 7.30,
                                           ),
@@ -240,7 +238,7 @@ class _InscrutctorsState extends State<Instructors> {
                                               color: Colors.grey,
                                               fontFamily: "interlight",
                                             ),
-                                          )
+                                          ),
                                         ],
                                       ),
                                     ),
@@ -309,7 +307,7 @@ class _InscrutctorsState extends State<Instructors> {
                                                   "Take Appointment",
                                                   style: TextStyle(
                                                       color: Colors.white,
-                                                      fontSize: 18,
+                                                      fontSize: width/22.83,
                                                       fontFamily: "interlight"),
                                                 ),
                                               ),
@@ -323,7 +321,7 @@ class _InscrutctorsState extends State<Instructors> {
                                                 "Cancel",
                                                 style: TextStyle(
                                                     color: Colors.white,
-                                                    fontSize: 16,
+                                                    fontSize: width/25.68,
                                                     fontFamily: "interlight"),
                                               ),
                                             ),
@@ -384,7 +382,7 @@ class _InscrutctorsState extends State<Instructors> {
                                                   "${rightIns.instructorPrice}",
                                                   style: TextStyle(
                                                     color: Colors.white,
-                                                    fontSize: 14,
+                                                    fontSize: width/29.35,
                                                     fontFamily: 'intermedi',
                                                   ),
                                                 ),
@@ -394,7 +392,7 @@ class _InscrutctorsState extends State<Instructors> {
                                               height: height / 9.80,
                                             ),
                                             TrainersName(
-                                                rightIns.instructorName),
+                                                rightIns.instructorName,width/18),
                                             SizedBox(
                                               width: width / 7.30,
                                             ),

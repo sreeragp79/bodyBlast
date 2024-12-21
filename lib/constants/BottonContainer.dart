@@ -17,13 +17,13 @@ Widget bottonContainer(double width,double height,ontap,String text, ){
             begin: Alignment.centerLeft,
             end: Alignment.centerRight,
           ),
-          borderRadius: BorderRadius.circular(26)
+          borderRadius: BorderRadius.circular(26),
       ),
       child: Center(
         child: Text(
           text,
           style: TextStyle(
-              fontSize: 18,
+              fontSize: 16,
               color: Colors.white,
               fontFamily: "intermedi",
               decoration: TextDecoration.none),

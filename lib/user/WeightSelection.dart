@@ -38,69 +38,84 @@ class WeightselectionState extends State<Weightselection> {
         Column(
           children: [
             SizedBox(height: height / 12.34),
-            Text(
-              "What's your weight?",
-              style: TextStyle(
-                fontFamily: "interbold",
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
+            Container(
+              width: 240,
+              child: FittedBox(
+                fit: BoxFit.contain,
+                child: Text(
+                  "What's your weight?",
+                  style: TextStyle(
+                    fontFamily: "interbold",
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
               ),
             ),
             SizedBox(height: height / 270.3),
-            Text(
-              "This helps us create your plan",
-              style: TextStyle(
-                fontFamily: "interlight",
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
+            Container(
+              width: 150,
+              child: FittedBox(
+                fit: BoxFit.contain,
+                child: Text(
+                  "This helps us create your plan",
+                  style: TextStyle(
+                    fontFamily: "interlight",
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
               ),
             ),
-            SizedBox(height: height / 4.74),
+            SizedBox(height: height / 5.74),
             // Custom Tick Mark Slider
-            Container(
-              height: height/8.9,
-            width: width,
-              decoration: BoxDecoration(
-                color: Colors.transparent,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: NotificationListener<ScrollNotification>(
-                onNotification: (notification) {
-                  if (notification is ScrollUpdateNotification) {
-                    setState(() {
-                      selectedWeight = 30 + (scrollController.offset ~/ 10);
-                      if (selectedWeight < 30) selectedWeight = 30;
-                      if (selectedWeight > 200) selectedWeight = 200;
-                    });
-                  }
-                  return true;
-                },
-                child: SingleChildScrollView(
-                  controller: scrollController,
-                  scrollDirection: Axis.horizontal,
-                  physics: BouncingScrollPhysics(),
-                  child: Row(
-                    children: List.generate(171 * 2, (index) {
-                      bool isMajorTick = index % 2 == 0;
-                      return Transform.translate(
-                        offset: isMajorTick ? Offset(5, 2) : Offset(3, 9),
-                        child: Container(
-                          margin: EdgeInsets.symmetric(horizontal: 6),
-                          width: 7,
-                          height: isMajorTick ? 80 : 40,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                           gradient: LinearGradient(
-                           colors: [startGradientColor,endGradientColor],
-                             begin: Alignment.topCenter,
-                             end: Alignment.bottomCenter,
-                           )
+            FittedBox(
+              fit: BoxFit.contain,
+              child: Container(
+                height: height/8.9,
+              width: width,
+                decoration: BoxDecoration(
+                  color: Colors.transparent,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: NotificationListener<ScrollNotification>(
+                  onNotification: (notification) {
+                    if (notification is ScrollUpdateNotification) {
+                      setState(() {
+                        selectedWeight = 30 + (scrollController.offset ~/ 10);
+                        if (selectedWeight < 30) selectedWeight = 30;
+                        if (selectedWeight > 200) selectedWeight = 200;
+                      });
+                    }
+                    return true;
+                  },
+                  child: SingleChildScrollView(
+                    controller: scrollController,
+                    scrollDirection: Axis.horizontal,
+                    physics: BouncingScrollPhysics(),
+                    child: Row(
+                      children: List.generate(171 * 2, (index) {
+                        bool isMajorTick = index % 2 == 0;
+                        return Transform.translate(
+                          offset: isMajorTick ? Offset(5, 2) : Offset(3, 9),
+                          child: Container(
+                            margin: EdgeInsets.symmetric(horizontal: 6),
+                            width: width/58.71,
+                            height: isMajorTick ? 80 : 40,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                             gradient: LinearGradient(
+                             colors: [startGradientColor,endGradientColor],
+                               begin: Alignment.topCenter,
+                               end: Alignment.bottomCenter,
+                             )
+                            ),
                           ),
-                        ),
-                      );
-                    }),
+                        );
+                      }),
+                    ),
                   ),
                 ),
               ),
@@ -111,12 +126,12 @@ class WeightselectionState extends State<Weightselection> {
               "$selectedWeight",
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 50,
+                fontSize: width/8.22,
                 fontWeight: FontWeight.bold,
               ),
             ),
 
-            SizedBox(height: height / 2.65),
+            SizedBox(height: height / 2.45),
             Padding(
               padding: EdgeInsets.only(left: width / 1.95),
               child: bottonContainer(
@@ -129,7 +144,7 @@ class WeightselectionState extends State<Weightselection> {
                         callNext(context, Goalselection());
                       }
                 },
-                "Next >",
+                "Next",
               ),
             ),
           ],

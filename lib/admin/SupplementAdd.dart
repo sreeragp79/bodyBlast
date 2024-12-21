@@ -60,7 +60,7 @@ class _FoodaddState extends State<SupplementAdd> {
                         ),
                       ),
                       SizedBox(width: width / 5.34),
-                      appbarText("Supplements"),
+                      appbarText("Supplements",width/18.84),
                     ],
                   ),
                   SizedBox(

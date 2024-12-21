@@ -25,13 +25,13 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
           Column(
             children: [
               SizedBox(height: height/16.45,),
-              Row(
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Padding(
                     padding: EdgeInsets.only(left: width/23.45),
                     child: GestureDetector(
                       onTap: () {
-                        callNext(context, BottomNavigationPage());
+                        back(context);
                       },
                       child: Container(
                         width: width/7.45,
@@ -46,8 +46,10 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
                       ),
                     ),
                   ),
-                  SizedBox(width: width/6.34,),
-                  appbarText("Privacy Policy"),
+                  appbarText("Privacy Policy",width/18.84),
+                  Container(
+                    width: width/5.45,
+                  )
                 ],
               ),
               SizedBox(height: height/27.45,),

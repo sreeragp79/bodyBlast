@@ -667,9 +667,11 @@ class AdminProvider extends ChangeNotifier {
   String? pincode;
   String? state;
   String? city;
-
+bool isSearchingLocation =false;
   Future<void> fetchUserLocation() async {
     try {
+      isSearchingLocation = true;
+      notifyListeners();
       // check permission
       LocationPermission permission = await Geolocator.checkPermission();
       if (permission == LocationPermission.denied) {
@@ -698,6 +700,7 @@ class AdminProvider extends ChangeNotifier {
         pincodeController.text = pincode!;
         stateController.text = state!;
         cityController.text = city!;
+        isSearchingLocation = false;
         notifyListeners();
       }
     } catch (e) {
@@ -747,12 +750,34 @@ class AdminProvider extends ChangeNotifier {
   String? month;
   String? date;
   String? dayName;
+  bool isLoadingAddress = false;
+
   List<AddressClass> addressList = [];
   Future<void> getAddressDetails() async {
-    var datas = await db.collection("ADDRESS").get();
+
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? currentUserId = prefs.getString("SIGN_USER_ID");
+
+    isLoadingAddress =true;
+    notifyListeners();
+
+    var datas = await db.collection("ADDRESS")
+        .where("USER_ID",isEqualTo:currentUserId).get();
+    addressList.clear();
+
     if (datas.docs.isNotEmpty) {
       for (var element in datas.docs) {
         Map<String, dynamic> map = element.data();
+
+        // Update controllers here for login user edit click time old data get cheyyan
+        addressNameController.text = map["NAME"] ?? '';
+        addressPhoneController.text = map["PHONE"] ?? '';
+        pincodeController.text = map["PIN_CODE"] ?? '';
+        stateController.text = map["STATE"] ?? '';
+        cityController.text = map["CITY"] ?? '';
+        addressHouseNoController.text = map["HOUSE_NO"] ?? '';
+        addressRoadController.text = map["ROAD_NAME"] ?? '';
 
         addressName = map["NAME"] ?? '';
         picode = map["PIN_CODE"] ?? '';
@@ -780,6 +805,7 @@ class AdminProvider extends ChangeNotifier {
         ));
       }
       notifyListeners();
+      isLoadingAddress=false;
     }
   }
 
@@ -819,42 +845,90 @@ class AdminProvider extends ChangeNotifier {
   // }
 
   // add user buy item add to firebase
-  void addBookingItem(
+  Future<void> addBookingItem(
       String suppleImage,
       String suppleName,
       String suppleBrand,
-      String supplePrice) {
+      String supplePrice) async {
     String bookingId = DateTime.now().millisecondsSinceEpoch.toString();
-    Map<String, dynamic> addBookingItem = {
-      "BOOKIN_ID": bookingId,
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? userId = prefs.getString("SIGN_USER_ID");
+
+    Map<String, dynamic> addBookingItemmm = {
+      "USER_ID":userId,
+      "BOOKING_ID": bookingId,
       "SUPPLEMENT_IMAGE": suppleImage,
       "SUPPLEMENT_NAME": suppleName,
       "SUPPLEMENT_BRAND": suppleBrand,
       "SUPPLEMENT_PRICE": supplePrice,
     };
-    db.collection("BOOKING_ITEMS").doc(bookingId).set(addBookingItem);
+    print("getSupplement DetAILS..............");
+    addBookingItemmm.forEach((key,value){
+      print("$key,$value");
+    });
+    db.collection("BOOKING_SUPPLEMENT_ITEMS").doc(bookingId).set(addBookingItemmm);
     notifyListeners();
   }
 
 // get booking items
   List<SupplementBookingClass> supplementsBookingList = [];
+  List<Map<String,String>> bookedSuppleImagesList = []; // store image and name for passing track page
+
   Future<void> getBookingItems() async {
+
     try {
-      var datas = await db.collection("BOOKING_ITEMS").get();
-      if (datas.docs.isNotEmpty) {
-        supplementsBookingList.clear();
-        for (var element in datas.docs) {
-          Map<String, dynamic> map = element.data();
-          map["BOOKIN_ID"] ?? '';
-          map["SUPPLEMENT_IMAGE"] ?? '';
-          map["SUPPLEMENT_NAME"] ?? '';
-          map["SUPPLEMENT_BRAND"] ?? '';
-          map["SUPPLEMENT_PRICE"] ?? '';
-        }
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? currentUserId = prefs.getString("SIGN_USER_ID");
+
+      if (currentUserId == null) {
+        print("No user logged in");
+        return;
       }
-      notifyListeners();
+      var datas = await db.collection("BOOKING_SUPPLEMENT_ITEMS")
+          .where("USER_ID", isEqualTo: currentUserId)
+          .get();
+
+      if (datas.docs.isNotEmpty) {
+
+        supplementsBookingList.clear();
+        bookedSuppleImagesList.clear();
+
+        for (var element in datas.docs){
+          Map<String, dynamic> map = element.data();
+
+          String bookedSuppleImage=map["SUPPLEMENT_IMAGE"]?? '';
+          String bookedSuppleName= map["SUPPLEMENT_NAME"]?? '';
+
+          // adding the image and name in the list
+          bookedSuppleImagesList.add({
+            'image': bookedSuppleImage,
+            'name': bookedSuppleName
+          });
+
+          print("suppledata");
+          map.forEach((key,value){
+            print("$key,$value");
+          });
+          supplementsBookingList.add(SupplementBookingClass(
+              map["USER_ID"] ?? '',
+              map["BOOKING_ID"] ?? '',
+              map["SUPPLEMENT_IMAGE"] ?? '',
+              map["SUPPLEMENT_NAME"] ?? '',
+              map["SUPPLEMENT_BRAND"] ?? '',
+              map["SUPPLEMENT_PRICE"] ?? '',
+          ));
+        }
+        notifyListeners();
+      }
     } catch (erorrr) {
       print("Supplement Getting details Eroorvrrrrrrr");
     }
+  }
+
+  // supplement item track pagilekk ayakkan
+  int currentOrderIndex = 0;
+  void setSuppleMentCurrentOrderIndex(int index) {
+    currentOrderIndex = index;
+    notifyListeners();
   }
 }

@@ -143,7 +143,7 @@ class _WorkOutListState extends State<WorkOutList> {
                                               height: height / 4.99,
                                             ),
                                             TrainersName(
-                                                leftWorkout.workOutName),
+                                                leftWorkout.workOutName,width/19),
                                             Text(
                                               "${leftWorkout.workOutSets} sets / ${leftWorkout.workOutMins} min",
                                               style: TextStyle(
@@ -211,7 +211,7 @@ class _WorkOutListState extends State<WorkOutList> {
                                                 height: height / 7.10,
                                               ),
                                               TrainersName(
-                                                  rightWorkout!.workOutName),
+                                                  rightWorkout!.workOutName,width/19),
                                               Text(
                                                 "${rightWorkout.workOutSets} sets / ${rightWorkout.workOutMins} min",
                                                 style: TextStyle(

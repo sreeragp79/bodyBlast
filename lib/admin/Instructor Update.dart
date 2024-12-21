@@ -47,7 +47,7 @@ class _InstructorUpdateState extends State<InstructorUpdate> {
                      ),
                    ),
                    SizedBox(width: width / 8.34),
-                   appbarText("Instructor Update"),
+                   appbarText("Instructor Update",width/18.84),
                  ],
                ),
                SizedBox(height: height / 45.56),

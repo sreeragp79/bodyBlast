@@ -36,13 +36,13 @@ class SupplePaymentOpation extends StatelessWidget {
                   Column(crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(height: height/16.45,),
-                      Row(
+                      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Padding(
                             padding: EdgeInsets.only(left: width/23.45),
                             child: GestureDetector(
                               onTap: () {
-                                Navigator.pop(context);
+                                back(context);
                               },
                               child: Container(
                                 width: width/7.45,
@@ -57,8 +57,10 @@ class SupplePaymentOpation extends StatelessWidget {
                               ),
                             ),
                           ),
-                          SizedBox(width: width/8.34,),
-                          appbarText("Payment Option"),
+                          appbarText("Payment Option",width/18.84),
+                          Container(
+                            width:width/6.56
+                          )
                         ],
                       ),
                       SizedBox(height: height/14.67,),
@@ -70,8 +72,8 @@ class SupplePaymentOpation extends StatelessWidget {
                           Imagesize: 4,
                           boxWidth: width/3.10,
                           ontap: (){
-                            value1.getDateDetails();
-                            callNext(context, Supplepaymentcomplete(
+                            value2.addBookingItem(suppleImage, suppleName, suppleBrand, supplePrice);
+                            callNextReplacement(context, Supplepaymentcomplete(
                               suppleImage: suppleImage,
                               suppleName: suppleName,
                               suppleBrand: suppleBrand,
@@ -85,10 +87,11 @@ class SupplePaymentOpation extends StatelessWidget {
                           image: "assets/image/intrbank.png",
                           height: height,
                           width: width,
-                          Imagesize: 4,
+                          Imagesize: width/100.45,
                           boxWidth: width/2.90,
                           ontap: (){
-                            callNext(context, Supplepaymentcomplete(
+                            value2.addBookingItem(suppleImage, suppleName, suppleBrand, supplePrice);
+                            callNextReplacement(context, Supplepaymentcomplete(
                               suppleImage: suppleImage,
                               suppleName: suppleName,
                               suppleBrand: suppleBrand,
@@ -102,10 +105,11 @@ class SupplePaymentOpation extends StatelessWidget {
                           image: "assets/image/upi.png",
                           height: height,
                           width: width,
-                          Imagesize: 3,
+                          Imagesize: width/150.45,
                           boxWidth: width/2.60,
                           ontap: (){
-                            callNext(context, Supplepaymentcomplete(
+                            value2.addBookingItem(suppleImage, suppleName, suppleBrand, supplePrice);
+                            callNextReplacement(context, Supplepaymentcomplete(
                               suppleImage: suppleImage,
                               suppleName: suppleName,
                               suppleBrand: suppleBrand,
@@ -119,11 +123,11 @@ class SupplePaymentOpation extends StatelessWidget {
                           image: "assets/image/paypal 1.png",
                           height: height,
                           width: width,
-                          Imagesize: 3,
+                          Imagesize: width/170.45,
                           boxWidth: width/1.99,
                           ontap: (){
                             value2.addBookingItem(suppleImage, suppleName, suppleBrand, supplePrice);
-                            callNext(context, Supplepaymentcomplete(
+                            callNextReplacement(context, Supplepaymentcomplete(
                               suppleImage: suppleImage,
                               suppleName: suppleName,
                               suppleBrand: suppleBrand,

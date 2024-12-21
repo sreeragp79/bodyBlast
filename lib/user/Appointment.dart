@@ -9,7 +9,7 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import '../constants/AppBar Texts.dart';
 import '../constants/BottonContainer.dart';
 import '../constants/Navigator.dart';
-import 'PaymentOption.dart';
+import 'InsPaymentOption.dart';
 
 class Appointment extends StatefulWidget {
   final image;
@@ -49,7 +49,7 @@ class _AppointmentState extends State<Appointment> {
                   SizedBox(
                     height: height / 16.45,
                   ),
-                  Row(
+                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Padding(
                         padding: EdgeInsets.only(left: width / 23.45),
@@ -71,10 +71,11 @@ class _AppointmentState extends State<Appointment> {
                           ),
                         ),
                       ),
-                      SizedBox(
-                        width: width / 6.34,
-                      ),
-                      appbarText("Appointment"),
+                      appbarText("Appointment",width/14.84),
+                      Container(
+                        width: width / 6.45,
+                        height: height / 20.45,
+                      )
                     ],
                   ),
                   SizedBox(
@@ -121,7 +122,7 @@ class _AppointmentState extends State<Appointment> {
                                       style: TextStyle(
                                           fontFamily: "jeju",
                                           height: height / 800.99,
-                                          fontSize: 25,
+                                          fontSize: width/17.6,
                                           color: CupertinoColors.white),
                                     ),
                                     experience("High Intensity Trainer"),
@@ -132,7 +133,7 @@ class _AppointmentState extends State<Appointment> {
                                       "${widget.experience} Year Experience",
                                       style: TextStyle(
                                         fontFamily: "intermedi",
-                                        fontSize: 13,
+                                        fontSize: width/31.61,
                                         color: Color(0x4C76E7).withOpacity(1),
                                       ),
                                     ),
@@ -206,7 +207,7 @@ class _AppointmentState extends State<Appointment> {
                             selectedDate,
                             style: TextStyle(
                               fontFamily: "intermedi",
-                              fontSize: 13,
+                              fontSize: width/31.61,
                               color: CupertinoColors.white
                             ),
                           ),
@@ -290,7 +291,7 @@ class _AppointmentState extends State<Appointment> {
                                 selectedTime,
                                 style: TextStyle(
                                   fontFamily: "intermedi",
-                                  fontSize: 13,
+                                  fontSize: width/31.61,
                                   color: CupertinoColors.white
                                 ),
                               ),
@@ -303,7 +304,7 @@ class _AppointmentState extends State<Appointment> {
                       style: TextStyle(
                         color: Colors.white,
                         fontFamily: "interlight",
-                        fontSize: 15
+                        fontSize: width/27.4
                       ),
                       ),
                       SizedBox(
@@ -380,7 +381,7 @@ class _AppointmentState extends State<Appointment> {
                                 selectedTimeTo,
                                 style: TextStyle(
                                     fontFamily: "intermedi",
-                                    fontSize: 13,
+                                    fontSize: width/31.61,
                                     color: CupertinoColors.white
                                 ),
                               ),

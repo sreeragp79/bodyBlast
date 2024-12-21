@@ -23,7 +23,6 @@ class Reviews extends StatelessWidget {
 
   ];
 
-
    Reviews({super.key});
 
   @override
@@ -47,7 +46,7 @@ class Reviews extends StatelessWidget {
                                 padding: EdgeInsets.only(left: width/23.45),
                                 child: GestureDetector(
                                   onTap: () {
-                                    callNextReplacement(context, BottomNavigationPage());
+                                    back(context);
                                   },
                                   child: Container(
                                     width: width/7.45,
@@ -63,7 +62,7 @@ class Reviews extends StatelessWidget {
                                 ),
                               ),
                               SizedBox(width: width/4.34,),
-                              appbarText("Reviews"),
+                              appbarText("Reviews",width/14.84),
                             ],
                           ),
                           SizedBox(height: height/28.45,),
@@ -102,27 +101,29 @@ class Reviews extends StatelessWidget {
                                                  item.userName,
                                                   style: TextStyle(
                                                       fontFamily: "jeju",
-                                                      fontSize: 17,
+                                                      fontSize: width/24.17,
                                                       color: CupertinoColors.white
                                                   ),
                                                 ),
                                                 SizedBox(width: width/25.45,),
-                                                Container(
-                                                  width: width/14.30,
-                                                  height: height/60.56,
-                                                  decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.circular(7),
-                                                    gradient: LinearGradient(
-                                                      colors: [Color(0x5f39f0).withOpacity(1), Color(0xFF7796E8)],
+                                                SingleChildScrollView(
+                                                  child: Container(
+                                                    width: width/14.30,
+                                                    height: height/60.56,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius: BorderRadius.circular(7),
+                                                      gradient: LinearGradient(
+                                                        colors: [Color(0x5f39f0).withOpacity(1), Color(0xFF7796E8)],
+                                                      ),
                                                     ),
-                                                  ),
-                                                  child:  Center(
-                                                    child: Text(
-                                                     "5.7",
-                                                      style: TextStyle(
-                                                          fontFamily: "jeju",
-                                                          fontSize: 10,
-                                                          color: CupertinoColors.white
+                                                    child:  Center(
+                                                      child: Text(
+                                                       "5.7",
+                                                        style: TextStyle(
+                                                            fontFamily: "jeju",
+                                                            fontSize: width/41.1,
+                                                            color: CupertinoColors.white
+                                                        ),
                                                       ),
                                                     ),
                                                   ),

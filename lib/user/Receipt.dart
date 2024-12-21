@@ -49,7 +49,7 @@ class Receipt extends StatelessWidget {
                 SizedBox(
                   width: width / 4.70,
                 ),
-                appbarText("Receipt"),
+                appbarText("Receipt",width/14.84),
               ],
             ),
             SizedBox(
@@ -189,7 +189,7 @@ class Receipt extends StatelessWidget {
                             fontSize: 16,
                           ),
                         ),
-                        SizedBox(width: width / 1.80,),
+                        SizedBox(width: width/2.10,),
                         Text(
                           item.toTime,
                           style: TextStyle(

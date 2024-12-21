@@ -11,6 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
+import 'AdminMenue.dart';
+
 class AdminBottomBar extends StatefulWidget {
   const AdminBottomBar({super.key});
 
@@ -38,7 +40,7 @@ class _BottomNavigationPageState extends State<AdminBottomBar> {
     AdminHome(),
     WorkOutList(),
     FoodList(),
-    Profile(),
+    Adminmenue(),
   ];
 
   @override

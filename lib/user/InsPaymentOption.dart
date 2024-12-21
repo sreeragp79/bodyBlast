@@ -31,7 +31,7 @@ class Paymentoption extends StatelessWidget {
               Column(crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: height/16.45,),
-                  Row(
+                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Padding(
                         padding: EdgeInsets.only(left: width/23.45),
@@ -52,8 +52,11 @@ class Paymentoption extends StatelessWidget {
                           ),
                         ),
                       ),
-                      SizedBox(width: width/8.34,),
-                      appbarText("Payment Option"),
+                      appbarText("Payment Option",width/14.84),
+                      Container(
+                        width: width/7.45,
+                        height: height/20.45,
+                      )
                     ],
                   ),
                  SizedBox(height: height/14.67,),
@@ -78,6 +81,7 @@ class Paymentoption extends StatelessWidget {
                      Imagesize: 4,
                      boxWidth: width/2.90,
                       ontap: (){
+                        value1.getDateDetails();
                         callNext(context, Paymentpage(price: price,image:image,name: name,));
                       }
                  ),
@@ -90,6 +94,7 @@ class Paymentoption extends StatelessWidget {
                      Imagesize: 3,
                      boxWidth: width/2.60,
                       ontap: (){
+                        value1.getDateDetails();
                         callNext(context, Paymentpage(price: price,image:image,name: name,));
                       }
                  ),
@@ -102,6 +107,7 @@ class Paymentoption extends StatelessWidget {
                      Imagesize: 3,
                      boxWidth: width/1.99,
                       ontap: (){
+                        value1.getDateDetails();
                         callNext(context, Paymentpage(price: price,image:image,name: name,));
                       }
                  ),

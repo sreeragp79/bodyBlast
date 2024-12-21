@@ -59,7 +59,7 @@ class _AddOptionState extends State<AddOption> {
                           ),
                         ),
                         SizedBox(width: width / 7.34),
-                        appbarText("Add Option"),
+                        appbarText("Add Option",width/18.84),
                       ],
                     ),
                     SizedBox(height: height / 45.56),

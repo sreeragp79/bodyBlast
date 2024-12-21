@@ -91,7 +91,7 @@ TextEditingController? controller,
         fontFamily: "InterLight",
       ),
       decoration: InputDecoration(
-        contentPadding:  EdgeInsets.symmetric(vertical: 20, horizontal: 8),
+        contentPadding:  EdgeInsets.symmetric(vertical: 17, horizontal: 8),
         border: InputBorder.none,
         labelText: labelText,
         labelStyle:  TextStyle(

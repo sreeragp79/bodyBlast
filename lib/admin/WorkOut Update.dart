@@ -75,7 +75,7 @@ class _WorkOutUpdateState extends State<WorkOutUpdate> {
                         ),
                       ),
                       SizedBox(width: width / 8.34),
-                      appbarText("WorkOut Update"),
+                      appbarText("WorkOut Update",width/18.84),
                     ],
                   ),
                   SizedBox(height: height / 45.56),

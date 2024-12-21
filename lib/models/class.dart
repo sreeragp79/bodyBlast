@@ -1,3 +1,4 @@
+import 'package:body_blast/user/SignUpPage.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 class ReviewsClass {
@@ -154,14 +155,44 @@ class AddressClass{
       );
 }
 class SupplementBookingClass{
+  String userId;
+  String bookingId;
   String BsupplementImage;
   String BsupplementName;
   String BsupplementBrand;
   String BsupplementPrice;
   SupplementBookingClass(
+      this.userId,
+      this.bookingId,
       this.BsupplementImage,
       this.BsupplementName,
       this.BsupplementBrand,
       this.BsupplementPrice,
+      );
+}
+class SingnInClass{
+  String userName;
+  SingnInClass(
+      this.userName
+      );
+}
+// class UserDetailsClassForLocation{
+//   String userIdLo;
+//   String userNameLo;
+//   String userImageLo;
+//   UserDetailsClassForLocation(this.userIdLo,this.userNameLo,this.userImageLo);
+// }
+class GetUserDrtailaClassForLocation{
+  String userId;
+  String userNameLo;
+  String userImageLo;
+  double latitude;
+  double longitude;
+
+  GetUserDrtailaClassForLocation(
+      this.userId,this.userNameLo
+      ,this.userImageLo,
+      this.latitude,
+      this.longitude,
       );
 }

@@ -8,3 +8,6 @@
 //   );
 //   },
 // }    // loading
+
+// keybord down
+// FocusScope.of(context).unfocus(); // Screen tap ചെയ്യുമ്പോൾ keyboard dismiss ചെയ്യുക

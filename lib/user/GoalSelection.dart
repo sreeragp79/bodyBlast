@@ -34,25 +34,37 @@ class _AgeselectionState extends State<Goalselection> {
           width,
           Column(
               children: [
-                SizedBox(height: height/12.34,),
-                Text("What’s  your goal ?",
-                  style: TextStyle(
-                      fontFamily: "interbold",
-                      fontSize: 35,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white
+                SizedBox(height: height / 12.34),
+                Container(
+                  width: 230,
+                  child: FittedBox(
+                    fit: BoxFit.contain,
+                    child: Text("What’s  your goal ?",
+                      style: TextStyle(
+                          fontFamily: "interbold",
+                          fontSize: 35,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white
+                      ),
+                    ),
                   ),
                 ),
-                SizedBox(height: height/270.3),
-                Text("This help us create your plan   ",
-                  style: TextStyle(
-                      fontFamily: "interlight",
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white
+                SizedBox(height: height/400.3),
+                Container(
+                  width: 170,
+                  child: FittedBox(
+                    fit: BoxFit.contain,
+                    child: Text("This help us create your plan   ",
+                      style: TextStyle(
+                          fontFamily: "interlight",
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white
+                      ),
+                    ),
                   ),
                 ),
-                SizedBox(height: height/14.74,),
+                SizedBox(height: height/17.74,),
                 Container(
                   height: height/1.800, // Height of the picker
                   child: CupertinoPicker(
@@ -60,7 +72,7 @@ class _AgeselectionState extends State<Goalselection> {
                       children: [
                         Container(
                           margin: EdgeInsets.symmetric(horizontal: width/4.16),
-                          height: 7,
+                          height: height/115.85,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(23),
                               gradient: LinearGradient(
@@ -71,10 +83,10 @@ class _AgeselectionState extends State<Goalselection> {
                               )
                           ),
                         ),
-                        SizedBox(height: height/9.01,),
+                        SizedBox(height: height/10,),
                         Container(
                           margin: EdgeInsets.symmetric(horizontal: width/4.16),
-                          height: 7,
+                          height: height/115.85,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(23),
                               gradient: LinearGradient(
@@ -99,11 +111,14 @@ class _AgeselectionState extends State<Goalselection> {
                     },
                     children: List<Widget>.generate(Goals.length, (index) {
                       return Center(
-                        child: Text(
-                          Goals[index], // Display the names
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 25,
+                        child: FittedBox(
+                          fit: BoxFit.contain,
+                          child: Text(
+                            Goals[index], // Display the names
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: width/16.44,
+                            ),
                           ),
                         ),
                       );
@@ -119,7 +134,7 @@ class _AgeselectionState extends State<Goalselection> {
                           (){
                         callNext(context, Loginpage());
                       },
-                      "Next >"
+                      "Next"
                   ),
                 )
               ]

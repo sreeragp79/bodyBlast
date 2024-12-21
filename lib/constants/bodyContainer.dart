@@ -47,7 +47,7 @@ Widget paymentContainer({
               text,
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 15,
+                fontSize: width/27.4,
                 fontFamily: "Inter",
               ),
             ),

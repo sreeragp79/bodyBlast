@@ -94,7 +94,7 @@ class _FoodListState extends State<FoodList> {
                               ),
                             ),
                             SizedBox(width: width / 6.90),
-                            appbarText("Admin Food List"),
+                            appbarText("Admin Food List",width/18.84),
                           ],
                         ),
                         SizedBox(height: height / 50.56),

@@ -42,7 +42,7 @@ class _FillYourProfileState extends State<FillYourProfile> {
                         Column(crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             SizedBox(height: height/16.45,),
-                            appbarText("Fill Your Profile"),
+                            appbarText("Fill Your Profile",width/15.84),
                             SizedBox(height: height/18.45),
                            Container(
                              height: height/7.20,
@@ -239,18 +239,23 @@ class _FillYourProfileState extends State<FillYourProfile> {
                             ),
                             bottonContainer(
                               width / 3.20, height / 18.99,
-                                  (){
+                                  ()async{
                                     if (proVlaue.lastNameController.text.isEmpty ||
                                         proVlaue.emailController.text.isEmpty ||
+                                        // userValue.userProfileFile == null ||
                                         proVlaue.dateOfBirthController.text.isEmpty) {
                                      showCustomSnackBar(context,  'Please Fill Your Details.');
                                     } else {
                                       userValue.saveImageToFireBase("userProfileAddImage");
+
+                                      await proVlaue.addUserDatasForLocation(context);
+                                      await proVlaue.getUserInfoForLocation(context);
+
                                      proVlaue.userFillProfile();
                                       callNextReplacement(context, Address());
                                     }
                                   },
-                              "Next >",
+                              "Next  ",
                             )
                           ],
                         )

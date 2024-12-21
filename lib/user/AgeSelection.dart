@@ -2,7 +2,6 @@ import 'package:body_blast/constants/BottonContainer.dart';
 import 'package:body_blast/constants/snackBar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import '../constants/Navigator.dart';
 import '../constants/bodyContainer.dart';
 import 'WeightSelection.dart';
@@ -28,25 +27,38 @@ class _AgeselectionState extends State<Ageselection> {
           Column(
             children: [
               SizedBox(height: height/12.34,),
-              Text("How old are you ?",
-                style: TextStyle(
-                    fontFamily: "interbold",
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white
+              Container(
+                width: 210,
+                child: FittedBox(
+                  fit: BoxFit.contain,
+                  child: Text("How old are you ?",
+                    style: TextStyle(
+                        fontFamily: "interbold",
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white
+                    ),
+                  ),
                 ),
               ),
               SizedBox(height: height/270.3),
-              Text("This help us create your plan   ",
-                style: TextStyle(
-                    fontFamily: "interlight",
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white
+              Container(
+                width: 170,
+                child: FittedBox(
+                  fit: BoxFit.contain,
+                  child: Text("This help us create your plan   ",
+                    style: TextStyle(
+                        fontFamily: "interlight",
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white
+                    ),
+                  ),
                 ),
               ),
               SizedBox(height: height/14.74,),
               Container(
+                padding: EdgeInsets.only(left: 10,right: 10,top: 10,),
                 height: height/1.900, // Height of the picker
                 child: CupertinoPicker(
                   selectionOverlay: Column(
@@ -97,7 +109,7 @@ class _AgeselectionState extends State<Ageselection> {
                         "${index + 10}", // Display ages from 10 upwards
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 45,
+                          fontSize: width/9.13,
                         ),
                       ),
                     );
@@ -117,7 +129,7 @@ class _AgeselectionState extends State<Ageselection> {
                             callNext(context, Weightselection());
                           }
                     },
-                    "Next >"
+                    "Next"
                 ),
               )
         ]

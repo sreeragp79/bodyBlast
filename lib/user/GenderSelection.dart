@@ -27,22 +27,34 @@ class _GenderselectionState extends State<Genderselection> {
           Column(
             children: [
               SizedBox(height: height/12.34,),
-             Text("Tell us about yourself!",
-               style: TextStyle(
-                 fontFamily: "interbold",
-                 fontSize: 30,
-                 fontWeight: FontWeight.bold,
-                 color: Colors.white
+             Container(
+               width: 265,
+               child: FittedBox(
+                 fit: BoxFit.contain,
+                 child: Text("Tell us about yourself!",
+                   style: TextStyle(
+                     fontFamily: "interbold",
+                     fontSize: 30,
+                     fontWeight: FontWeight.bold,
+                     color: Colors.white,
+                   ),
+                 ),
                ),
              ),
               SizedBox(height: height/270.3),
-              Text("To give you a better experience we need \n"
-                  "                 to know your gender",
-                style: TextStyle(
-                    fontFamily: "interlight",
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white
+              Container(
+                width: 210,
+                child: FittedBox(
+                  fit: BoxFit.contain,
+                  child: Text("To give you a better experience we need \n"
+                      "                 to know your gender",
+                    style: TextStyle(
+                        fontFamily: "interlight",
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white
+                    ),
+                  ),
                 ),
               ),
               SizedBox(height: height/6.34,),
@@ -55,24 +67,22 @@ class _GenderselectionState extends State<Genderselection> {
                       });
                     },
                     child: Container(
+                      padding: EdgeInsets.only(left: 20,right: 20,top: 23),
                       height: height/6.10,
                       width: height /6.10,
                       decoration: BoxDecoration(
                         gradient: selectedGender == "Male"? myGradient():null,
                         color: selectedGender == "Male"? null:CupertinoColors.inactiveGray,
                         shape: BoxShape.circle,
-                        image: DecorationImage(
-                          image: AssetImage("assets/image/Male.png"),scale: 3.50
-                        ),
                       ),
                       child: Column(mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          SizedBox(height: height/8.00,),
+                         Image.asset("assets/image/Male.png"),
                           Text("Male",
                           style: TextStyle(
                             color: Colors.white,
                             fontFamily: "intermedi",
-                            fontSize: 19
+                            fontSize: width / 21.63,
                           ),
                           )
                         ],
@@ -89,24 +99,22 @@ class _GenderselectionState extends State<Genderselection> {
                   });
                 },
                 child: Container(
+                  padding: EdgeInsets.only(left: 25,right: 25,top: 25),
                   height: height/6.10,
                   width: height /6.10,
                   decoration: BoxDecoration(
                     gradient: selectedGender == "Female"? myGradient():null,
                     color: selectedGender == "Female"? null:CupertinoColors.inactiveGray,
                     shape: BoxShape.circle,
-                    image: DecorationImage(
-                        image: AssetImage("assets/image/Female.png"),scale: 3.70
-                    ),
                   ),
                   child: Column(mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      SizedBox(height: height/8.00,),
+                      Image.asset("assets/image/Female.png"),
                       Text("Female",
                         style: TextStyle(
                             color: Colors.white,
                             fontFamily: "intermedi",
-                            fontSize: 18
+                          fontSize: width / 21.63,
                         ),
                       ),
                     ],
@@ -126,7 +134,7 @@ class _GenderselectionState extends State<Genderselection> {
                           callNext(context, Ageselection());
                         }
                   },
-                    "Next >"
+                    "Next"
                 ),
               )
             ],

@@ -37,7 +37,7 @@ class _SupplementsState extends State<Supplements> {
                     padding: EdgeInsets.only(left: width / 23.45),
                     child: GestureDetector(
                       onTap: () {
-                        callNext(context, BottomNavigationPage());
+                        back(context);
                       },
                       child: Container(
                         width: width / 7.45,
@@ -54,7 +54,7 @@ class _SupplementsState extends State<Supplements> {
                     ),
                   ),
                   SizedBox(width: width / 6.34),
-                  appbarText("Supplements"),
+                  appbarText("Supplements",width/18.84),
                 ],
               ),
               SizedBox(height: height / 50.56),
@@ -159,7 +159,7 @@ class _SupplementsState extends State<Supplements> {
               SizedBox(height: height/70.56,),
               Padding(
                 padding: EdgeInsets.only(left: width / 15.10),
-                child: appbarText("Supplements"),
+                child: appbarText("Supplements",width/18.84),
               ),
               Expanded(
                 child: SizedBox(

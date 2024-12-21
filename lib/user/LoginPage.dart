@@ -11,6 +11,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 class Loginpage extends StatefulWidget {
@@ -49,11 +50,12 @@ class _LoginpageState extends State<Loginpage> {
                       children: [
                         Column(
                           children: [
-                            Text("LogIn",
+                            Text(
+                              "LogIn",
                               style: TextStyle(
                                 color: Colors.white,
                                 fontFamily: "intersemi",
-                                fontSize: 20,
+                                fontSize: width/20.55,
                               ),
                             ),
                               SizedBox(height: height/90.34,),
@@ -73,10 +75,10 @@ class _LoginpageState extends State<Loginpage> {
                             style: TextStyle(
                               color: Colors.white,
                               fontFamily: "intersemi",
-                              fontSize: 20,
+                              fontSize: width/20.55,
                             ),
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),
@@ -90,14 +92,14 @@ class _LoginpageState extends State<Loginpage> {
                       hintText: "Name",
                       hintStyle: TextStyle(
                         color: Colors.white,
-                        fontSize: 15,
+                        fontSize: width/27.4,
                         fontFamily: "interlight",
                       ),
                       contentPadding: EdgeInsets.only(bottom: height/40.55),
                       enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
                             color: Colors.grey.withOpacity(0.50),width: width/999.99,
-                          )
+                          ),
                       ),
                       focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
@@ -119,7 +121,7 @@ class _LoginpageState extends State<Loginpage> {
                       hintText: "Pssword",
                       hintStyle: TextStyle(
                         color: Colors.white,
-                        fontSize: 15,
+                        fontSize: width/27.4,
                         fontFamily: "interlight",
                       ),
                       contentPadding: EdgeInsets.only(bottom: height/40.55),
@@ -157,7 +159,7 @@ class _LoginpageState extends State<Loginpage> {
                     "Forgot Password ",
                     style: TextStyle(
                         color: Color(0x818181).withOpacity(1),
-                        fontSize: 15,
+                        fontSize: width/27.4,
                         fontFamily: "interlight"),
                   ),
                 ),
@@ -199,8 +201,17 @@ class _LoginpageState extends State<Loginpage> {
                       SizedBox(
                         width: width / 3.95,
                       ),
-                      bottonContainer(
-                          width / 3.30, height / 18.93, () {
+                      logvalue.isOldUserLoading ?
+                      SizedBox(
+                        width: 130,
+                        height: 130,
+                        child: Lottie.asset(
+                          "assets/animation/LoadingAnimation.json",
+                        ),
+                      )
+                      :bottonContainer(
+                          width / 3.30, height / 18.93, ()async {
+                        FocusScope.of(context).unfocus();
                             if(logvalue.logInNameController.text.isEmpty ||
                                 logvalue.logInPasswordController.text.isEmpty){
                              showCustomSnackBar(context, 'Please Fill Your Details.');
@@ -208,11 +219,10 @@ class _LoginpageState extends State<Loginpage> {
                              String name = logvalue.logInNameController.text;
                              String password = logvalue.logInPasswordController.text;
                              logvalue.checkUser(context,name, password);
-                             logvalue.loadUserDetails(context);
                             }
 
                       },
-                        "Log In >",
+                        "Log In",
                       )
                     ],
                   ),

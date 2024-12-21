@@ -7,6 +7,7 @@ import 'package:body_blast/constants/bodyContainer.dart';
 import 'package:body_blast/user/ChooseWorkout.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'ChatScreen.dart';
 import 'Foods.dart';
@@ -42,7 +43,7 @@ class _HomePageState extends State<HomePage>with SingleTickerProviderStateMixin 
     "assets/image/76.png",
   ];
   List<String> name1 = [
-    "Battle Rope",
+    "Battle",
     "Dumble",
     "Pull Up",
     "Mountain",
@@ -143,382 +144,482 @@ class _HomePageState extends State<HomePage>with SingleTickerProviderStateMixin 
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-    return Scaffold(
-        backgroundColor: Colors.black,
-        body: SingleChildScrollView(
-          child: Consumer<AdminProvider>(
-            builder: (context3,value3,child) {
-              return Consumer<Userprovider>(
-                builder: (context2,value2,child) {
-                  return Consumer<LoginProvider>(
-                    builder: (context1,value1,child) {
-                      return bodyContainer(height, width,
-                          Column(crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(height: height/17.45,),
-                              Padding(
-                                padding:  EdgeInsets.only(left: width/20.34),
-                                child: Row(
-                                  children: [
-                                    Expanded(child: headingText("HELLO,${value1.signUpNameController.text}")),
-                                    SizedBox(width: 60,),
-                                    GestureDetector(
-                                      onTap: () {
-                                        value2.getBookingDetails();
-                                        callNext(context, Notifications());
-                                      },
-                                      child: Container(
-                                        width: width/7.45,
-                                        height: height/20.45,
-                                        decoration: BoxDecoration(
-                                          color: Colors.grey.withOpacity(0.30),
-                                          shape: BoxShape.circle,
-                                          image: DecorationImage(
-                                            image: AssetImage("assets/image/bellBotton.png"),scale: width/89.34,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding:  EdgeInsets.only(left: width/20.34),
-                                child: Row(
-                                  children: [
-                                    Text("Good Work! Your progress is on the track",
-                                      style: TextStyle(
-                                          fontFamily: "interlight",
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(height: height/40.45,),
-                              Padding(
-                                padding: EdgeInsets.only(left: width/19.34),
-                                child: Text("Continue Activities",
-                                  style: TextStyle(
-                                      color: CupertinoColors.white,
-                                      fontSize: 20,
-                                      fontFamily: "interlight",
-                                      fontWeight: FontWeight.w500
-                                  ),
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  callNext(context, ChooseWorkout());
-                                },
-                                child: Container(
-                                  height: height/4.80,
-                                  width: width,
-                                  color: Colors.transparent,
-                                  child: ListView.builder(
-                                    shrinkWrap: true,
-                                    itemCount: image.length,
-                                    scrollDirection: Axis.horizontal,
-                                    itemBuilder: (context, index) {
-                                      return Padding(
-                                        padding: EdgeInsets.only(left: width / 27.34, right: width / 3.30), // Adjusted padding
-                                        child: Container(
-                                          margin: EdgeInsets.symmetric(vertical: height/49.34),
-                                          height: height/18.45,
-                                          width: width/2.80,
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(25),
-                                            color: Colors.transparent,
-                                            image: DecorationImage(
-                                              fit: BoxFit.fill,
-                                              image: AssetImage(image[index]
-                                              ),
-                                            ),
-                                          ),
-                                          child: Transform.translate(
-                                            offset: Offset(width/3.90,height/90.45),
-                                            child: Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              mainAxisSize: MainAxisSize.min,  // Take minimum vertical space
-                                              mainAxisAlignment: MainAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  name1[index],
-                                                  style: TextStyle(
-                                                    height: 1,
-                                                    fontFamily: "intermedi",
-                                                    color: Colors.white,
-                                                    fontSize: 32,
-                                                  ),
-                                                ),
-                                                Text(
-                                                  name2[index],
-                                                  style: TextStyle(
-                                                    height: 1,
-                                                    fontFamily: "intermedi",
-                                                    color: Colors.white,
-                                                    fontSize:  32,
-                                                  ),
-                                                ),
-                                                SizedBox(height: height/160.34,),
-                                                Image.asset(line[index],scale: 4,),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ),
-                              SizedBox(height: height/90.34),
-                              SizedBox(
-                                height: height / 6.99,
-                                  child: ListView.builder(
-                                    itemCount: StatusImage.length,
-                                    shrinkWrap: true,
-                                    scrollDirection: Axis.horizontal,
-                                    itemBuilder: (context, index) {
-                                      if (index == 0) {
-                                        return Container(
-                                          margin: EdgeInsets.only(right: width / 15.34),
-                                          height: 120,
-                                          width: 120,
-                                          decoration: BoxDecoration(
-                                            gradient: LinearGradient(
-                                              colors: [
-                                                Color(0x17161D).withOpacity(1),Colors.black,
-                                              ],
-                                              begin: Alignment.centerLeft,
-                                              end: Alignment.centerRight
-                                            )
-                                          ),
-                                          child: Padding(
-                                            padding:  EdgeInsets.only(left: width/40.34),
-                                            child: Container(
-                                              height: height/10.34,
-                                              width: width/9.45,
-                                              decoration: BoxDecoration(
-                                                image: DecorationImage(
-                                                  image: AssetImage("assets/image/weeklyStatus.png"),
-                                                )
-                                              ),
-                                            ),
-                                          ),
-                                        );
-                                      } else {
-                                        return Container(
-                                          margin: EdgeInsets.only(right: width / 19.34),
-                                          height: height/8.11,
-                                          width: width/2.417,
-                                          decoration: BoxDecoration(
-                                            color: Colors.transparent,
-                                            image: DecorationImage(
-                                                image: AssetImage(StatusImage[index])
-                                            ),
-                                            borderRadius: BorderRadius.circular(25),
-                                          ),
-                                        );
-                                      }
-                                    },
-                                  ),
-                              ),
-                              SizedBox(
-                                height: height / 6.99,
-                                child: Container(
-                                  child: ListView.builder(
-                                    itemCount: menuImage.length,
-                                    scrollDirection: Axis.horizontal,
-                                    itemBuilder: (context, index) {
-                                      return Column(
-                                        children: [
-                                          Padding(
-                                            padding:  EdgeInsets.symmetric(horizontal: width/50.34),
-                                            child: GestureDetector(
+    return PopScope(
+      canPop:  false,
+      onPopInvoked: (val) {
+        showExitDialog();
+      },
+      child: Scaffold(
+          backgroundColor: Colors.black,
+          body: SingleChildScrollView(
+            child: Consumer<AdminProvider>(
+              builder: (context3,value3,child) {
+                return Consumer<Userprovider>(
+                  builder: (context2,value2,child) {
+                    return Consumer<LoginProvider>(
+                      builder: (context1,value1,child) {
+                        return bodyContainer(height, width,
+                            Column(crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(height: height/17.45,),
+                                Padding(
+                                  padding:  EdgeInsets.only(left: width/20.34),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: width/1.80,
+                                        child: FittedBox(
+                                          fit: BoxFit.contain,
+                                          child: headingText(
+                                              "HELLO, ${value1.signUpNameController.text.isNotEmpty
+                                                  ? value1.signUpNameController.text[0].toUpperCase()
+                                                  + value1.signUpNameController.text.substring(1)
+                                                  : 'Guest'}",
 
-                                              onTap: (){
-                                                if(index == 0){
-                                                  callNext(context, ChooseWorkout());
-                                                }else if(index == 1){
-                                                // value3.getSupplementsDetails();
-                                                  callNext(context, Supplements());
-                                                }else if(index == 2){
-                                                  callNext(context, ChooseWorkout());
-                                                }else if(index == 3){
-                                                  callNext(context, ChooseWorkout());
-                                                }else if(index == 4){
-                                                  callNext(context, ChooseWorkout());
-                                                }else if(index == 5){
-                                                  callNext(context, ChooseWorkout());
-                                                }else if(index == 6){
-                                                  callNext(context, Foods());
-                                                }
-                                              },
-                                              child: Container(
-                                                width: width/7.10,
-                                                height: height/9.11,
-                                                decoration: BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  image: DecorationImage(
-                                                    image: AssetImage(menuImage[index]),scale: 3
-                                                  ),
-                                                  gradient: LinearGradient(
-                                                    colors: [
-                                                      Colors.black,
-                                                      Color(0X201E1E).withOpacity(1),
-                                                    ],
-                                                    begin: Alignment.topRight,
-                                                    end: Alignment.bottomCenter,
-                                                    stops: [0.2, 1],
-                                                  ),
+                                          ),
+                                        ),
+                                      ),
+
+                                      SizedBox(width: 60,),
+                                      GestureDetector(
+                                        onTap: () {
+                                          value2.getInsBookingDetails();
+                                          callNext(context, Notifications());
+                                        },
+                                        child: Container(
+                                          width: width/7.45,
+                                          height: height/20.45,
+                                          decoration: BoxDecoration(
+                                            color: Colors.grey.withOpacity(0.30),
+                                            shape: BoxShape.circle,
+                                            image: DecorationImage(
+                                              image: AssetImage("assets/image/bellBotton.png"),scale: width/89.34,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Padding(
+                                  padding:  EdgeInsets.only(left: width/20.34),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: 230,
+                                        child: FittedBox(
+                                          fit: BoxFit.contain,
+                                          child: Text("Good Work! Your progress is on the track",
+                                            style: TextStyle(
+                                                fontFamily: "interlight",
+                                                fontSize: width/28,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(height: height/40.45,),
+                                Padding(
+                                  padding: EdgeInsets.only(left: width/19.34),
+                                  child: Container(
+                                    width: 130,
+                                    child: FittedBox(
+                                      fit: BoxFit.contain,
+                                      child: Text("Continue Activities",
+                                        style: TextStyle(
+                                            color: CupertinoColors.white,
+                                            fontSize: 20,
+                                            fontFamily: "interlight",
+                                            fontWeight: FontWeight.w500
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    callNext(context, ChooseWorkout());
+                                  },
+                                  child: Container(
+                                    height: height/4.88,
+                                    width: width,
+                                    color: Colors.transparent,
+                                    child: ListView.builder(
+                                      shrinkWrap: true,
+                                      itemCount: image.length,
+                                      scrollDirection: Axis.horizontal,
+                                      itemBuilder: (context, index) {
+                                        return Padding(
+                                          padding: EdgeInsets.only(left: width / 27.34, right: width / 3.30), // Adjusted padding
+                                          child: Container(
+                                            margin: EdgeInsets.symmetric(vertical: height/49.34),
+                                            height: height/18.45,
+                                            width: width/2.80,
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(25),
+                                              color: Colors.transparent,
+                                              image: DecorationImage(
+                                                fit: BoxFit.fill,
+                                                image: AssetImage(image[index]
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                          Text(
-                                            menu[index],
-                                            style: TextStyle(
-                                              height: 0.10,
-                                              color: Colors.white,
-                                              fontSize: 12,
-                                              fontFamily: 'intermedi',
+                                            child: Transform.translate(
+                                              offset: Offset(width/3.90,height/90.45),
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                mainAxisSize: MainAxisSize.min,  // Take minimum vertical space
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                children: [
+                                                  Container(
+                                                    width: 210,
+                                                    child: FittedBox(
+                                                      fit: BoxFit.scaleDown,
+                                                      alignment: Alignment.centerLeft,
+                                                      child: Text(
+                                                        name1[index],
+                                                        style: TextStyle(
+                                                          height: 1,
+                                                          fontFamily: "intermedi",
+                                                          color: Colors.white,
+                                                          fontSize: 33,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    width: 210,
+                                                    child: FittedBox(
+                                                      fit: BoxFit.scaleDown,
+                                                      alignment: Alignment.centerLeft,
+                                                      child: Text(
+                                                        name2[index],
+                                                        style: TextStyle(
+                                                          height: 1,
+                                                          fontFamily: "intermedi",
+                                                          color: Colors.white,
+                                                          fontSize:  32,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  SizedBox(height: height/160.34,),
+                                                  Image.asset(line[index],scale: 4,),
+                                                ],
+                                              ),
                                             ),
                                           ),
-                                        ],
-                                      );
-                                    },
+                                        );
+                                      },
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Padding(
-                                padding:  EdgeInsets.only(left: width/19.34),
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      "Find instructor ",
-                                      style: TextStyle(
-                                        height: height/999.99,
-                                        color: Colors.white,
-                                        fontSize: 24,
-                                        fontFamily: 'intermedi',
-                                      ),
-                                    ),
-                                    SizedBox(width: width/2.80,),
-                                    InkWell(
-                                      onTap: () {
-                                        callNext(context, Instructors());
-                                      },
-                                      child: Text(
-                                        "See All",
-                                        style: TextStyle(
-                                          height: height/999.99,
-                                          color: Colors.white,
-                                          fontSize: 14,
-                                          fontFamily: 'intermedi',
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(height: height/50.34,),
-                              SizedBox(
-                                height: height/4.20,
-                                child: ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: TrainerImage.length,
-                                  itemBuilder: (context, index) {
-                                    return GestureDetector(
-                                      onTap: () {
-                                        callNext(context, Instructors());
-                                      },
-                                      child: Container(
-                                        margin: EdgeInsets.only(left: width/30.34),
-                                        height: 12.34,
-                                        width:170.45,
-                                        decoration: BoxDecoration(
-                                          image: DecorationImage(
-                                            fit: BoxFit.fill,
-                                            image: AssetImage(TrainerImage[index]),
-                                          ),
-                                          color: Colors.transparent,
-                                          borderRadius: BorderRadius.circular(25)
-                                        ),
-                                        child: Padding(
-                                          padding:  EdgeInsets.only(left: width/37.34),
-                                          child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              SizedBox(height: height/70.34,),
-                                              Container(
-                                                width: width/10.45,
-                                                height: height/20.45,
+                                SizedBox(height: height/90.34),
+                                SizedBox(
+                                  height: height / 6.99,
+                                    child: ListView.builder(
+                                      itemCount: StatusImage.length,
+                                      shrinkWrap: true,
+                                      scrollDirection: Axis.horizontal,
+                                      itemBuilder: (context, index) {
+                                        if (index == 0) {
+                                          return Container(
+                                            margin: EdgeInsets.only(right: width / 15.34),
+                                            height: 120,
+                                            width: 120,
+                                            decoration: BoxDecoration(
+                                              gradient: LinearGradient(
+                                                colors: [
+                                                  Color(0x17161D).withOpacity(1),Colors.black,
+                                                ],
+                                                begin: Alignment.centerLeft,
+                                                end: Alignment.centerRight
+                                              )
+                                            ),
+                                            child: Padding(
+                                              padding:  EdgeInsets.only(left: width/40.34),
+                                              child: Container(
+                                                height: height/10.34,
+                                                width: width/9.45,
                                                 decoration: BoxDecoration(
-                                                  color: Colors.grey.withOpacity(0.20),
-                                                  shape: BoxShape.circle,
+                                                  image: DecorationImage(
+                                                    image: AssetImage("assets/image/weeklyStatus.png"),
+                                                  )
                                                 ),
-                                                child:  Center(
-                                                  child: Text(
-                                                    price[index],
-                                                    style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 14,
-                                                      fontFamily: 'intermedi',
+                                              ),
+                                            ),
+                                          );
+                                        } else {
+                                          return Container(
+                                            margin: EdgeInsets.only(right: width / 19.34),
+                                            height: height/8.11,
+                                            width: width/2.417,
+                                            decoration: BoxDecoration(
+                                              color: Colors.transparent,
+                                              image: DecorationImage(
+                                                  image: AssetImage(StatusImage[index])
+                                              ),
+                                              borderRadius: BorderRadius.circular(25),
+                                            ),
+                                          );
+                                        }
+                                      },
+                                    ),
+                                ),
+                                SizedBox(
+                                  height: height / 6.99,
+                                  child: Container(
+                                    child: ListView.builder(
+                                      itemCount: menuImage.length,
+                                      scrollDirection: Axis.horizontal,
+                                      itemBuilder: (context, index) {
+                                        return Column(
+                                          children: [
+                                            Padding(
+                                              padding:  EdgeInsets.symmetric(horizontal: width/50.34),
+                                              child: GestureDetector(
+
+                                                onTap: (){
+                                                  if(index == 0){
+                                                    callNext(context, ChooseWorkout());
+                                                  }else if(index == 1){
+                                                  // value3.getSupplementsDetails();
+                                                    callNext(context, Supplements());
+                                                  }else if(index == 2){
+                                                    callNext(context, ChooseWorkout());
+                                                  }else if(index == 3){
+                                                    callNext(context, ChooseWorkout());
+                                                  }else if(index == 4){
+                                                    callNext(context, ChooseWorkout());
+                                                  }else if(index == 5){
+                                                    callNext(context, ChooseWorkout());
+                                                  }else if(index == 6){
+                                                    callNext(context, Foods());
+                                                  }
+                                                },
+                                                child: Container(
+                                                  width: width/7.10,
+                                                  height: height/9.11,
+                                                  decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    image: DecorationImage(
+                                                      image: AssetImage(menuImage[index]),scale: 3
+                                                    ),
+                                                    gradient: LinearGradient(
+                                                      colors: [
+                                                        Colors.black,
+                                                        Color(0X201E1E).withOpacity(1),
+                                                      ],
+                                                      begin: Alignment.topRight,
+                                                      end: Alignment.bottomCenter,
+                                                      stops: [0.2, 1],
                                                     ),
                                                   ),
                                                 ),
                                               ),
-                                              SizedBox(height: height/10.34,),
-                                              Text(
-                                                TrainerName[index],
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 28,
-                                                  fontFamily: 'jeju',
-                                                ),
+                                            ),
+                                            Text(
+                                              menu[index],
+                                              style: TextStyle(
+                                                height: 0.10,
+                                                color: Colors.white,
+                                                fontSize: 12,
+                                                fontFamily: 'intermedi',
                                               ),
-                                              experience(Experience[index]),
-                                            ],
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding:  EdgeInsets.only(left: width/19.34),
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        "Find instructor ",
+                                        style: TextStyle(
+                                          height: height/999.99,
+                                          color: Colors.white,
+                                          fontSize: width/22,
+                                          fontFamily: 'intermedi',
+                                        ),
+                                      ),
+                                      SizedBox(width: width/2.80,),
+                                      InkWell(
+                                        onTap: () {
+                                          callNext(context, Instructors());
+                                        },
+                                        child: Text(
+                                          "See All",
+                                          style: TextStyle(
+                                            height: height/999.99,
+                                            color: Colors.white,
+                                            fontSize: 14,
+                                            fontFamily: 'intermedi',
                                           ),
                                         ),
                                       ),
-                                    );
-                                  },
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                      );
-                    }
-                  );
-                }
-              );
-            }
-          ),
-        ),
-      floatingActionButton: AnimatedBuilder(
-        animation: bounceAnimation,
-        builder: (context, child) {
-          return Transform.translate(
-            offset: Offset(0, bounceAnimation.value),
-            child: FloatingActionButton(
-              onPressed: () {
-                showPopup(context);
-              },
-              child: const Icon(
-                Icons.mark_chat_unread,
-                color: Colors.white,
-              ),
-              backgroundColor: Colors.blue,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25)
-              ),
+                                SizedBox(height: height/50.34,),
+                                SizedBox(
+                                  height: height/4.20,
+                                  child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: TrainerImage.length,
+                                    itemBuilder: (context, index) {
+                                      return GestureDetector(
+                                        onTap: () {
+                                          callNext(context, Instructors());
+                                        },
+                                        child: Container(
+                                          margin: EdgeInsets.only(left: width/30.34),
+                                          height: 12.34,
+                                          width:170.45,
+                                          decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                              fit: BoxFit.fill,
+                                              image: AssetImage(TrainerImage[index]),
+                                            ),
+                                            color: Colors.transparent,
+                                            borderRadius: BorderRadius.circular(25)
+                                          ),
+                                          child: Padding(
+                                            padding:  EdgeInsets.only(left: width/37.34),
+                                            child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                SizedBox(height: height/70.34,),
+                                                Container(
+                                                  width: width/10.45,
+                                                  height: height/20.45,
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.grey.withOpacity(0.20),
+                                                    shape: BoxShape.circle,
+                                                  ),
+                                                  child:  Center(
+                                                    child: Text(
+                                                      price[index],
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 14,
+                                                        fontFamily: 'intermedi',
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(height: height/10.34,),
+                                                Text(
+                                                  TrainerName[index],
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: width / 15,
+                                                    fontFamily: 'jeju',
+                                                  ),
+                                                ),
+                                                experience(Experience[index]),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                        );
+                      }
+                    );
+                  }
+                );
+              }
             ),
-          );
-        },
+          ),
+        floatingActionButton: AnimatedBuilder(
+          animation: bounceAnimation,
+          builder: (context, child) {
+            return Transform.translate(
+              offset: Offset(0, bounceAnimation.value),
+              child: FloatingActionButton(
+                onPressed: () {
+                  showPopup(context);
+                },
+                child: const Icon(
+                  Icons.mark_chat_unread,
+                  color: Colors.white,
+                ),
+                backgroundColor: Colors.blue,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(25)
+                ),
+              ),
+            );
+          },
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
+
+  Future<bool> showExitDialog() async {
+    return await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: Color(0x111111).withOpacity(1),
+        title: Text(
+          'Exit app?',
+          style: TextStyle(
+            fontFamily: "jeju2",
+            fontSize: 20,
+            color: Colors.white
+          ),
+        ),
+        content: Padding(
+          padding: const EdgeInsets.only(top: 12),
+          child: Text(
+            'Are you sure you want to exit the app?',
+            style: TextStyle(
+              fontFamily: "jeju2",
+              fontSize: 16,
+              color: Colors.white
+            ),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text(
+              'No',
+              style: TextStyle(
+                color: Colors.blue,
+                fontFamily: "jeju2",
+                fontSize: 16,
+              ),
+            ),
+          ),
+          TextButton(
+           onPressed: (){
+             SystemNavigator.pop();
+           },
+            child: Text(
+              'Yes',
+              style: TextStyle(
+                color: Colors.red,
+                fontFamily: "jeju2",
+                fontSize: 16,
+              ),
+            ),
+          ),
+        ],
+      ),
+    ) ?? false;
+  }
+
 }

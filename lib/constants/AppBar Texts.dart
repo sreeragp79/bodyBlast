@@ -1,24 +1,24 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-Widget appbarText(String text) {
+Widget appbarText(String text,double width) {
   return Text(
     text,
     style: TextStyle(
       fontFamily: "intermedi",
-      fontSize: 26,
+      fontSize: width,
       color: CupertinoColors.white,
       decoration: TextDecoration.none,
     ),
   );
 }
 
-Widget headingText(String text) {
+Widget headingText(String text,) {
   return Text(
     text,
     style: TextStyle(
       fontFamily: "interbold",
-      fontSize: 35,
+      fontSize: 34,
       color: CupertinoColors.white,
     ),
   );
@@ -44,12 +44,12 @@ Widget experience (String text,){
     ),
   );
 }
-Widget TrainersName (String text,){
+Widget TrainersName (String text,double width){
   return Text(text,
     style: TextStyle(
       height: 1.10,
       fontFamily: "jeju",
-      fontSize: 28,
+      fontSize: width,
       color: CupertinoColors.white,
     ),
   );

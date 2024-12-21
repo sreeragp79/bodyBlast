@@ -10,7 +10,7 @@ import '../constants/AppBar Texts.dart';
 import '../constants/BottonContainer.dart';
 import '../constants/Navigator.dart';
 import 'Bottom Navigation.dart';
-import 'PaymentOption.dart';
+import 'InsPaymentOption.dart';
 
 class Paymentcompleted extends StatelessWidget {
   final image;
@@ -55,7 +55,7 @@ class Paymentcompleted extends StatelessWidget {
                               style: TextStyle(
                                 color: Colors.white,
                                 fontFamily: "intermedi",
-                                fontSize: 25,
+                                fontSize: width/16.44,
                               ),
                             ),
                           ],
@@ -67,7 +67,7 @@ class Paymentcompleted extends StatelessWidget {
                           style: TextStyle(
                             color: Colors.white,
                             fontFamily: "interlight",
-                            fontSize: 18,
+                            fontSize: width/22.83,
                           ),
                         ),
                         SizedBox(height: height/27.70,),
@@ -129,7 +129,7 @@ class Paymentcompleted extends StatelessWidget {
                                     style: TextStyle(
                                       color: Colors.grey.withOpacity(0.56),
                                       fontFamily: "intermedi",
-                                      fontSize: 14,
+                                      fontSize: width/29.35,
                                     ),
                                   ),
                                 ),
@@ -141,7 +141,7 @@ class Paymentcompleted extends StatelessWidget {
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontFamily: "interlight",
-                                      fontSize: 13,
+                                      fontSize: width/31.61,
                                     ),
                                   ),
                                 ),
@@ -155,7 +155,7 @@ class Paymentcompleted extends StatelessWidget {
                                         style: TextStyle(
                                           color: Colors.grey.withOpacity(0.56),
                                           fontFamily: "intermedi",
-                                          fontSize: 14,
+                                          fontSize: width/29.35,
                                         ),
                                       ),
                                       SizedBox(width: width / 7.50,),
@@ -164,7 +164,7 @@ class Paymentcompleted extends StatelessWidget {
                                         style: TextStyle(
                                           color: Colors.white,
                                           fontFamily: "interlight",
-                                          fontSize: 12,
+                                          fontSize: width/34.25,
                                         ),
                                       ),
                                       SizedBox(width: width / 7.40,),
@@ -173,7 +173,7 @@ class Paymentcompleted extends StatelessWidget {
                                         style: TextStyle(
                                           color: Colors.grey.withOpacity(0.56),
                                           fontFamily: "intermedi",
-                                          fontSize: 14,
+                                          fontSize: width/29.35,
                                         ),
                                       ),
                                     ],
@@ -189,7 +189,7 @@ class Paymentcompleted extends StatelessWidget {
                                         style: TextStyle(
                                           color: Colors.white,
                                           fontFamily: "interlight",
-                                          fontSize: 13,
+                                          fontSize: width/31.61,
                                         ),
                                       ),
                                       SizedBox(width: width / 3.80,),
@@ -198,7 +198,7 @@ class Paymentcompleted extends StatelessWidget {
                                         style: TextStyle(
                                           color: Colors.white,
                                           fontFamily: "interlight",
-                                          fontSize: 13,
+                                          fontSize:  width/31.61,
                                         ),
                                       ),
                                     ],

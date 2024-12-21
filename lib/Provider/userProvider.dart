@@ -18,12 +18,11 @@ import 'package:url_launcher/url_launcher.dart';
 import '../constants/Navigator.dart';
 import '../constants/snackBar.dart';
 import '../models/class.dart';
-import '../user/PaymentOption.dart';
+import '../user/InsPaymentOption.dart';
 
 class Userprovider extends ChangeNotifier{
 Userprovider(){
  getReviews();
- getBookingDetails();
 }
 
  final FirebaseFirestore db = FirebaseFirestore.instance;
@@ -132,6 +131,10 @@ Userprovider(){
     // Save data to Firestore
   if(from == "userProfileAddImage"){
    await db.collection("SIGNUP_DETAILS").doc(userId).update(dataToSave);
+
+   await db.collection("USER_DETAILS_LOCATION").doc(userId).update({
+    "USER_IMAGE-LO": downloadUrl
+   });
   }else{
    await db.collection(collection).doc(id).set(dataToSave);
   }
@@ -185,7 +188,7 @@ Future<void> getReviews()async{
 
     Map<String,dynamic> map = element.data();
     reviewsList.add(ReviewsClass(
-     map["REVIEW_ID"] ?? '',
+     map["REVIEW_USER_ID"] ?? '',
      map["REVIEW_USER_IMAGE"] ?? '',
      map["REVIEW_SUB"] ?? '',
      map["REVIEW_DATE"] ?? '',
@@ -197,7 +200,29 @@ Future<void> getReviews()async{
   }
  });
 }
-
+// get UserDetails for Location tracking
+//  List<UserDetailsClass> userDrtailsForLocationList = [];
+//  Future<void>getUserInfoForLocation(context)async{
+//
+//   SharedPreferences prefs = await SharedPreferences.getInstance();
+//   String? userId = prefs.getString("SIGN_USER_ID");
+//
+//   LoginProvider logDetailsLo = Provider.of<LoginProvider>(context,listen: false);
+//
+//
+//   var datas = await db.collection("USER_REVIEWS").get();
+//  if(datas.docs.isNotEmpty){
+//   for(var element in datas.docs){
+//    userDrtailsForLocationList.clear();
+//    Map<String,dynamic> map = element.data();
+//  userDrtailsForLocationList.add(UserDetailsClassForLocation(
+//      userIdLo,
+//      userNameLo,
+//      userImageLo
+//  ))
+//   }}
+//  notifyListeners();
+//  }
 // cleara Reviews
  void clearRevies(){
   reviewSubController.clear();
@@ -416,11 +441,12 @@ Future<void> getReviews()async{
  // get Booking Details
  List<BookingDetailsClass> bookingDetailsList = [];
 
- Future<void>getBookingDetails()async{
+ Future<void>getInsBookingDetails()async{
+
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String? currentUserId = prefs.getString("SIGN_USER_ID");
 
-  var datas =await db.collection("BOOKING_DETAILS").
+  var datas = await db.collection("BOOKING_DETAILS").
   where("USER_ID",isEqualTo: currentUserId).get();
 
   if(datas.docs.isNotEmpty){
@@ -445,4 +471,9 @@ Future<void> getReviews()async{
   }
   notifyListeners();
  }
+ void clearUserImage(){
+  userProfileFile ==null;
+  notifyListeners();
+ }
+
 }

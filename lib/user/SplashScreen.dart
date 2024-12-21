@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../Provider/loginProvider.dart';
 import 'Bottom Navigation.dart';
 import 'LoginPage.dart';
 import 'SliderPage.dart';
@@ -21,7 +25,11 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
   @override
   void initState() {
     super.initState();
-
+    // Delay 3 seconds to show splash, then check user details
+    Future.delayed(Duration(seconds: 3), () {
+      final loginProvider = Provider.of<LoginProvider>(context, listen: false);
+      loginProvider.checkUserExist(context);
+    });
     //  icon animation
     _iconAnimationController = AnimationController(
       duration: const Duration(seconds: 1), // Icon animation duration
@@ -79,7 +87,6 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                     const begin = Offset(1.0, 0.0); // Slide in from the right
                     const end = Offset.zero;
                     const curve = Curves.easeInOut;
-
                     var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
                     var offsetAnimation = animation.drive(tween);
 
@@ -95,6 +102,10 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
         });
       });
     });
+    // Delay the permission check by 5 seconds
+    Future.delayed(const Duration(seconds: 7), () {
+      checkLocationPermission();
+    });
   }
 
   @override
@@ -102,11 +113,37 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
     _iconAnimationController.dispose();
     _containerAnimationController.dispose();
     _textFadeInController.dispose();
+    // checkLocationPermission();
     super.dispose();
+  }
+  Future<void> checkLocationPermission() async {
+    var status = await Permission.location.status;
+    if (status.isDenied) {
+      // Request location permission
+      await Permission.location.request();
+      status = await Permission.location.status;
+    }
+
+    if (status.isGranted) {
+      try {
+        // Get current location and save it
+        Position position = await Geolocator.getCurrentPosition(
+            desiredAccuracy: LocationAccuracy.high
+        );
+
+        // Save location to Firebase
+        final provider = Provider.of<LoginProvider>(context, listen: false);
+        // await provider.addUserDatasForLocation(context);
+      } catch (e) {
+        print("Error getting location: $e");
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.black,
       body: AnimatedBuilder(
@@ -160,7 +197,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                           TextSpan(
                             text: "Fit ",
                             style: TextStyle(
-                              fontSize: 38,
+                              fontSize: width/11,
                               color: Colors.white,
                               fontFamily: "intermedi",
                               fontWeight: FontWeight.normal,
@@ -169,7 +206,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                           TextSpan(
                             text: "Pro",
                             style: TextStyle(
-                              fontSize: 38,
+                              fontSize: width/11,
                               color: Colors.white,
                               fontFamily: "interbold",
                               fontWeight: FontWeight.bold,

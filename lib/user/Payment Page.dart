@@ -34,7 +34,7 @@ class Paymentpage extends StatelessWidget {
             SizedBox(
               height: height / 16.45,
             ),
-            Row(
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Padding(
                   padding: EdgeInsets.only(left: width / 23.45),
@@ -56,10 +56,12 @@ class Paymentpage extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(
-                  width: width / 4.70,
-                ),
-                appbarText("Payment"),
+                appbarText("Payment",width/14.84),
+                Container(
+                  width: width/6.45,
+                  height: height/20.45,
+                )
+
               ],
             ),
             SizedBox(

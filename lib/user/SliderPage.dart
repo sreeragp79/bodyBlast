@@ -87,12 +87,12 @@ class _SliderPageState extends State<SliderPage> {
                     smoothIndicator(pageController),
                     SizedBox(width: width/45.6,),
                     bottonContainer(
-                      width / 2.74,
+                      width / 3.30,
                       height / 18.93,
                       (){
                         callNextReplacement(context, Genderselection());
                        },
-                      "Start Now >",
+                      "Start Now",
                     )
                   ],
                 ),

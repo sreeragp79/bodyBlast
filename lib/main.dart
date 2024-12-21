@@ -1,6 +1,7 @@
 import 'package:body_blast/Provider/adminProvider.dart';
 import 'package:body_blast/Provider/loginProvider.dart';
 import 'package:body_blast/Provider/userProvider.dart';
+import 'package:body_blast/admin/AdminMenue.dart';
 import 'package:body_blast/admin/Food%20List.dart';
 import 'package:body_blast/admin/SupplementAdd.dart';
 import 'package:body_blast/admin/WorkOut%20List.dart';
@@ -25,7 +26,7 @@ import 'package:body_blast/user/Notification.dart';
 import 'package:body_blast/user/OtpPage.dart';
 import 'package:body_blast/user/Payment%20Page.dart';
 import 'package:body_blast/user/PaymentCompleted.dart';
-import 'package:body_blast/user/PaymentOption.dart';
+import 'package:body_blast/user/InsPaymentOption.dart';
 import 'package:body_blast/user/Privacy%20Policy.dart';
 import 'package:body_blast/user/Profile.dart';
 import 'package:body_blast/user/Receipt.dart';
@@ -60,7 +61,6 @@ options: FirebaseOptions(
     projectId: "comment-picker-76557",
     storageBucket:"comment-picker-76557.appspot.com"
 ),
-
 );
   runApp(const MyApp());
 }
@@ -77,7 +77,7 @@ class MyApp extends StatelessWidget {
      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: BottomNavigationPage(),
+          home: AdminBottomBar(),
       ),
     );
   }

@@ -1,9 +1,15 @@
 import 'dart:io';
 import 'dart:math';
+import 'package:body_blast/Provider/adminProvider.dart';
 import 'package:body_blast/Provider/userProvider.dart';
+import 'package:body_blast/admin/Map.dart';
+import 'package:body_blast/models/class.dart';
 import 'package:body_blast/user/Fill%20Your%20Profile.dart';
+import 'package:body_blast/user/SliderPage.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:body_blast/user/GenderSelection.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:body_blast/constants/Navigator.dart';
@@ -18,6 +24,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../user/Bottom Navigation.dart';
 
@@ -29,6 +36,9 @@ class LoginProvider extends ChangeNotifier {
 
   // Search controller
   TextEditingController searchController =TextEditingController();
+
+ // otp controller
+  TextEditingController otpController =TextEditingController();
 
   // Login Controllers
 
@@ -57,9 +67,9 @@ class LoginProvider extends ChangeNotifier {
       "NAME": signUpNameController.text,
       "PHONE_NUMBER": signUpPhoneController.text,
       "PASSWORD": signUpPasswordController.text.toString(),
-      "SIGN_UP_TIME": DateTime.now()
+      "SIGN_UP_TIME": DateTime.now(),
     };
-    print("SignUp Details.....");
+    print("SignUpDetails");
     addLoginDetails.forEach((key,value){
       print("$key,$value");
     });
@@ -67,13 +77,115 @@ class LoginProvider extends ChangeNotifier {
     notifyListeners();
 
     // userData sharedPreference save
-
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString("NAME", signUpNameController.text,);
     await prefs.setString("PASSWORD", signUpPasswordController.text,);
     await prefs.setString("SIGN_USER_ID", userId,);
     notifyListeners();
   }
+
+
+  // add UserDetailsFor Location
+  Future<void> addUserDatasForLocation(BuildContext context) async {
+
+    // Get current location
+    Position position = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high,
+    );
+
+    Userprovider userValue = Provider.of<Userprovider>(context,listen: false);
+    userValue.userProfileUrl;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? userIdForLocation = prefs.getString("SIGN_USER_ID");
+
+    Map<String,dynamic> addUserDetails={
+      "USER_ID_LO":userIdForLocation,
+      "USER_NAME_LO":signUpNameController.text,
+      "USER_IMAGE-LO":userValue.userProfileUrl,
+      "LATITUDE":position.latitude,
+      "LONGITUDE":position.longitude,
+    };
+    print("user details add for location");
+    addUserDetails.forEach((key,value){
+      print("$key,$value");
+    });
+
+    await db.collection("USER_DETAILS_LOCATION").doc(userIdForLocation).set(addUserDetails);
+    notifyListeners();
+  }
+
+
+  // get User Details for Location
+  List<GetUserDrtailaClassForLocation> userLocationList = [];
+  Future<void>getUserInfoForLocation(context)async{
+    try {
+      userLocationList.clear();
+      var datas = await db.collection("USER_DETAILS_LOCATION").get();
+
+      if (datas.docs.isNotEmpty) {
+        for (var element in datas.docs) {
+          Map<String, dynamic> map = element.data();
+
+          print("user details get for location");
+          map.forEach((key, value) {
+            print("$key,$value");
+          });
+          userLocationList.add(GetUserDrtailaClassForLocation(
+            map["USER_ID_LO"] ?? '',
+            map["USER_NAME_LO"] ?? '',
+            map["USER_IMAGE-LO"] ?? '',
+            map["LATITUDE"] ?? 0.0,
+            map["LONGITUDE"] ?? 0.0,
+          ));
+        }
+      }
+      notifyListeners();
+    }catch(eror){
+      print("Location details cat get.........");
+    }
+  }
+
+  // get user Location
+
+  Future<void> getUserCurrentLocatoin(String userId, BuildContext context) async {
+    try {
+
+      var datas = await db.collection("USER_DETAILS_LOCATION").doc(userId).get();
+
+      if (datas.exists) {
+        var userData = datas.data() as Map<String, dynamic>;
+
+        double? latitude = userData["LATITUDE"];
+        double? longitude = userData["LONGITUDE"];
+        String? userName = userData["USER_NAME_LO"];
+
+        if (latitude != null && longitude != null && userName != null) {
+          navigateToMap(context, latitude, longitude, userName);
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('i dint get location details')),
+          );
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('dont get user details')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('somethingerorrr: $e')),
+      );
+    }
+    notifyListeners();
+  }
+
+ // go to map page
+   void navigateToMap(BuildContext context, double latitude, double longitude, String userName){
+   callNext(context, GoogleMapScreen(latitude: latitude,longitude:longitude,userName: userName,));
+   notifyListeners();
+   }
+
+
 
   // // user time Get
   // Future<String>getUserTime(String userId)async{
@@ -94,29 +206,36 @@ class LoginProvider extends ChangeNotifier {
   //   return "";
   // }
   //
-  // userData fetch
-
-  Future<void> getUserDetails() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    signUpNameController.text = prefs.getString("NAME") ?? '';
-    signUpPasswordController.text = prefs.getString("PASSWORD") ?? '';
-    var userId = prefs.getString("SIGN_USER_ID") ?? '';
-    notifyListeners();
-  }
 
   // pref clearing
+  Future<void> logOut(BuildContext context) async {
+    try {
+      await FirebaseAuth.instance.signOut();
+      await GoogleSignIn().signOut();
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.clear();
 
-  Future<void> logOut()async{
-    print("Prefs Clear Successfully");
-    SharedPreferences prefs =await SharedPreferences.getInstance();
-    await prefs.setBool("isUserSignedUp", false); // make flag false
+      AdminProvider admin = Provider.of<AdminProvider>(context,listen: false);
+      Userprovider user = Provider.of<Userprovider>(context,listen: false);
+
+      user.bookingDetailsList.clear();
+      admin.supplementsBookingList.clear();
+      admin.bookedSuppleImagesList.clear();
+      admin.addressList.clear();
+
+    } catch (e) {
+      showCustomSnackBar(context, "Logout Failed. Please try again.");
+    }
     notifyListeners();
   }
 
-  // user Exist
 
+
+  // user Exist
+  bool isOldUserLoading = false;
   Future<void> checkUser(BuildContext context,String name, String password) async {
     try {
+      isOldUserLoading = true;
       // check name and password
       var data = await FirebaseFirestore.instance.collection("SIGNUP_DETAILS")
           .where("NAME", isEqualTo: name)
@@ -124,6 +243,16 @@ class LoginProvider extends ChangeNotifier {
           .get();
 
       if (data.docs.isNotEmpty) {
+        // Get the user document
+        var userDoc = data.docs.first;
+
+        // Clear old user data and save new user ID in SharedPreferences
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString("SIGN_USER_ID", userDoc.id);
+
+        // Load user details
+        await loadUserDetails(context);
+
         callNextReplacement(context, BottomNavigationPage());
       } else {
         showCustomSnackBar(context,  'Invalid details. Please check password and name."');
@@ -134,7 +263,62 @@ class LoginProvider extends ChangeNotifier {
       );
       print(error);
     }
+    isOldUserLoading = false;
     notifyListeners();
+  }
+
+  // user exist go to home screen
+
+  Future<void>checkUserExist(BuildContext context)async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? userIdd = prefs.getString("SIGN_USER_ID");
+    if(userIdd == null){
+    callNextReplacement(context, SliderPage());
+    }else{
+      callNextReplacement(context, BottomNavigationPage());
+    }
+  }
+
+  // load user details
+  Future<void> loadUserDetails(BuildContext context )async{
+    print("ffffffffff");
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? userId = prefs.getString("SIGN_USER_ID");
+
+    print("Current User ID: $userId");
+
+    if(userId == null){
+      print("No user ID found");
+      return;
+    }
+    // get UserProvider User Image
+    Userprovider userImage = Provider.of<Userprovider>(context,listen: false);
+    AdminProvider admin = Provider.of<AdminProvider>(context,listen: false);
+
+    var userDoc = await db.collection("SIGNUP_DETAILS").doc(userId).get();
+
+    if(userDoc.exists){
+
+      // Get user data from Firestore
+
+      var userData = userDoc.data() ?? {};
+
+      // load details to controller
+      signUpNameController.text = userData["NAME"]?? "";
+      lastNameController.text = userData["LAST_NAME"]?? '';
+      emailController.text = userData[ "EMAIL"]?? '';
+      dateOfBirthController.text = userData["DATE_OF_BIRTH"]?? '';
+      userImage.userProfileUrl = userData["USER_IMAGE"]??'';
+
+      print("loade old existing details");
+      print("Name: ${signUpNameController.text}");
+      print("Last Name: ${lastNameController.text}");
+      print("Email: ${emailController.text}");
+      print("Date of Birth: ${dateOfBirthController.text}");
+      print("User Image URL: ${userImage.userProfileUrl}");
+    }
+    notifyListeners();
+
   }
 
 
@@ -154,37 +338,6 @@ class LoginProvider extends ChangeNotifier {
     notifyListeners();
   }
   //
-
-  // load user details
-
-  Future<void> loadUserDetails(BuildContext context )async{
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? userId = prefs.getString("SIGN_USER_ID");
-
-   Userprovider userImage = Provider.of<Userprovider>(context,listen: false);
-
-    var userDoc = await db.collection("SIGNUP_DETAILS").doc(userId).get();
-
-    if(userDoc.exists){
-      var userData = userDoc.data(); // get firestore data
-      // load details to controller
-      signUpNameController.text = userData?["NAME"]?? "";
-      lastNameController.text = userData?["LAST_NAME"]?? '';
-      emailController.text = userData?[ "EMAIL"]?? '';
-      dateOfBirthController.text = userData?["DATE_OF_BIRTH"]?? '';
-      userImage.userProfileUrl = userData?["USER_IMAGE"]??'';
-
-      print("loade details");
-      print("Name: ${signUpNameController.text}");
-      print("Last Name: ${lastNameController.text}");
-      print("Email: ${emailController.text}");
-      print("Date of Birth: ${dateOfBirthController.text}");
-      print("User Image URL: ${userImage.userProfileUrl}");
-      notifyListeners();
-
-    }
-
-  }
 
   // user update profile
   Future<void> updateUserProfile(BuildContext context) async {
@@ -225,6 +378,10 @@ class LoginProvider extends ChangeNotifier {
     signUpPhoneController.clear();
     logInNameController.clear();
     logInPasswordController.clear();
+    lastNameController.clear();
+    emailController.clear();
+    dateOfBirthController.clear();
+    otpController.clear();
      notifyListeners();
 }
 
@@ -232,66 +389,130 @@ class LoginProvider extends ChangeNotifier {
 
   final GoogleSignIn googleSignIn = GoogleSignIn();
   final FirebaseAuth  auth = FirebaseAuth.instance;
+  //
+  // Future<void> signInMethod(BuildContext context) async {
+  //   try {
+  //
+  //     await auth.signOut();
+  //     print("Google Sign-In process started...");
+  //
+  //     // remove old sigin details
+  //     await googleSignIn.signOut(); // Google Sign-Out
+  //     await auth.signOut(); // Firebase Sign-Out
+  //     print("Attempting Google Sign-In...");
+  //
+  //     // Start a new Google Sign-In process
+  //     final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+  //     if (googleUser == null) {
+  //       return; // Sign-in cancelled
+  //     }
+  //
+  //     // get account details
+  //     final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+  //
+  //     // Create a new credential
+  //     final OAuthCredential credential = GoogleAuthProvider.credential(
+  //       accessToken: googleAuth.accessToken,
+  //       idToken: googleAuth.idToken,
+  //     );
+  //
+  //     // Sign in to Firebase with the Google credential
+  //     UserCredential userCredential = await auth.signInWithCredential(credential);
+  //
+  //     // Get the signed-in user's details
+  //     User? user = userCredential.user;
+  //
+  //     // get google account profile image
+  //     Userprovider userVl = Provider.of<Userprovider>(context, listen: false);
+  //     // userVl.userProfileUrl = user?.photoURL ?? '';
+  //     notifyListeners();
+  //
+  //     signUpNameController.text = user!.displayName!;
+  //     emailController.text = user.email ?? '';
+  //
+  //
+  //     // Check if the user is new or already signed up
+  //     final QuerySnapshot result = await FirebaseFirestore.instance
+  //         .collection("SIGNUP_DETAILS")
+  //         .where("EMAIL", isEqualTo: user.email)
+  //         .get();
+  //
+  //     // If user already exists, navigate to the Home page
+  //     if (result.docs.isNotEmpty) {
+  //       await loadUserDetails(context);
+  //       callNextReplacement(context, BottomNavigationPage());
+  //     } else {
+  //       // If user does not exist, navigate to profile page to fill details
+  //       addUserSignUpDetails();
+  //       callNextReplacement(context, FillYourProfile());
+  //     }
+  //
+  //     if (user != null && user.displayName != null) {
+  //       List<String> nameParts = user.displayName!.split(' ');
+  //
+  //       // Set first name (first part)
+  //       signUpNameController.text = nameParts.isNotEmpty ? nameParts.first : '';
+  //
+  //       // Set last name (last part if present)
+  //       lastNameController.text = nameParts.length > 1 ? nameParts.last : '';
+  //
+  //       // Set email
+  //       emailController.text = user.email ?? '';  // Add email to the email controller
+  //     }
+  //
+  //     print("User Info: ${user?.displayName}, ${user?.email}");
+  //   } catch (e) {
+  //     print("Error during Google Sign-In: $e");
+  //   }
+  // }
+
   Future<void> signInMethod(BuildContext context) async {
     try {
-      await googleSignIn.signOut(); // Google Sign-Out
-      await auth.signOut(); // Firebase Sign-Out
-      print("Attempting Google Sign-In...");
+      await auth.signOut();
+      await googleSignIn.signOut();
 
-      // Disconnect any previous Google sign-in session
-      // await googleSignIn.disconnect();
-
-      // Start a new Google Sign-In process
       final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
-      if (googleUser == null) {
-        return; // Sign-in cancelled
-      }
+      if (googleUser == null) return;
 
       final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
 
-      // Create a new credential
       final OAuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
 
-      // Sign in to Firebase with the Google credential
       UserCredential userCredential = await auth.signInWithCredential(credential);
-
-      // Get the signed-in user's details
       User? user = userCredential.user;
 
-      // check the user exist
-      if(user != null &&  user.email != null){
-        final QuerySnapshot result = await FirebaseFirestore.instance
-            .collection("SIGNUP_DETAILS").get();
-        if(result.docs.isNotEmpty){
-          callNextReplacement(context, BottomNavigationPage());
-        }else {
-          callNextReplacement(context, Genderselection());
-        }
+      if (user == null) return;
+
+      signUpNameController.text = user.displayName ?? '';
+      emailController.text = user.email ?? '';
+
+      // Save user ID to SharedPreferences
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString("SIGN_USER_ID", user.uid);
+
+      // Check if the user already exists in Firestore
+      final QuerySnapshot result = await db
+          .collection("SIGNUP_DETAILS")
+          .where("EMAIL", isEqualTo: user.email)
+          .get();
+
+      if (result.docs.isNotEmpty) {
+        await loadUserDetails(context);
+        callNextReplacement(context, BottomNavigationPage());
+      } else {
+        addUserSignUpDetails();
+        callNextReplacement(context, FillYourProfile());
       }
 
-      if (user != null && user.displayName != null) {
-        List<String> nameParts = user.displayName!.split(' ');
-
-        // Set first name (first part)
-        signUpNameController.text = nameParts.isNotEmpty ? nameParts.first : '';
-
-        // Set last name (last part if present)
-        lastNameController.text = nameParts.length > 1 ? nameParts.last : '';
-
-        // Set email
-        emailController.text = user.email ?? '';  // Add email to the email controller
-      }
-
-      print("User Info: ${user?.displayName}, ${user?.email}");
+      notifyListeners();
     } catch (e) {
       print("Error during Google Sign-In: $e");
+      showCustomSnackBar(context, "Google Sign-In Failed. Please try again.");
     }
   }
-
-
 
 }
 //

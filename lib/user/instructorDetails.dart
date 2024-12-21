@@ -51,9 +51,8 @@ class InstructorDetails extends StatelessWidget {
         "reach my fitness goals",
 
         "An effective testimonial strongly feature\n"
-        " your USP, the thing that you do best\n"
-        "An example of a USP for  a Personal \n"
-        "Rose is just so supportive.",
+        "your USP, the thing that you do best\n"
+        "An example of a USP for  a Personal"
   ];
 
    InstructorDetails({
@@ -72,210 +71,219 @@ class InstructorDetails extends StatelessWidget {
     return Scaffold(
       body: Consumer<Userprovider>(
         builder: (context,value1,child) {
-          return bodyContainer(
-            height,
-            width,
-            Column(
-              children: [
-                Container(
-                  width: width,
-                  height: height/2.50,
-                  decoration: BoxDecoration(
-                      color: Colors.black,
-                    image: DecorationImage(
-                      fit: BoxFit.scaleDown,
-                      image: NetworkImage(insImage)
-                    )
+          return SingleChildScrollView(
+            child: bodyContainer(
+              height,
+              width,
+              Column(
+                children: [
+                  Container(
+                    width: width,
+                    height: height/2.50,
+                    decoration: BoxDecoration(
+                        color: Colors.black,
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: NetworkImage(insImage)
+                      )
+                    ),
                   ),
-                ),
-                Expanded(
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Container(
-                      width: width,
-                      height: height/1.10,
-                      decoration: BoxDecoration(
-                        color:  Color(0x0f0f0f).withOpacity(1),
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(35),
-                          topRight: Radius.circular(35),
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                        width: width,
+                        height: height/1.10,
+                        decoration: BoxDecoration(
+                          color:  Color(0x0f0f0f).withOpacity(1),
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(35),
+                            topRight: Radius.circular(35),
+                          ),
                         ),
-                      ),
-                      child: Padding(
-                        padding:  EdgeInsets.only(left: width/20.34),
-                        child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(height: height/60.34,),
-                            Row(
-                              children: [
-                                TrainersName(insName),
-                                SizedBox(width: width/1.90,),
-                                GestureDetector(
-                                  onTap: (){
-                                    value1.makePhoneCall(context, '+917994152461');
-                                  },
-                                    child: Image.asset("assets/image/call.png",scale: 5,)),
-                              ],
-                            ),
-                            experience("High Intensity Trainer"),
-                            SizedBox(height: height/34.34,),
-                            Container(
-                              padding:  EdgeInsets.only(right: width/20.45),
-                              height: height/9.99,
-                              width: width/1.10,
-                              decoration: BoxDecoration(
-                                color:Colors.grey.withOpacity(0.10),
-                                borderRadius: BorderRadius.circular(17),
+                        child: Padding(
+                          padding:  EdgeInsets.only(left: width/20.34),
+                          child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(height: height/60.34,),
+                              Row(
+                                children: [
+                                  TrainersName(insName,width/19),
+                                  SizedBox(width: width/1.90,),
+                                  GestureDetector(
+                                    onTap: (){
+                                      value1.makePhoneCall(context, '+917994152461');
+                                    },
+                                      child: Image.asset("assets/image/call.png",scale: 5,)),
+                                ],
                               ),
-                              child: IntrinsicHeight(
-                                child: Row( mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    buildStatColumn("${insXp}","Experience"),
-                                    Container(
-                                      width: width/999.999,
-                                      height: height/16.45,
-                                      color: Colors.grey[600],
-                                    ),
-                                    buildStatColumn('${medals}', 'Medals'),
-                                    Container(
-                                      width: width/999.999,
-                                      height: height/16.45,
-                                      color: Colors.grey[600],
-                                    ),
-                                    buildStatColumn('${clint}', 'Clients'),
-                                  ],
+                              experience("High Intensity Trainer"),
+                              SizedBox(height: height/34.34,),
+                              Container(
+                                padding:  EdgeInsets.only(right: width/20.45),
+                                height: height/9.99,
+                                width: width/1.10,
+                                decoration: BoxDecoration(
+                                  color:Colors.grey.withOpacity(0.10),
+                                  borderRadius: BorderRadius.circular(17),
                                 ),
-                              ),
-                            ),
-                            SizedBox(height: height/60.34,),
-                            Text(
-                              "Reviews",
-                              style: TextStyle(
-                                  fontFamily: "jeju",
-                                  fontSize: 15,
-                                  color: Colors.white
-                              ),
-                            ),
-                            SizedBox(height: height/200.34,),
-                            Row(
-                              children: [
-                                Image.asset("assets/image/reviewCircle.png",scale: 4.56,),
-                                SizedBox(width: width/2.1,),
-                                GestureDetector(
-                                  onTap: () {
-                                    callNext(context, Reviews());
-                                  },
-                                  child: Text(
-                                    "See All Reviews",
-                                    style: TextStyle(
-                                        fontFamily: "jeju",
-                                        fontSize: 15,
-                                      color:Color(0x448EE4).withOpacity(1),
-                                    ),
+                                child: IntrinsicHeight(
+                                  child: Row( mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      buildStatColumn("${insXp}","Experience"),
+                                      Container(
+                                        width: width/999.999,
+                                        height: height/16.45,
+                                        color: Colors.grey[600],
+                                      ),
+                                      buildStatColumn('${medals}', 'Medals'),
+                                      Container(
+                                        width: width/999.999,
+                                        height: height/16.45,
+                                        color: Colors.grey[600],
+                                      ),
+                                      buildStatColumn('${clint}', 'Clients'),
+                                    ],
                                   ),
                                 ),
-                              ],
-                            ),
-                            SizedBox(height: height/56.67,),
-                            SizedBox(
-                              height:160
-          ,                          child: ListView.builder(
-                                physics: BouncingScrollPhysics(),
-                                itemCount: name.length,
-                                scrollDirection: Axis.horizontal,
-                                itemBuilder: (context, index) {
-                                  return
-                                      Container(
-                                        margin: EdgeInsets.only(right:width/30.45),
-                                        width: width/1.25,
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(15),
-                                          color:Colors.grey.withOpacity(0.10),
-                                        ),
-                                        child: Padding(
-                                          padding:  EdgeInsets.only(left: width/26.56),
-                                          child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              SizedBox(height: height/70.45,),
-                                              Row(
-                                                children: [
-                                                  CircleAvatar(
-                                                    backgroundImage: AssetImage(image[index]),radius: 21,
-                                                  ),
-                                                  SizedBox(width: width/25.45,),
-                                                  Text(
-                                                    name[index],
-                                                    style: TextStyle(
-                                                      fontFamily: "jeju",
-                                                      fontSize: 17,
-                                                     color: CupertinoColors.white
+                              ),
+                              SizedBox(height: height/60.34,),
+                              Text(
+                                "Reviews",
+                                style: TextStyle(
+                                    fontFamily: "jeju",
+                                    fontSize: 15,
+                                    color: Colors.white
+                                ),
+                              ),
+                              SizedBox(height: height/200.34,),
+                              Row(
+                                children: [
+                                  Image.asset("assets/image/reviewCircle.png",scale: 4.56,),
+                                  SizedBox(width: width/2.1,),
+                                  GestureDetector(
+                                    onTap: () {
+                                      callNext(context, Reviews());
+                                    },
+                                    child: Text(
+                                      "See All Reviews",
+                                      style: TextStyle(
+                                          fontFamily: "jeju",
+                                          fontSize: width/27.4,
+                                        color:Color(0x448EE4).withOpacity(1),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: height/56.67,),
+                              SizedBox(
+                                height:height/5.56
+            ,                          child: ListView.builder(
+                                  physics: BouncingScrollPhysics(),
+                                  itemCount: name.length,
+                                  scrollDirection: Axis.horizontal,
+                                  itemBuilder: (context, index) {
+                                    return
+                                        Container(
+                                          margin: EdgeInsets.only(right:width/30.45),
+                                          width: width/1.25,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(15),
+                                            color:Colors.grey.withOpacity(0.10),
+                                          ),
+                                          child: Padding(
+                                            padding:  EdgeInsets.only(left: width/26.56),
+                                            child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                SizedBox(height: height/70.45,),
+                                                Row(
+                                                  children: [
+                                                    CircleAvatar(
+                                                      backgroundImage: AssetImage(image[index]),radius: 21,
                                                     ),
-                                                  ),
-                                                  SizedBox(width: width/25.45,),
-                                                  Container(
-                                                    width: width/14.30,
-                                                    height: height/60.56,
-                                                    decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.circular(7),
-                                                      gradient: LinearGradient(
-                                                        colors: [Color(0x5f39f0).withOpacity(1), Color(0xFF7796E8)],
+                                                    SizedBox(width: width/25.45,),
+                                                    Text(
+                                                      name[index],
+                                                      style: TextStyle(
+                                                        fontFamily: "jeju",
+                                                        fontSize: width/25,
+                                                       color: CupertinoColors.white
                                                       ),
                                                     ),
-                                                    child:  Center(
-                                                      child: Text(
-                                                        rating[index],
-                                                        style: TextStyle(
-                                                            fontFamily: "jeju",
-                                                            fontSize: 10,
-                                                            color: CupertinoColors.white
+                                                    SizedBox(width: width/25.45,),
+                                                    Container(
+                                                      width: width/14.30,
+                                                      height: height/60.56,
+                                                      decoration: BoxDecoration(
+                                                        borderRadius: BorderRadius.circular(7),
+                                                        gradient: LinearGradient(
+                                                          colors: [Color(0x5f39f0).withOpacity(1), Color(0xFF7796E8)],
+                                                        ),
+                                                      ),
+                                                      child:  Center(
+                                                        child: Text(
+                                                          rating[index],
+                                                          style: TextStyle(
+                                                              fontFamily: "jeju",
+                                                              fontSize: 10,
+                                                              color: CupertinoColors.white
+                                                          ),
                                                         ),
                                                       ),
                                                     ),
-                                                  ),
-                                                  SizedBox(width: width/3.99,),
-                                                  experience(days[index])
-                                                ],
-                                              ),
-                                              SizedBox(height: height/70.45,),
-                                              Text(
-                                                reviews[index],
-                                                style: TextStyle(
-                                                    fontFamily: "interlight",
-                                                    fontSize: 14.45,
-                                                    color: CupertinoColors.white
+                                                    SizedBox(width: width/3.99,),
+                                                    experience(days[index])
+                                                  ],
                                                 ),
-                                              ),
-                                            ],
+                                                SizedBox(height: height/70.45,),
+                                                Container(
+                                                  width: width/1.64,
+                                                  child: FittedBox(
+                                                    fit: BoxFit.contain,
+                                                    child: Text(
+                                                      reviews[index],
+                                                      style: TextStyle(
+                                                          fontFamily: "interlight",
+                                                          fontSize: width/28,
+                                                          color: CupertinoColors.white
+                                                      ),
+
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                      );
-                                },
-                              ),
-                            ),
-                            SizedBox(height: height/26.45,),
-                            Padding(
-                              padding:  EdgeInsets.only(left: width/7.50),
-                              child: bottonContainer(
-                                  width/1.60,
-                                  height/17.56,
-                                      (){
-                                   callNext(context, Appointment(
-                                     image:insImage,
-                                     name: insName,
-                                     experience:insXp,
-                                     price:price,
-                                   ));
+                                        );
                                   },
-                                  "Book An Appointment"
+                                ),
                               ),
-                            )
-                          ],
+                              SizedBox(height: height/26.45,),
+                              Padding(
+                                padding:  EdgeInsets.only(left: width/7.50),
+                                child: bottonContainer(
+                                    width/1.60,
+                                    height/17.56,
+                                        (){
+                                     callNext(context, Appointment(
+                                       image:insImage,
+                                       name: insName,
+                                       experience:insXp,
+                                       price:price,
+                                     ));
+                                    },
+                                    "Book An Appointment"
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         }

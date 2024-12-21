@@ -16,8 +16,7 @@ class TrackOrder extends StatefulWidget {
 }
 
 class _TrackOrderState extends State<TrackOrder> {
-  int _currentStep = 0; // To track the current step
-
+  int _currentStep = 0;
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -39,7 +38,7 @@ class _TrackOrderState extends State<TrackOrder> {
                       padding: EdgeInsets.only(left: width / 23.45),
                       child: GestureDetector(
                         onTap: () {
-                          callNext(context, BottomNavigationPage());
+                        back(context);
                         },
                         child: Container(
                           width: width / 7.45,
@@ -56,7 +55,7 @@ class _TrackOrderState extends State<TrackOrder> {
                       ),
                     ),
                     SizedBox(width: width / 6.34),
-                    appbarText("Order Details"),
+                    appbarText("Order Details",width/14.84),
                   ],
                 ),
                 SizedBox(height: height / 33.66),
@@ -72,6 +71,26 @@ class _TrackOrderState extends State<TrackOrder> {
                           color: Colors.white,
                           fontFamily: "intersemi",
                         ),
+                      ),
+                      SizedBox(height: height / 55.45),
+                      Row(
+                        children: [
+                          CircleAvatar(
+                            radius: 27,
+                            backgroundColor: Colors.black,
+                            backgroundImage: NetworkImage(
+                            value.bookedSuppleImagesList[value.currentOrderIndex]["image"]??'',
+                            ),
+                          ),
+                          SizedBox(width: width/55.56,),
+                          Text(value.bookedSuppleImagesList[value.currentOrderIndex]["name"]??"",
+                          style: TextStyle(
+                            fontSize: width/28.56,
+                            color: Colors.white,
+                            fontFamily: "intersemi"
+                          ),
+                          )
+                        ],
                       ),
                       SizedBox(height: height / 77.45),
                       Text(
@@ -123,10 +142,10 @@ class _TrackOrderState extends State<TrackOrder> {
                         steps: [
                           Step(
                             title: Text("Order Placed",style: TextStyle(color: Colors.blue)),
-                            content: Text("Date: Wed, 12 Sep",style: TextStyle(color: Colors.grey),),
+                            content: Text("${value.dayName},${value.date},${value.month}",style: TextStyle(color: Colors.grey),),
                             state: StepState.complete,stepStyle: StepStyle(
                             color: Colors.green,
-                          )
+                          ),
                           ),
                           Step(
                             title: Text("Order Processed",style: TextStyle(color: Colors.blue),),

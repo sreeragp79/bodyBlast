@@ -156,11 +156,11 @@ class _HomePageState extends State<AdminHome>with SingleTickerProviderStateMixin
                             padding:  EdgeInsets.only(left: width/20.34),
                             child: Row(
                               children: [
-                                headingText("HELLO ADMIN"),
+                                headingText("HELLO ADMIN",),
                                 SizedBox(width: width/4.20,),
                                 GestureDetector(
                                   onTap: () {
-                                    value2.getBookingDetails();
+                                    value2.getInsBookingDetails();
                                     callNext(context, Notifications());
                                   },
                                   child: Container(

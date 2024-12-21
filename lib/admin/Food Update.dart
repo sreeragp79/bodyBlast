@@ -70,7 +70,7 @@ class _FoodUpdateState extends State<FoodUpdate> {
                         ),
                       ),
                       SizedBox(width: width / 7.34),
-                      appbarText("Food Update"),
+                      appbarText("Food Update",width/18.84),
                     ],
                   ),
                   SizedBox(height: height / 45.56),

@@ -20,7 +20,7 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
 
    List<String> names = [
     "Home",
-    "WorkOuts",
+    "WorkOut",
     "Food",
     "Profile",
   ];
@@ -125,7 +125,7 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
                                   style: TextStyle(
                                     color: Color(0x406DE3).withOpacity(1),
                                     fontWeight: FontWeight.w600,
-                                    fontSize: 15,
+                                    fontSize: width/27.4,
                                   ),
                                 ),
                               ),
