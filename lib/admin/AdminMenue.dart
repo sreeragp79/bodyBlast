@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../constants/AppBar Texts.dart';
+import '../user/LoginPage.dart';
 import 'UsersLocation.dart';
 
 class Adminmenue extends StatefulWidget {
@@ -224,14 +225,14 @@ class _ProfileState extends State<Adminmenue> {
                                         ),
                                         SizedBox(height: height/14.34,),
                                         GestureDetector(
-                                          // onTap: () {
-                                          //   prologValue.clearAll();
-                                          //   proValue.clearImage();
-                                          //   value3.clearAddress();
-                                          //   proValue.clearUserImage();
-                                          //   prologValue.logOut(context);
-                                          //   callNext(context, Loginpage());
-                                          // },
+                                          onTap: () {
+                                            // prologValue.clearAll();
+                                            // proValue.clearImage();
+                                            // value3.clearAddress();
+                                            // proValue.clearUserImage();
+                                            // prologValue.logOut(context);
+                                            callNext(context, Loginpage());
+                                          },
                                           child: Text("Log Out",
                                             style: TextStyle(
                                               color: Colors.red,

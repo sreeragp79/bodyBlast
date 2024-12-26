@@ -9,6 +9,7 @@ import 'package:body_blast/user/Get%20Premium.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 import '../Provider/userProvider.dart';
@@ -238,25 +239,52 @@ class _FillYourProfileState extends State<FillYourProfile> {
                               height: height / 15.20,
                             ),
                             bottonContainer(
-                              width / 3.20, height / 18.99,
-                                  ()async{
-                                    if (proVlaue.lastNameController.text.isEmpty ||
-                                        proVlaue.emailController.text.isEmpty ||
-                                        // userValue.userProfileFile == null ||
-                                        proVlaue.dateOfBirthController.text.isEmpty) {
-                                     showCustomSnackBar(context,  'Please Fill Your Details.');
-                                    } else {
-                                      userValue.saveImageToFireBase("userProfileAddImage");
+                              width / 3.20,
+                              height / 18.99,
+                                  () async {
+                                if (proVlaue.lastNameController.text.isEmpty ||
+                                    proVlaue.emailController.text.isEmpty ||
+                                    proVlaue.dateOfBirthController.text.isEmpty||
+                                    userValue.userProfileFile == null
+                                ) {
+                                  showCustomSnackBar(context, 'Please Fill Your Details.');
+                                } else {
+                                  // Show Loading Animation
+                                  showDialog(
+                                    context: context,
+                                    barrierDismissible: false,
+                                    builder: (context) {
+                                      return Center(
+                                        child:  SizedBox(
+                                          width: 130,
+                                          height: 130,
+                                          child: Lottie.asset(
+                                            "assets/animation/LoadingAnimation.json",
+                                          ),
+                                        )
+                                      );
+                                    },
+                                  );
 
-                                      await proVlaue.addUserDatasForLocation(context);
-                                      await proVlaue.getUserInfoForLocation(context);
+                                  // Simulate a delay of 4 seconds
+                                  await Future.delayed(Duration(seconds: 3));
 
-                                     proVlaue.userFillProfile();
-                                      callNextReplacement(context, Address());
-                                    }
-                                  },
-                              "Next  ",
-                            )
+                                  // Perform your async operations
+                                  userValue.saveImageToFireBase("userProfileAddImage");
+                                   proVlaue.userFillProfile();
+                                  await proVlaue.addUserDatasForLocation(context);
+                                  await proVlaue.getUserInfoForLocation(context);
+
+                                  // Close the loading dialog
+                                  Navigator.pop(context);
+
+                                  // Navigate to the next page
+                                  callNextReplacement(context, Address());
+                                }
+                              },
+                              "Next",
+                            ),
+
                           ],
                         )
                     ),

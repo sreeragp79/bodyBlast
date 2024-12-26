@@ -25,11 +25,6 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
   @override
   void initState() {
     super.initState();
-    // Delay 3 seconds to show splash, then check user details
-    Future.delayed(Duration(seconds: 3), () {
-      final loginProvider = Provider.of<LoginProvider>(context, listen: false);
-      loginProvider.checkUserExist(context);
-    });
     //  icon animation
     _iconAnimationController = AnimationController(
       duration: const Duration(seconds: 1), // Icon animation duration
@@ -77,27 +72,33 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
       Future.delayed(const Duration(milliseconds: 100), () {
         _containerAnimationController.forward().whenComplete(() {
           _textFadeInController.forward().whenComplete(() {
-            // Smooth animation to SliderPage
-            Future.delayed(const Duration(seconds: 2), () {
-              Navigator.of(context).pushReplacement(
-                PageRouteBuilder(
-                  transitionDuration: const Duration(seconds: 1), // Transition duration
-                  pageBuilder: (context, animation, secondaryAnimation) => SliderPage(),
-                  transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                    const begin = Offset(1.0, 0.0); // Slide in from the right
-                    const end = Offset.zero;
-                    const curve = Curves.easeInOut;
-                    var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-                    var offsetAnimation = animation.drive(tween);
-
-                    return FadeTransition(
-                      opacity: animation,
-                      child: child,
-                    );
-                  },
-                ),
-              );
+            // Check user and navigate after animations complete
+            Future.delayed(Duration(seconds: 2), () {
+              final loginProvider = Provider.of<LoginProvider>(context, listen: false);
+              loginProvider.loadUserDetails(context);
+              loginProvider.checkUserExist(context);
             });
+            // Smooth animation to SliderPage
+            // Future.delayed(const Duration(seconds: 2), () {
+            //   Navigator.of(context).pushReplacement(
+            //     PageRouteBuilder(
+            //       transitionDuration: const Duration(seconds: 1), // Transition duration
+            //       pageBuilder: (context, animation, secondaryAnimation) => SliderPage(),
+            //       transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            //         const begin = Offset(1.0, 0.0); // Slide in from the right
+            //         const end = Offset.zero;
+            //         const curve = Curves.easeInOut;
+            //         var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            //         var offsetAnimation = animation.drive(tween);
+            //
+            //         return FadeTransition(
+            //           opacity: animation,
+            //           child: child,
+            //         );
+            //       },
+            //     ),
+            //   );
+            // });
           });
         });
       });

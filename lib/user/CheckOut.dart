@@ -110,13 +110,19 @@ class _CheckoutState extends State<Checkout> {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      widget.suppleName,
-                                      style: TextStyle(
-                                          fontFamily: "jeju",
-                                          height: height / 800.99,
-                                          fontSize: width/21.30,
-                                          color: CupertinoColors.white),
+                                    Container(
+                                      width: width/2.10,
+                                      child: FittedBox(
+                                        fit: BoxFit.contain,
+                                        child: Text(
+                                          widget.suppleName,
+                                          style: TextStyle(
+                                              fontFamily: "jeju",
+                                              height: height / 800.99,
+                                              fontSize: width/21.30,
+                                              color: CupertinoColors.white),
+                                        ),
+                                      ),
                                     ),
                                     experience(widget.suppleBrand),
                                     SizedBox(
@@ -165,38 +171,44 @@ class _CheckoutState extends State<Checkout> {
                         child: Column(crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SizedBox(height: height/56.67,),
-                            Row(crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                               value.isLoadingAddress?
-                                   Center(
-                                     child: CircularProgressIndicator(color: Colors.blue,),
-                                   ):
-                               Text(
-                                  "${value.addressName}\n"
-                                      "${value.cityy},${value.pincode}\n"
-                                      "${value.rodeName}\n"
-                                      "${value.statee}",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontFamily: "intersemi",
-                                    fontSize: width/25.62,
-                                  ),
+                            Container(
+                              width: width/1.45,
+                              child: FittedBox(
+                                fit: BoxFit.contain,
+                                child: Row(crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                   value.isLoadingAddress?
+                                       Center(
+                                         child: CircularProgressIndicator(color: Colors.blue,),
+                                       ):
+                                   Text(
+                                      "${value.addressName}\n"
+                                          "${value.cityy},${value.pincode}\n"
+                                          "${value.rodeName}\n"
+                                          "${value.statee}",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: "intersemi",
+                                        fontSize: width/25.62,
+                                      ),
+                                    ),
+                                    SizedBox(width: width/2.99,),
+                                    GestureDetector(
+                                      onTap: () {
+                                        value.getAddressDetails();
+                                        callNext(context, UpdateAddress());
+                                      },
+                                      child: Text("Edit",
+                                      style: TextStyle(
+                                        color: Colors.blue,
+                                        fontFamily: "intersemi",
+                                        fontSize: width/27.29,
+                                      ),
+                                      ),
+                                    )
+                                  ],
                                 ),
-                                SizedBox(width: width/2.99,),
-                                GestureDetector(
-                                  onTap: () {
-                                    value.getAddressDetails();
-                                    callNext(context, UpdateAddress());
-                                  },
-                                  child: Text("Edit",
-                                  style: TextStyle(
-                                    color: Colors.blue,
-                                    fontFamily: "intersemi",
-                                    fontSize: width/27.29,
-                                  ),
-                                  ),
-                                )
-                              ],
+                              ),
                             ),
                           ],
                         ),
@@ -206,88 +218,88 @@ class _CheckoutState extends State<Checkout> {
                   SizedBox(height: height / 33.67),
                   Padding(
                     padding: EdgeInsets.only(left: width / 16.45),
-                    child: Container(
-                      height: height / 5.66,  // Fixed height issue here
-                      width: width / 1.15,  // Width could be smaller on smaller devices
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.grey.withOpacity(0.10),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.only(left: width / 16.45),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(height: height / 56.67),
-                            Row(
-                              children: [
-                                Text(
-                                  "Item price",
-                                  style: TextStyle(
-                                    fontSize: width / 26.62,
-                                    color: Colors.grey,
-                                    fontFamily: "intersemi",
-                                  ),
-                                ),
-                                SizedBox(width: width / 2.24),
-                                Text(
-                                  widget.supplePrice,
-                                  style: TextStyle(
-                                    fontSize: width / 19.33,
-                                    color: Colors.white,
-                                    fontFamily: "interBold",
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: height / 44.45),
-                            Row(
-                              children: [
-                                Text(
-                                  "Shipping charge",
-                                  style: TextStyle(
-                                    fontSize: width / 26.62,
-                                    color: Colors.grey,
-                                    fontFamily: "intersemi",
-                                  ),
-                                ),
-                                SizedBox(width: width / 2.82),
-                                Text(
-                                  "0",
-                                  style: TextStyle(
-                                    fontSize: width / 19.33,
-                                    color: Colors.white,
-                                    fontFamily: "interBold",
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: height / 38.45),
-                            Row(
-                              children: [
-                                Text(
-                                  "Total Amount",
-                                  style: TextStyle(
-                                    fontSize: width / 26.62,
-                                    color: Colors.white,
-                                    fontFamily: "intersemi",
-                                  ),
-                                ),
-                                SizedBox(width: width / 2.53),
-                                Text(
-                                  widget.supplePrice,
-                                  style: TextStyle(
-                                    fontSize: width / 19.33,
-                                    color: Colors.blue,
-                                    fontFamily: "interBold",
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
+                      child:Container(
+                        height: height / 5.66,
+                        width: width / 1.15,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Colors.grey.withOpacity(0.10),
                         ),
-                      ),
-                    ),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: width / 20),  // Changed padding
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(height: height / 56.67),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,  // Added this
+                                children: [
+                                  Text(
+                                    "Item price",
+                                    style: TextStyle(
+                                      fontSize: width / 26.62,
+                                      color: Colors.grey,
+                                      fontFamily: "intersemi",
+                                    ),
+                                  ),
+                                  Text(
+                                    widget.supplePrice,
+                                    style: TextStyle(
+                                      fontSize: width / 19.33,
+                                      color: Colors.white,
+                                      fontFamily: "interBold",
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: height / 44.45),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,  // Added this
+                                children: [
+                                  Text(
+                                    "Shipping charge",
+                                    style: TextStyle(
+                                      fontSize: width / 26.62,
+                                      color: Colors.grey,
+                                      fontFamily: "intersemi",
+                                    ),
+                                  ),
+                                  Text(
+                                    "0",
+                                    style: TextStyle(
+                                      fontSize: width / 19.33,
+                                      color: Colors.white,
+                                      fontFamily: "interBold",
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: height / 38.45),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,  // Added this
+                                children: [
+                                  Text(
+                                    "Total Amount",
+                                    style: TextStyle(
+                                      fontSize: width / 26.62,
+                                      color: Colors.white,
+                                      fontFamily: "intersemi",
+                                    ),
+                                  ),
+                                  Text(
+                                    widget.supplePrice,
+                                    style: TextStyle(
+                                      fontSize: width / 19.33,
+                                      color: Colors.blue,
+                                      fontFamily: "interBold",
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
                   ),
 
                   SizedBox(height: height/4.56,),

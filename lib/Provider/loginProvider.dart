@@ -5,6 +5,7 @@ import 'package:body_blast/Provider/userProvider.dart';
 import 'package:body_blast/admin/Map.dart';
 import 'package:body_blast/models/class.dart';
 import 'package:body_blast/user/Fill%20Your%20Profile.dart';
+import 'package:body_blast/user/SignUpPage.dart';
 import 'package:body_blast/user/SliderPage.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:body_blast/user/GenderSelection.dart';
@@ -60,7 +61,7 @@ class LoginProvider extends ChangeNotifier {
   TextEditingController dateOfBirthController = TextEditingController();
 
   // signup add
-  void addUserSignUpDetails() async {
+ Future<void>addUserSignUpDetails()async {
     String userId = DateTime.now().millisecondsSinceEpoch.toString();
     Map<String, dynamic> addLoginDetails = {
       "SIGN_USER_ID": userId,
@@ -73,7 +74,7 @@ class LoginProvider extends ChangeNotifier {
     addLoginDetails.forEach((key,value){
       print("$key,$value");
     });
-    db.collection("SIGNUP_DETAILS").doc(userId).set(addLoginDetails, SetOptions(merge: true));
+   await db.collection("SIGNUP_DETAILS").doc(userId).set(addLoginDetails, SetOptions(merge: true));
     notifyListeners();
 
     // userData sharedPreference save
@@ -114,11 +115,13 @@ class LoginProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-
+bool isLoadingLocation = false;
   // get User Details for Location
   List<GetUserDrtailaClassForLocation> userLocationList = [];
   Future<void>getUserInfoForLocation(context)async{
     try {
+      isLoadingLocation = true;
+      notifyListeners();
       userLocationList.clear();
       var datas = await db.collection("USER_DETAILS_LOCATION").get();
 
@@ -139,9 +142,10 @@ class LoginProvider extends ChangeNotifier {
           ));
         }
       }
+      isLoadingLocation = false;
       notifyListeners();
     }catch(eror){
-      print("Location details cat get.........");
+      print("Location details cat get.........$eror");
     }
   }
 
@@ -268,14 +272,77 @@ class LoginProvider extends ChangeNotifier {
   }
 
   // user exist go to home screen
+  Future<void> checkUserExist(BuildContext context) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? userId = prefs.getString("SIGN_USER_ID");
 
-  Future<void>checkUserExist(BuildContext context)async{
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? userIdd = prefs.getString("SIGN_USER_ID");
-    if(userIdd == null){
-    callNextReplacement(context, SliderPage());
-    }else{
-      callNextReplacement(context, BottomNavigationPage());
+      if (userId != null) {
+        var userDoc = await db.collection("SIGNUP_DETAILS").doc(userId).get();
+
+        if (userDoc.exists) {
+          Navigator.of(context).pushReplacement(
+            PageRouteBuilder(
+              transitionDuration: const Duration(seconds: 1),
+              pageBuilder: (context, animation, secondaryAnimation) => BottomNavigationPage(),
+              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                const begin = Offset(1.0, 0.0);
+                const end = Offset.zero;
+                const curve = Curves.easeInOut;
+                var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                var offsetAnimation = animation.drive(tween);
+                return FadeTransition(
+                  opacity: animation,
+                  child: child,
+                );
+              },
+            ),
+          );
+        } else {
+          // Add transition for Slider Page too
+          Navigator.of(context).pushReplacement(
+            PageRouteBuilder(
+              transitionDuration: const Duration(seconds: 1),
+              pageBuilder: (context, animation, secondaryAnimation) => SliderPage(),
+              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                return FadeTransition(
+                  opacity: animation,
+                  child: child,
+                );
+              },
+            ),
+          );
+        }
+      } else {
+        // For new users, go to Slider Page with transition
+        Navigator.of(context).pushReplacement(
+          PageRouteBuilder(
+            transitionDuration: const Duration(seconds: 1),
+            pageBuilder: (context, animation, secondaryAnimation) => SliderPage(),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+              return FadeTransition(
+                opacity: animation,
+                child: child,
+              );
+            },
+          ),
+        );
+      }
+    } catch (e) {
+      print("Error: $e");
+      // Even on error, navigate to Slider Page
+      Navigator.of(context).pushReplacement(
+        PageRouteBuilder(
+          transitionDuration: const Duration(seconds: 1),
+          pageBuilder: (context, animation, secondaryAnimation) => SliderPage(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return FadeTransition(
+              opacity: animation,
+              child: child,
+            );
+          },
+        ),
+      );
     }
   }
 
@@ -318,7 +385,6 @@ class LoginProvider extends ChangeNotifier {
       print("User Image URL: ${userImage.userProfileUrl}");
     }
     notifyListeners();
-
   }
 
 
@@ -552,6 +618,5 @@ class LoginProvider extends ChangeNotifier {
 //      print('Failed to send OTP: ${response.body}');
 //    }
 //  }
-
 
 

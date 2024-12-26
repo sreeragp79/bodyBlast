@@ -272,8 +272,7 @@ class _LoginpageState extends State<SignUpPage> {
                                       });
 
                                       callNext(context, Otppage());
-
-                                      signValue.addUserSignUpDetails();
+                                      await signValue.addUserSignUpDetails();
                                     }
                                   }
                                 },

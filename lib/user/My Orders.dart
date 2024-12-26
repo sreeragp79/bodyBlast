@@ -110,13 +110,19 @@ class _MyOrdersState extends State<MyOrders> {
                                     Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Text(
-                                          item.BsupplementName,
-                                          style: TextStyle(
-                                              fontFamily: "jeju",
-                                              height: height / 800.99,
-                                              fontSize: width/20.56,
-                                              color: CupertinoColors.white),
+                                        Container(
+                                          width: width/2.10,
+                                          child: FittedBox(
+                                            fit:BoxFit.contain,
+                                            child: Text(
+                                              item.BsupplementName,
+                                              style: TextStyle(
+                                                  fontFamily: "jeju",
+                                                  height: height / 800.99,
+                                                  fontSize: width/20.56,
+                                                  color: CupertinoColors.white),
+                                            ),
+                                          ),
                                         ),
                                         experience(item.BsupplementBrand),
                                         SizedBox(

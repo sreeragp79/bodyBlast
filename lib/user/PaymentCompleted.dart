@@ -72,7 +72,7 @@ class Paymentcompleted extends StatelessWidget {
                         ),
                         SizedBox(height: height/27.70,),
                         Container(
-                          height: height/4.20,
+                          height: 210,
                           width: width/1.30,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(17),
@@ -107,7 +107,7 @@ class Paymentcompleted extends StatelessWidget {
                                             style: TextStyle(
                                                 fontFamily: "jeju",
                                                 height: height / 800.99,
-                                                fontSize: 22,
+                                                fontSize: width/18.68,
                                                 color: CupertinoColors.white),
                                           ),
                                           experience("High Intensity Trainer"),
@@ -179,7 +179,7 @@ class Paymentcompleted extends StatelessWidget {
                                     ],
                                   ),
                                 ),
-                                SizedBox(height: height/400.54,),
+                                SizedBox(height: height/400.54),
                                 Padding(
                                   padding:  EdgeInsets.only(left: width/34.45),
                                   child: Row(

@@ -40,7 +40,7 @@ class Reviews extends StatelessWidget {
                       Column(
                         children: [
                           SizedBox(height: height/16.45,),
-                          Row(
+                          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Padding(
                                 padding: EdgeInsets.only(left: width/23.45),
@@ -61,8 +61,11 @@ class Reviews extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              SizedBox(width: width/4.34,),
                               appbarText("Reviews",width/14.84),
+                                Container(
+                                  width: width/5.50,
+                                  height: height/20.45,
+                                ),
                             ],
                           ),
                           SizedBox(height: height/28.45,),
@@ -86,65 +89,67 @@ class Reviews extends StatelessWidget {
                                       ),
                                       child: Padding(
                                         padding:  EdgeInsets.only(left: width/26.56),
-                                        child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            SizedBox(height: height/70.45,),
-                                            Row(
-                                              children: [
-                                                CircleAvatar(
-                                                  backgroundImage: item.reviewImage.isNotEmpty
-                                                      ? NetworkImage(item.reviewImage)
-                                                      : AssetImage('assets/image/user11.png'),
-                                                ),
-                                                SizedBox(width: width/25.45,),
-                                                Text(
-                                                 item.userName,
-                                                  style: TextStyle(
-                                                      fontFamily: "jeju",
-                                                      fontSize: width/24.17,
-                                                      color: CupertinoColors.white
+                                        child: SingleChildScrollView(
+                                          child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              SizedBox(height: height/70.45,),
+                                              Row(
+                                                children: [
+                                                  CircleAvatar(
+                                                    backgroundImage: item.reviewImage.isNotEmpty
+                                                        ? NetworkImage(item.reviewImage)
+                                                        : AssetImage('assets/image/user11.png'),
                                                   ),
-                                                ),
-                                                SizedBox(width: width/25.45,),
-                                                SingleChildScrollView(
-                                                  child: Container(
-                                                    width: width/14.30,
-                                                    height: height/60.56,
-                                                    decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.circular(7),
-                                                      gradient: LinearGradient(
-                                                        colors: [Color(0x5f39f0).withOpacity(1), Color(0xFF7796E8)],
-                                                      ),
+                                                  SizedBox(width: width/25.45,),
+                                                  Text(
+                                                   item.userName,
+                                                    style: TextStyle(
+                                                        fontFamily: "jeju",
+                                                        fontSize: width/24.17,
+                                                        color: CupertinoColors.white
                                                     ),
-                                                    child:  Center(
-                                                      child: Text(
-                                                       "5.7",
-                                                        style: TextStyle(
-                                                            fontFamily: "jeju",
-                                                            fontSize: width/41.1,
-                                                            color: CupertinoColors.white
+                                                  ),
+                                                  SizedBox(width: width/25.45,),
+                                                  SingleChildScrollView(
+                                                    child: Container(
+                                                      width: width/14.30,
+                                                      height: height/60.56,
+                                                      decoration: BoxDecoration(
+                                                        borderRadius: BorderRadius.circular(7),
+                                                        gradient: LinearGradient(
+                                                          colors: [Color(0x5f39f0).withOpacity(1), Color(0xFF7796E8)],
+                                                        ),
+                                                      ),
+                                                      child:  Center(
+                                                        child: Text(
+                                                         "5.7",
+                                                          style: TextStyle(
+                                                              fontFamily: "jeju",
+                                                              fontSize: width/41.1,
+                                                              color: CupertinoColors.white
+                                                          ),
                                                         ),
                                                       ),
                                                     ),
                                                   ),
-                                                ),
-                                                // SizedBox(width: width/3.99,),
-                                                // experience(item.reviewDate)
-                                              ],
-                                            ),
-                                            SizedBox(height: height/70.45,),
-                                            Padding(
-                                              padding:  EdgeInsets.only(right: width/8.78),
-                                              child: Text(
-                                                item.reviewSub,
-                                                style: TextStyle(
-                                                    fontFamily: "interlight",
-                                                    fontSize: 16.45,
-                                                    color: CupertinoColors.white
+                                                  // SizedBox(width: width/3.99,),
+                                                  // experience(item.reviewDate)
+                                                ],
+                                              ),
+                                              SizedBox(height: height/70.45,),
+                                              Padding(
+                                                padding:  EdgeInsets.only(right: width/8.78),
+                                                child: Text(
+                                                  item.reviewSub,
+                                                  style: TextStyle(
+                                                      fontFamily: "interlight",
+                                                      fontSize: 16.45,
+                                                      color: CupertinoColors.white
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                          ],
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),
