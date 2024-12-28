@@ -25,20 +25,23 @@ if (flutterVersionName == null) {
 
 android {
     namespace = "com.example.body_blast"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 34
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17 // Java Version 17
+        targetCompatibility JavaVersion.VERSION_17 // Java Version 17
+    }
+    kotlinOptions {
+        jvmTarget = "17" // Kotlin JVM Target Version 17
     }
 
     defaultConfig {
-        applicationId = "com.example.body_blast"
+        applicationId "com.example.body_blast"
         minSdk = 24
-        targetSdk = 33
-        versionCode = flutterVersionCode.toInteger()
-        versionName = flutterVersionName
+        targetSdk = 34
+        versionCode flutterVersionCode.toInteger()
+        versionName flutterVersionName
     }
 
     buildTypes {

@@ -1,30 +1,24 @@
 buildscript {
     repositories {
-        google()  // Google's repository (required for Firebase, GPay)
-        mavenCentral()  // Maven Central repository
+        google() // Google's repository (required for Firebase, Google Pay, etc.)
+        mavenCentral() // Maven Central repository for additional libraries
     }
     dependencies {
-        // Android Gradle Plugin version (ensure it's compatible with your Android Studio version)
-        classpath 'com.android.tools.build:gradle:7.3.1'
-
-        // Kotlin Plugin for Kotlin support in Android projects
-        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.10'
-
-        // Google Services Plugin for Firebase or Google Pay integration
-        classpath 'com.google.gms:google-services:4.3.15'
-
-        // Other classpath dependencies as needed (for example, if using Hilt or other plugins)
+        classpath 'com.android.tools.build:gradle:8.1.1' // Gradle Plugin Version
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.0' // Kotlin Plugin Version
+        classpath 'com.google.gms:google-services:4.4.0' // Google Services Plugin
     }
 }
 
 allprojects {
     repositories {
-        google()  // Ensure Google's repository is included
-        mavenCentral()  // Maven Central repository
+        google() // Google's repository for Android dependencies
+        mavenCentral() // Maven Central repository for additional dependencies
     }
 }
 
 rootProject.buildDir = "../build"
+
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
 }
